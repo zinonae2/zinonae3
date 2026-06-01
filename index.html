@@ -1,374 +1,952 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Exam Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Integrated Exam System</title>
 
-<style>
-* {
-    box-sizing: border-box;
-    font-family: "Segoe UI", Tahoma, sans-serif;
-}
+    <style>
+        /* =========================================
+           1. التنسيقات العامة ولوحة التحكم (Dashboard)
+           ========================================= */
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+        }
 
-body {
-    margin: 0;
-    background: #0f0f0f;
-    color: #e0e0e0;
-}
+        body {
+            margin: 0;
+            background: #1c1c1e;
+            color: #e0e0e0;
+            transition: background-color 0.3s ease;
+        }
 
-/* ===== Top Bar ===== */
-.top-bar {
-    height: 60px;
-    background: #1a1a1a;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    border-bottom: 1px solid #2a2a2a;
-}
+        #dashboard-container { display: block; }
+        #exam-start-page { display: none; height: 100vh; flex-direction: column; }
+        #exam-interface-container { display: none; min-height: 100vh; background: #131926; }
+        #post-exam-dashboard { display: none; } /* حاوية صفحة ما بعد الاختبار المضافة */
 
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        /* ===== Dashboard Top Bar ===== */
+        .top-bar {
+            height: 65px; 
+            background: #1c1c1e; 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 1px solid #2d2d30;
+        }
 
-.avatar {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: #3a3a3a;
-}
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 14px; 
+            cursor: pointer;
+            min-width: 0;
+        }
 
-.user-text {
-    display: flex;
-    flex-direction: column;
-    font-size: 13px;
-}
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #3a3a3c; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
 
-.user-text span:first-child {
-    color: #9a9a9a;
-    font-size: 12px;
-}
+        .avatar-svg {
+            width: 100%;
+            height: 100%;
+            fill: #b1b1b6; 
+        }
 
-.icons {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    color: #bdbdbd;
-}
+        .user-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1px;
+            min-width: 0;
+        }
 
-.icon {
-    width: 18px;
-    height: 18px;
-    stroke: #bdbdbd;
-    stroke-width: 2;
-    fill: none;
-    cursor: pointer;
-}
+        .user-text span:first-child {
+            color: #7c7c80; 
+            font-size: 13px;
+            font-weight: 500;
+        }
 
-/* ===== Tabs ===== */
-.tabs {
-    display: flex;
-    justify-content: center;
-    gap: 120px;
-    background: #000;
-    border-bottom: 1px solid #1f1f1f;
-}
+        .user-text span:last-child {
+            color: #ffffff; 
+            font-size: 16px; 
+            font-weight: bold; 
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 190px;
+        }
 
-.tab {
-    padding: 14px 0;
-    color: #9a9a9a;
-    font-size: 14px;
-    position: relative;
-    cursor: pointer;
-}
+        .icons {
+            display: flex;
+            align-items: center;
+            gap: 20px; 
+            flex-shrink: 0;
+        }
 
-.tab.active {
-    color: #4da3ff;
-}
+        .icon-svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: #ffffff; 
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            cursor: pointer;
+        }
 
-.tab.active::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: #4da3ff;
-}
+        /* ===== Tabs Dashboard ===== */
+        .tabs {
+            display: flex;
+            background: #000000; 
+            border-bottom: 1px solid #2d2d30;
+            padding: 0;
+        }
 
-/* ===== Content ===== */
-.content {
-    padding: 30px 40px;
-}
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 16px 0;
+            color: #7c7c80; 
+            font-size: 15px; 
+            font-weight: 600; 
+            position: relative;
+            cursor: pointer;
+        }
 
-.header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    font-size: 14px;
-    color: #bdbdbd;
-}
+        .tab.active {
+            color: #ffffff; 
+        }
 
-.toggle {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        .tab::after {
+            content: "";
+            position: absolute;
+            bottom: -1px; 
+            left: 0;
+            width: 100%;
+            height: 3px; 
+            background: transparent;
+        }
 
-.toggle-switch {
-    width: 42px;
-    height: 22px;
-    background: #3a3a3a;
-    border-radius: 11px;
-    position: relative;
-}
+        .tab.active::after {
+            background: #2a65bf; 
+        }
 
-.toggle-switch::after {
-    content: "";
-    width: 18px;
-    height: 18px;
-    background: #fff;
-    border-radius: 50%;
-    position: absolute;
-    top: 2px;
-    right: 2px;
-}
+        /* ===== Content Dashboard ===== */
+        .content {
+            padding: 20px 16px;
+            max-width: 768px; 
+            margin: 0 auto;  
+        }
 
-/* ===== Exam Card ===== */
-.exam-card {
-    background: #1c1c1c;
-    border-radius: 10px;
-    padding: 20px;
-    border: 1px solid #2c2c2c;
-    position: relative;
-    overflow: hidden;
-}
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #7c7c80; 
+        }
 
-.exam-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: #4da3ff;
-}
+        .toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
 
-.exam-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
+        .toggle-switch {
+            width: 46px;
+            height: 24px;
+            background: #3a3a3c;
+            border-radius: 12px;
+            position: relative;
+            transition: background-color 0.25s ease;
+        }
 
-.exam-title {
-    font-size: 16px;
-    font-weight: 600;
-}
+        .toggle-switch::after {
+            content: "";
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: left 0.25s ease;
+        }
 
-.exam-date {
-    font-size: 13px;
-    color: #b0b0b0;
-    text-align: right;
-    line-height: 1.4;
-}
+        .toggle.active .toggle-switch {
+            background: #34c759; 
+        }
 
-.exam-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    row-gap: 12px;
-    font-size: 14px;
-    color: #bdbdbd;
-}
+        .toggle.active .toggle-switch::after {
+            left: 24px; 
+        }
 
-.exam-details .value {
-    color: #ffffff;
-    justify-self: end;
-}
+        /* ===== Exam Card ===== */
+        .exam-card {
+            background: #2c2c2e; 
+            border-radius: 14px;
+            padding: 22px 20px;
+            border: 1px solid #3a3a3c;
+            position: relative;
+            overflow: hidden;
+        }
 
-.exam-details .value.status-ended {
-    color: #4da3ff;
-}
+        .exam-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #2a65bf; 
+        }
 
-.view-score {
-    margin-top: 20px;
-    width: 100%;
-    padding: 12px;
-    background: transparent;
-    border: 1px solid #4da3ff;
-    border-radius: 8px;
-    color: #4da3ff;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
+        .exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; 
+            padding-bottom: 16px; 
+            border-bottom: 1px solid #3a3a3c; 
+            margin-bottom: 18px; 
+        }
 
-.view-score:hover {
-    background: rgba(77, 163, 255, 0.1);
-}
+        .exam-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: #ffffff;
+            max-width: 70%;
+            line-height: 1.4;
+        }
 
-.hidden {
-    display: none !important;
-}
+        .exam-date {
+            font-size: 13px;
+            color: #aeaeb2;
+            text-align: right;
+            line-height: 1.4;
+        }
 
-/* ===== Modal (Popup) ===== */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7); /* خلفية مظللة */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
+        .exam-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            row-gap: 16px;
+            font-size: 14px;
+            color: #aeaeb2; 
+            padding-bottom: 4px; 
+        }
 
-.modal-box {
-    background: #2a2a2a;
-    border: 1px solid #3a3a3a;
-    border-radius: 8px;
-    width: 340px;
-    padding: 35px 25px 20px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
+        .exam-details .value {
+            color: #ffffff; 
+            justify-self: end;
+            font-weight: 500;
+        }
 
-.modal-icon {
-    position: absolute;
-    top: -25px; /* رفع الأيقونة للأعلى */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 50px;
-    background: #2b78e4;
-    border-radius: 50%;
-    border: 3px solid #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    font-weight: bold;
-    font-family: serif;
-    color: white;
-}
+        .exam-details .value.status-upcoming {
+            color: #2a65bf;
+            font-weight: bold;
+        }
 
-.modal-title {
-    font-size: 15px;
-    color: #fff;
-    margin-bottom: 15px;
-}
+        .exam-details .value.status-ended {
+            color: #2a65bf;
+        }
 
-.modal-text {
-    font-size: 13px;
-    color: #e0e0e0;
-    line-height: 1.6;
-    margin-bottom: 25px;
-}
+        .view-score {
+            margin-top: 22px;
+            width: 100%;
+            padding: 13px; 
+            background: #2c2c2e; 
+            border: 1px solid #2a65bf; 
+            border-radius: 10px;
+            color: #2a65bf; 
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-.modal-btn {
-    width: 100%;
-    padding: 10px;
-    background: #2b78e4;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
+        .view-score:active {
+            background: rgba(42, 101, 191, 0.05); 
+        }
 
-.modal-btn:hover {
-    background: #1f5eb5;
-}
-</style>
+        .hidden { display: none !important; }
+
+        /* ===== Overlays & Modals ===== */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); 
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000;
+        }
+
+        .spinner-box {
+            width: 80px; height: 80px;
+            background: rgba(30, 30, 32, 0.85); 
+            border-radius: 14px;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .ios-spinner { width: 44px; height: 44px; }
+        .ios-spinner line { stroke: #8a8a8f; stroke-width: 4px; stroke-linecap: round; }
+        .spinner-animated { transform-origin: center; animation: spinner-rotate 1s steps(8) infinite; }
+        @keyframes spinner-rotate { 100% { transform: rotate(360deg); } }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000; padding: 24px; 
+        }
+
+        .modal-box {
+            background: #2a2a2e; 
+            border: 1px solid #3a3a3f;
+            border-radius: 12px; 
+            width: 100%; max-width: 320px;
+            padding: 38px 16px 16px;
+            text-align: center; position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .modal-icon {
+            position: absolute; top: -28px; left: 50%; transform: translateX(-50%);
+            width: 56px; height: 56px; background: #2a65bf; 
+            border-radius: 50%; border: 3px solid #2a2a2e; outline: 2px solid #ffffff; 
+            display: flex; justify-content: center; align-items: center;
+            font-size: 26px; font-weight: bold; color: white;
+        }
+
+        .modal-title { font-size: 16px; font-weight: 600; color: #ffffff; margin-bottom: 14px; }
+        .modal-text { font-size: 13.5px; color: #e0e0e3; line-height: 1.6; margin-bottom: 20px; text-align: center; }
+        .modal-input-group { margin-bottom: 20px; text-align: left; }
+        .modal-input-group label { display: block; color: #aeaeb2; font-size: 13px; margin-bottom: 8px; }
+        .modal-input-group input {
+            width: 100%; padding: 12px; background: #1c1c1e; border: 1px solid #3a3a3c;
+            border-radius: 8px; color: white; font-size: 16px; outline: none;
+        }
+
+        .modal-btn-container { display: flex; gap: 10px; }
+        .modal-btn { width: 100%; padding: 11px; background: #2a65bf; color: white; border: none; border-radius: 6px; font-size: 15px; cursor: pointer; font-weight: 500; }
+        .modal-btn.btn-secondary { background: #3a3a3c; color: #ffffff; }
+
+        /* ===== Bottom Sheets ===== */
+        .bottom-sheet-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); z-index: 1500;
+            display: flex; align-items: flex-end; visibility: hidden; opacity: 0;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        .bottom-sheet-overlay.open { visibility: visible; opacity: 1; }
+        .bottom-sheet {
+            width: 100%; background: #1c1c1e; border-top-left-radius: 16px; border-top-right-radius: 16px;
+            padding: 16px 16px 30px 16px; transform: translateY(100%); transition: transform 0.25s ease-out;
+        }
+
+        .bottom-sheet-overlay.open .bottom-sheet { transform: translateY(0); }
+        .sheet-header { display: flex; justify-content: flex-end; padding-bottom: 10px; }
+        .close-sheet-btn { background: none; border: none; color: #ffffff; font-size: 18px; cursor: pointer; }
+
+        .filter-header-title { display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid #2c2c2e; margin-bottom: 6px; }
+        .filter-header-title h3 { font-size: 18px; color: #ffffff; }
+        .filter-option { display: flex; align-items: center; padding: 14px 0; cursor: pointer; }
+        .filter-radio { width: 20px; height: 20px; border: 2px solid #3a3a3c; border-radius: 50%; margin-right: 12px; display: flex; justify-content: center; align-items: center; }
+        .filter-option.selected .filter-radio { border-color: #2a65bf; }
+        .filter-radio::after { content: ""; width: 10px; height: 10px; background: transparent; border-radius: 50%; }
+        .filter-option.selected .filter-radio::after { background: #2a65bf; }
+        .filter-label { font-size: 15px; color: #ffffff; }
+        .filter-show-btn { width: 100%; background: #2a65bf; color: #ffffff; border: none; border-radius: 10px; padding: 12px; font-weight: 600; margin-top: 16px; cursor: pointer; }
+
+        .profile-content { display: flex; flex-direction: column; padding: 10px 4px 16px 4px; }
+        .profile-user-row { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; }
+        .profile-avatar { width: 44px; height: 44px; border-radius: 50%; background: #2c2c2e; display: flex; justify-content: center; align-items: center; }
+        .profile-avatar svg { width: 100%; height: 100%; fill: #8e8e93; }
+        .profile-info-text { display: flex; flex-direction: column; gap: 4px; }
+        .profile-info-text .welcome-lbl { color: #7c7c80; font-size: 13px; }
+        .profile-info-text .name-lbl { color: #ffffff; font-size: 16px; font-weight: bold; }
+        .signout-btn { width: 100%; padding: 13px; background: transparent; border: 1px solid #c93b3b; border-radius: 10px; color: #e54343; font-weight: 600; cursor: pointer; }
+
+        /* ===== صفحة التعليمات قبل بدء الاختبار ===== */
+        .page-header { padding: 15px; display: flex; align-items: center; background-color: #2c2c2e; border-bottom: 1px solid #3a3a3c; }
+        .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; color: #ffffff; }
+        .detail-list { padding: 20px; flex-grow: 1; }
+        .detail-item { display: flex; flex-direction: column; margin-bottom: 20px; }
+        .detail-item .dt-label { color: #aeaeb2; font-size: 13px; margin-bottom: 5px; }
+        .detail-item .dt-value { font-size: 16px; color: #ffffff; font-weight: 500; }
+        .instructions-box { background-color: #2c2c2e; padding: 20px; border-radius: 8px; border: 1px solid #3a3a3c; height: 150px; color: #aeaeb2; font-size: 14px; margin-top: 8px; }
+        .footer-action { padding: 20px; background-color: #1c1c1e; }
+
+        @media (min-width: 1024px) { .content { max-width: 900px; } }
+
+        /* =========================================
+           2. تنسيقات واجهة الاختبار الفعلي المطابقة للصورة
+           ========================================= */
+        :root {
+            --exam-bg: #141d26;
+            --header-dark: #1b2431;
+            --text-white: #ffffff;
+            --text-blue: #3d8bfd;
+            --text-yellow: #ffc107;
+            --green-progress: #4cd964;
+            --card-bg: #1b2431;
+            --border-color: #2d3748;
+            --btn-border: #4a5568;
+            --qscale: 1;
+        }
+
+        .exam-app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: var(--exam-bg);
+            color: var(--text-white);
+            font-size: 16px;
+        }
+
+        .exam-top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #151b26;
+            border-bottom: 1px solid #202733;
+        }
+
+        .exam-nav-left-placeholder { width: 80px; }
+
+        .exam-nav-tabs {
+            display: flex;
+            background: #151b26;
+            border: 1px solid var(--btn-border);
+            border-radius: 8px;
+            overflow: hidden;
+            padding: 2px;
+        }
+
+        .exam-nav-tab {
+            padding: 6px 16px;
+            font-size: 14px;
+            border: none;
+            background: transparent;
+            color: #a0aec0;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .exam-nav-tab.active {
+            background-color: #2d3748;
+            color: var(--text-white);
+            border: 1px solid #4a5568;
+        }
+
+        .exam-nav-remaining {
+            font-size: 14px;
+            color: var(--text-yellow);
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            width: 80px;
+        }
+        .exam-nav-remaining span:first-child { font-size: 11px; color: #a0aec0; font-weight: normal; margin-bottom: 2px; }
+
+        .exam-user-strip {
+            background-color: #232d3d;
+            padding: 10px 16px;
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--text-white);
+            text-transform: uppercase;
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .exam-stats-panel {
+            padding: 14px 16px;
+            background-color: #17202e;
+            border-bottom: 1px solid #202733;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: 140px 1fr 45px;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stats-label { font-size: 14px; color: #cbd5e0; }
+
+        .progress-bar-container {
+            height: 10px;
+            background-color: #0d1520;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--green-progress);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .stats-percentage { font-size: 14px; text-align: right; font-weight: bold; color: #cbd5e0; }
+
+        .question-mode-card {
+            background-color: #222e3f;
+            border: 1px solid #2d3e54;
+            border-radius: 6px;
+            padding: 8px 12px;
+            width: 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        .mode-card-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; }
+        .mode-card-bar { height: 4px; background-color: #0d1520; border-radius: 2px; overflow: hidden; }
+        .mode-card-fill { height: 100%; background-color: var(--green-progress); width: 0%; }
+
+        .exam-middle-section {
+            display: grid;
+            grid-template-columns: 75px 1fr;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .exam-sidebar-nav {
+            background-color: #141c27;
+            border-right: 1px solid #202733;
+            padding: 10px 4px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .sidebar-q-btn {
+            width: 52px;  
+            height: 34px; 
+            border-radius: 5px;
+            border: none;
+            font-size: 13px; 
+            font-weight: bold;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .sidebar-q-btn.answered { background-color: #4cd964; }
+        .sidebar-q-btn.current { background-color: #007aff; }
+        .sidebar-q-btn.current::after {
+            content: ""; position: absolute; top: -3px; left: 50%; transform: translateX(-50%);
+            border-width: 4px; border-style: solid; border-color: transparent transparent #ffffff transparent;
+        }
+
+        .sidebar-q-btn.unanswered { background-color: #1963ac; }
+        
+        .sidebar-q-btn.flagged {
+            background-color: #ff9500 !important; 
+            color: #ffffff !important;
+            border: none !important;
+        }
+
+        .exam-question-viewport { padding: 16px; overflow-y: auto; background-color: #111822; }
+        .question-card-inner { display: flex; flex-direction: column; }
+        .question-meta-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; }
+        .meta-q-id { font-size: 16px; font-weight: bold; color: var(--text-blue); }
+        .meta-q-type { font-size: 15px; color: var(--text-blue); }
+        .meta-q-marks { font-size: 15px; font-weight: bold; color: var(--text-blue); }
+
+        .text-size-tools { display: flex; align-items: center; gap: 10px; margin: 12px 0 20px 0; }
+        .text-size-label { font-size: 14px; color: #cbd5e0; }
+        .text-zoom-btn {
+            width: 34px; height: 34px; border-radius: 50%; border: none;
+            background-color: #2d3748; color: var(--text-white); font-size: 18px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+
+        .real-question-text { font-size: calc(16px * var(--qscale)); line-height: 1.6; margin-bottom: 24px; color: var(--text-white); }
+        .select-option-prompt { font-size: 14px; color: #a0aec0; margin-bottom: 16px; }
+
+        .exam-options-container { display: flex; flex-direction: column; gap: 12px; }
+        .exam-option-item {
+            display: flex; align-items: center; gap: 14px; background-color: #1b2431;
+            border: 1px solid #3a4759; border-radius: 8px; padding: 16px; cursor: pointer; transition: background-color 0.2s;
+        }
+        .exam-option-item.selected { background-color: #233044; border-color: #4a5d78; }
+
+        .exam-option-item input[type="radio"] {
+            appearance: none; -webkit-appearance: none; width: 22px; height: 22px;
+            border: 2px solid #cbd5e0; border-radius: 50%; outline: none; background: transparent;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .exam-option-item input[type="radio"]:checked { border-color: #007aff; background-color: transparent; }
+        .exam-option-item input[type="radio"]:checked::after { content: ""; width: 12px; height: 12px; background-color: #007aff; border-radius: 50%; display: block; }
+
+        .option-item-text { font-size: calc(15px * var(--qscale)); color: var(--text-white); }
+
+        .exam-bottom-dock { background-color: #151b26; border-top: 1px solid #202733; padding: 14px 16px; }
+        .dock-buttons-layout { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: center; }
+        .dock-nav-btn {
+            background: transparent; border: 1px solid var(--btn-border); color: var(--text-white);
+            padding: 12px 0; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; text-align: center;
+        }
+        .dock-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .dock-nav-btn.primary-action { background-color: #007aff; border: none; color: #ffffff; }
+        .dock-nav-btn.danger-action { background-color: #d93d3d; border: none; color: #ffffff; }
+    </style>
 </head>
 
 <body>
 
-<div class="top-bar">
-    <div class="user-info">
-        <div class="avatar"></div>
-        <div class="user-text">
-            <span>Welcome</span>
-            <span>MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
-        </div>
-    </div>
-
-    <div class="icons">
-        ⟳
-        <svg class="icon" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="7"></circle>
-            <line x1="16.5" y1="16.5" x2="22" y2="22"></line>
+<div id="refresh-loading" class="loading-overlay hidden">
+    <div class="spinner-box">
+        <svg class="ios-spinner spinner-animated" viewBox="0 0 64 64">
+            <g>
+                <line x1="32" y1="8" x2="32" y2="16" opacity="0.25"></line>
+                <line x1="48.97" y1="15.03" x2="43.31" y2="20.69" opacity="0.35"></line>
+                <line x1="56" y1="32" x2="48" y2="32" opacity="0.45"></line>
+                <line x1="48.97" y1="48.97" x2="43.31" y2="43.31" opacity="0.55"></line>
+                <line x1="32" y1="56" x2="32" y2="48" opacity="0.65"></line>
+                <line x1="15.03" y1="48.97" x2="20.69" y2="43.31" opacity="0.75"></line>
+                <line x1="8" y1="32" x2="16" y2="32" opacity="0.85"></line>
+                <line x1="15.03" y1="15.03" x2="20.69" y2="20.69" opacity="1"></line>
+            </g>
         </svg>
-        ☰
     </div>
 </div>
 
-<div class="tabs">
-    <div class="tab active" id="tab-sum" onclick="switchTab('summative')">Summative</div>
-    <div class="tab" id="tab-form" onclick="switchTab('formative')">Formative</div>
-</div>
-
-<div class="content">
-    <div class="header-row">
-        <div>Total Exams: <span id="exams-count">1</span></div>
-        <div class="toggle">
-            <span>Open All</span>
-            <div class="toggle-switch"></div>
-        </div>
-    </div>
-
-    <div id="exams-container">
-        <div class="exam-card">
-            <div class="exam-header">
-                <div class="exam-title">Midterm Exam 312</div>
-                <div class="exam-date">
-                    26 feb 2026<br>
-                    11:00 AM
-                </div>
-            </div>
-
-            <div class="exam-details">
-                <span>Course</span>
-                <span class="value">Infection Control for Nursing</span>
-
-                <span>Duration</span>
-                <span class="value">02:00:00</span>
-
-                <span>Proctored</span>
-                <span class="value">No</span>
-
-                <span>Status</span>
-                <span class="value status-ended">Exam Ended</span>
-
-                <span>Upload Status</span>
-                <span class="value">Uploaded</span>
-            </div>
-
-            <button class="view-score" onclick="openModal()">View Score</button>
-        </div>
-    </div>
+<div id="dashboard-container">
     
-    <div id="no-exams-msg" class="hidden" style="text-align:center; color:#ffffff; margin-top:50px; font-size:16px;">
-        No data found!
+    <div class="top-bar">
+        <div class="user-info" onclick="openProfileSheet()">
+            <div class="avatar">
+                <svg class="avatar-svg" viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="4.5"></circle>
+                    <path d="M12 14c-4.42 0-8 2.58-8 5.75v1.25h16v-1.25c0-3.17-3.58-5.75-8-5.75z"></path>
+                </svg>
+            </div>
+            <div class="user-text">
+                <span>Welcome</span>
+                <span>MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
+            </div>
+        </div>
+
+        <div class="icons">
+            <svg class="icon-svg" viewBox="0 0 24 24" onclick="triggerRefresh()">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l6.73-6.73"></path>
+            </svg>
+            <svg class="icon-svg" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <svg class="icon-svg" viewBox="0 0 24 24" style="fill: none; stroke: #ffffff; stroke-width: 2.5;" onclick="openFilter()">
+                <line x1="2" y1="8" x2="22" y2="8"></line>
+                <circle cx="9" cy="8" r="2.5" style="fill: #ffffff; stroke: none;"></circle>
+                <line x1="2" y1="16" x2="22" y2="16"></line>
+                <circle cx="15" cy="16" r="2.5" style="fill: #ffffff; stroke: none;"></circle>
+            </svg>
+            <svg class="icon-svg" viewBox="0 0 24 24" onclick="openNotificationModal()">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" id="tab-sum" onclick="switchTab('summative')">Summative</div>
+        <div class="tab" id="tab-form" onclick="switchTab('formative')">Formative</div>
+    </div>
+
+    <div id="dashboard-page" class="content">
+        <div class="header-row">
+            <div>Total Exams: <span id="exams-count">1</span></div>
+            <div class="toggle" id="toggle-container" onclick="toggleSwitch()">
+                <span id="toggle-text">Close All</span>
+                <div class="toggle-switch"></div>
+            </div>
+        </div>
+
+        <div id="exams-container">
+            <div class="exam-card">
+                <div class="exam-header">
+                    <div class="exam-title">NURS 226 FINAL EXAM 1ST SEM 1447</div>
+                    <div class="exam-date">29 Dec 2025<br>01:00 PM</div>
+                </div>
+                <div class="exam-details">
+                    <span>Course</span> <span class="value">Pharmacology for Nursing</span>
+                    <span>Duration</span> <span class="value">02:00:00</span>
+                    <span>Proctored</span> <span class="value">No</span>
+                    <span>Status</span> <span class="value status-upcoming">Upcoming</span>
+                    <span>Upload Status</span> <span class="value">-</span>
+                </div>
+                <button class="view-score" onclick="goToExamPage()">Attempt (Take Exam)</button>
+            </div>
+        </div>
+        
+        <div id="no-exams-msg" class="hidden" style="text-align:center; color:#ffffff; margin-top:50px; font-size:16px;">
+            No data found!
+        </div>
+    </div>
+
+    <div id="exam-start-page">
+        <div class="page-header">
+            <span class="back-arrow" onclick="goBackToDashboard()">&#8592;</span>
+            <span style="font-weight: bold; color: white;">NURS 226 FINAL EXAM 1ST SEM 1447</span>
+        </div>
+        <div class="detail-list">
+            <div class="detail-item"><span>Course</span><span class="dt-value">Pharmacology for Nursing</span></div>
+            <div class="detail-item"><span>Total Duration</span><span class="dt-value">02:00:00</span></div>
+            <div class="detail-item"><span>Remaining Duration</span><span class="dt-value" id="timer-display" style="color: #2a65bf;">02:00:00</span></div>
+            <div class="detail-item"><span>Language</span><span class="dt-value">English</span></div>
+            <div class="detail-item"><span>Proctored</span><span class="dt-value">No</span></div>
+            <div style="margin-top: 20px;">
+                <span style="font-weight: bold; font-size: 14px; color: white;">Instructions</span>
+                <div class="instructions-box">No Instructions Available.</div>
+            </div>
+        </div>
+        <div class="footer-action">
+            <button class="view-score" style="background:#2a65bf; color:white; margin:0;" onclick="openPasswordModal()">Start Exam</button>
+        </div>
+    </div>
+</div>
+
+<div id="exam-interface-container">
+    <div class="exam-app">
+        <header class="exam-top-nav">
+            <div class="exam-nav-left-placeholder"></div> 
+            <div class="exam-nav-tabs">
+                <button class="exam-nav-tab active">Summary</button>
+                <button class="exam-nav-tab">Tools</button>
+            </div>
+            <div class="exam-nav-remaining">
+                <span>Remaining</span>
+                <span id="countdownTimerText">02:00:00</span>
+            </div>
+        </header>
+
+        <div class="exam-user-strip" id="examUserNameStrip">MOHAMMED HUSSAIN MOHAMMED HAKMI</div>
+
+        <section class="exam-stats-panel">
+            <div class="stats-row">
+                <div class="stats-label">Items <span id="itemsCountLabel">0 / 50</span></div>
+                <div class="progress-bar-container"><div class="progress-bar-fill" id="itemsProgressBarFill"></div></div>
+                <div class="stats-percentage" id="itemsPercentLabel">0%</div>
+            </div>
+            <div class="stats-row">
+                <div class="stats-label" id="timeMinutesLabel">Time 0 / 120 (mins)</div>
+                <div class="progress-bar-container"><div class="progress-bar-fill" id="timeProgressBarFill"></div></div>
+                <div class="stats-percentage" id="timePercentLabel">0%</div>
+            </div>
+            <div class="question-mode-card">
+                <div class="mode-card-header"><span>Multi Choice</span><span id="modePercentLabel">0%</span></div>
+                <div class="mode-card-bar"><div class="mode-card-fill" id="modeProgressBarFill"></div></div>
+            </div>
+        </section>
+
+        <section class="exam-middle-section">
+            <aside class="exam-sidebar-nav" id="examSidebarNavContainer"></aside>
+            <main class="exam-question-viewport">
+                <div class="question-card-inner">
+                    <div class="question-meta-header">
+                        <div class="meta-q-id" id="currentQuestionIdLabel">Q.1</div>
+                        <div class="meta-q-type">Multi Choice</div>
+                        <div class="meta-q-marks" id="currentQuestionMarksLabel">Marks: 0.60</div>
+                    </div>
+                    <div class="text-size-tools">
+                        <span class="text-size-label">Text size</span>
+                        <button type="button" class="text-zoom-btn" id="increaseTextSizeBtn">+</button>
+                        <button type="button" class="text-zoom-btn" id="decreaseTextSizeBtn">−</button>
+                    </div>
+                    <div class="real-question-text" id="realQuestionTextBody">Loading question text...</div>
+                    <div class="select-option-prompt">Please Select One Suitable Option</div>
+                    <form class="exam-options-container" id="examOptionsFormContainer"></form>
+                </div>
+            </main>
+        </section>
+
+        <footer class="exam-bottom-dock">
+            <div class="dock-buttons-layout">
+                <button type="button" class="dock-nav-btn" id="examPrevBtn">Previous</button>
+                <button type="button" class="dock-nav-btn" id="examFlagBtn">Flag</button>
+                <button type="button" class="dock-nav-btn primary-action" id="examNextBtn">Next</button>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<div id="post-exam-dashboard">
+    <div class="top-bar">
+        <div class="user-info" onclick="openProfileSheet()">
+            <div class="avatar">
+                <svg class="avatar-svg" viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="4.5"></circle>
+                    <path d="M12 14c-4.42 0-8 2.58-8 5.75v1.25h16v-1.25c0-3.17-3.58-5.75-8-5.75z"></path>
+                </svg>
+            </div>
+            <div class="user-text">
+                <span>Welcome</span>
+                <span>MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
+            </div>
+        </div>
+        <div class="icons">
+            <svg class="icon-svg" viewBox="0 0 24 24" onclick="triggerRefresh()">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l6.73-6.73"></path>
+            </svg>
+            <svg class="icon-svg" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <svg class="icon-svg" viewBox="0 0 24 24" style="fill: none; stroke: #ffffff; stroke-width: 2.5;" onclick="openFilter()">
+                <line x1="2" y1="8" x2="22" y2="8"></line>
+                <circle cx="9" cy="8" r="2.5" style="fill: #ffffff; stroke: none;"></circle>
+                <line x1="2" y1="16" x2="22" y2="16"></line>
+                <circle cx="15" cy="16" r="2.5" style="fill: #ffffff; stroke: none;"></circle>
+            </svg>
+            <svg class="icon-svg" viewBox="0 0 24 24" onclick="openNotificationModal()">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" id="post-tab-sum" onclick="switchPostTab('summative')">Summative</div>
+        <div class="tab" id="post-tab-form" onclick="switchPostTab('formative')">Formative</div>
+    </div>
+
+    <div class="content">
+        <div class="header-row">
+            <div>Total Exams: <span id="post-exams-count">1</span></div>
+            <div class="toggle" id="post-toggle-container" onclick="togglePostSwitch()">
+                <span id="post-toggle-text">Open All</span>
+                <div class="toggle-switch"></div>
+            </div>
+        </div>
+
+        <div id="post-exams-container">
+            <div class="exam-card">
+                <div class="exam-header">
+                    <div class="exam-title">Midterm Exam 312</div>
+                    <div class="exam-date">26 Feb 2026<br>11:00 AM</div>
+                </div>
+                <div class="exam-details">
+                    <span>Course</span> <span class="value">Infection Control for Nursing</span>
+                    <span>Duration</span> <span class="value">02:00:00</span>
+                    <span>Proctored</span> <span class="value">No</span>
+                    <span>Status</span> <span class="value status-ended">Exam Ended</span>
+                    <span>Upload Status</span> <span class="value">Uploaded</span>
+                </div>
+                <button class="view-score" onclick="openResultsNotificationModal()">View Score</button>
+            </div>
+        </div>
+        
+        <div id="post-no-exams-msg" class="hidden" style="text-align:center; color:#ffffff; margin-top:50px; font-size:16px;">
+            No data found!
+        </div>
     </div>
 </div>
 
 <div id="score-modal" class="modal-overlay hidden">
     <div class="modal-box">
         <div class="modal-icon">i</div>
-        <div class="modal-title">Notification</div>
-        <div class="modal-text">Exam Result is not published. Once your result is published, you will receive a notification.</div>
-        <button class="modal-btn" onclick="closeModal()">Ok</button>
+        <div class="modal-title" id="modal-title-text">Notification</div>
+        <div class="modal-text" id="modal-body-text">Exam Result is not published.</div>
+        
+        <div id="modal-password-group" class="modal-input-group hidden">
+            <label>Examination Password</label>
+            <input type="password" id="exam-password-input" placeholder="********">
+        </div>
+        <div class="modal-btn-container" id="modal-buttons-container">
+            <button class="modal-btn" onclick="closeModal()">Ok</button>
+        </div>
+    </div>
+</div>
+
+<div id="filter-overlay" class="bottom-sheet-overlay" onclick="closeFilter(event)">
+    <div class="bottom-sheet" onclick="event.stopPropagation()">
+        <div class="filter-header-title">
+            <h3>Filter</h3>
+            <button class="close-sheet-btn" onclick="closeFilter(null)">✕</button>
+        </div>
+        <div class="filter-options-list">
+            <div class="filter-option" onclick="selectFilterOption(this)"><div class="filter-radio"></div><span class="filter-label">All</span></div>
+            <div class="filter-option" onclick="selectFilterOption(this)"><div class="filter-radio"></div><span class="filter-label">Current Exams</span></div>
+            <div class="filter-option" onclick="selectFilterOption(this)"><div class="filter-radio"></div><span class="filter-label">Future Exams</span></div>
+            <div class="filter-option selected" onclick="selectFilterOption(this)"><div class="filter-radio"></div><span class="filter-label">Previous Exams</span></div>
+        </div>
+        <button class="filter-show-btn" onclick="closeFilter(null)">Show</button>
+    </div>
+</div>
+
+<div id="profile-sheet-overlay" class="bottom-sheet-overlay" onclick="closeProfileSheet(event)">
+    <div class="bottom-sheet" onclick="event.stopPropagation()">
+        <div class="sheet-header"><button class="close-sheet-btn" onclick="closeProfileSheet(null)">✕</button></div>
+        <div class="profile-content">
+            <div class="profile-user-row">
+                <div class="profile-avatar">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5"></circle><path d="M12 14c-4.42 0-8 2.58-8 5.75v1.25h16v-1.25c0-3.17-3.58-5.75-8-5.75z"></path></svg>
+                </div>
+                <div class="profile-info-text">
+                    <span class="welcome-lbl">Welcome</span>
+                    <span class="name-lbl">MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
+                </div>
+            </div>
+            <button class="signout-btn" onclick="closeProfileSheet(null)">Sign out</button>
+        </div>
     </div>
 </div>
 
 <script>
+    // --- 1. منطق لوحة التحكم ما قبل البداية ---
+    let dashboardTimerInterval;
+
+    function triggerRefresh() {
+        const loading = document.getElementById('refresh-loading');
+        loading.classList.remove('hidden');
+        setTimeout(() => { loading.classList.add('hidden'); }, 1000); 
+    }
+
+    function toggleSwitch() {
+        const toggleContainer = document.getElementById('toggle-container');
+        const toggleText = document.getElementById('toggle-text');
+        if (toggleContainer.classList.contains('active')) {
+            toggleContainer.classList.remove('active');
+            toggleText.textContent = 'Open All';
+        } else {
+            toggleContainer.classList.add('active');
+            toggleText.textContent = 'Close All';
+        }
+    }
+
     function switchTab(type) {
         const tabSum = document.getElementById('tab-sum');
         const tabForm = document.getElementById('tab-form');
@@ -391,13 +969,266 @@ body {
         }
     }
 
-    // دوال النافذة المنبثقة
-    function openModal() {
+    function goToExamPage() {
+        document.getElementById('dashboard-page').style.display = 'none';
+        document.getElementById('exam-start-page').style.display = 'flex';
+        startDashboardTimer();
+    }
+
+    function goBackToDashboard() {
+        document.getElementById('exam-start-page').style.display = 'none';
+        document.getElementById('dashboard-page').style.display = 'block';
+        clearInterval(dashboardTimerInterval);
+    }
+
+    function startDashboardTimer() {
+        let hours = 2, minutes = 0, seconds = 0;
+        const display = document.getElementById('timer-display');
+        if(dashboardTimerInterval) clearInterval(dashboardTimerInterval);
+
+        dashboardTimerInterval = setInterval(() => {
+            if (seconds > 0) seconds--;
+            else {
+                if (minutes > 0) { minutes--; seconds = 59; }
+                else {
+                    if (hours > 0) { hours--; minutes = 59; seconds = 59; }
+                    else clearInterval(dashboardTimerInterval);
+                }
+            }
+            display.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }, 1000);
+    }
+
+    // --- 2. التحكم بالمودال والقوائم السفلية المشتركة ---
+    function openNotificationModal() {
+        document.getElementById('modal-title-text').textContent = 'Notification';
+        document.getElementById('modal-body-text').innerHTML = 'The QQ app was first launched at 12 Oct 2025 06:07:15 PM...';
+        document.getElementById('modal-password-group').classList.add('hidden');
+        document.getElementById('modal-buttons-container').innerHTML = `<button class="modal-btn" onclick="closeModal()">Ok</button>`;
         document.getElementById('score-modal').classList.remove('hidden');
     }
 
-    function closeModal() {
-        document.getElementById('score-modal').classList.add('hidden');
+    function openPasswordModal() {
+        document.getElementById('modal-title-text').textContent = 'Verification';
+        document.getElementById('modal-body-text').textContent = 'Please enter the examination password to proceed.';
+        document.getElementById('modal-password-group').classList.remove('hidden');
+        document.getElementById('exam-password-input').value = '';
+        document.getElementById('modal-buttons-container').innerHTML = `
+            <button class="modal-btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button class="modal-btn" onclick="verifyAndStart()">Verify</button>
+        `;
+        document.getElementById('score-modal').classList.remove('hidden');
+    }
+
+    function openResultsNotificationModal() {
+        document.getElementById('modal-title-text').textContent = 'Notification';
+        document.getElementById('modal-body-text').textContent = 'Exam Result is not published. Once your result is published, you will receive a notification.';
+        document.getElementById('modal-password-group').classList.add('hidden');
+        document.getElementById('modal-buttons-container').innerHTML = `<button class="modal-btn" onclick="closeModal()">Ok</button>`;
+        document.getElementById('score-modal').classList.remove('hidden');
+    }
+
+    function closeModal() { document.getElementById('score-modal').classList.add('hidden'); }
+    function openFilter() { document.getElementById('filter-overlay').classList.add('open'); }
+    function closeFilter(event) { if (!event || event.target === document.getElementById('filter-overlay')) document.getElementById('filter-overlay').classList.remove('open'); }
+    function selectFilterOption(element) { document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected')); element.classList.add('selected'); }
+    function openProfileSheet() { document.getElementById('profile-sheet-overlay').classList.add('open'); }
+    function closeProfileSheet(event) { if (!event || event.target === document.getElementById('profile-sheet-overlay')) document.getElementById('profile-sheet-overlay').classList.remove('open'); }
+
+    function verifyAndStart() {
+        closeModal();
+        document.getElementById('dashboard-container').style.display = 'none';
+        clearInterval(dashboardTimerInterval); 
+        document.getElementById('exam-interface-container').style.display = 'block';
+        initExamSystem();
+    }
+
+    // --- 3. منطق واجهة نظام الاختبار الفعلي المطور عمودياً الجانب الصغير ---
+    const bank = [
+        { q: "A nurse in the central sterile processing unit is performing a Bowie-Dick test before the first autoclave cycle of the day. The purpose of this test is to:", a: ["Check for presence of biological spores", "Detect air leaks and inadequate air removal", "Measure exposure time and temperature", "Verify sterilization of wrapped instruments"], marks: "0.60" },
+        { q: "Asthma is best described as a disease with which two main components?", a: ["Inflammation and bronchospasm", "Infection and fibrosis", "Edema and emphysema", "Obstruction and collapse"], marks: "0.50" },
+        { q: "Status asthmaticus refers to:", a: ["A prolonged asthma attack", "Exercise-induced asthma", "Mild intermittent asthma", "Nocturnal asthma"], marks: "0.50" },
+        { q: "Which of the following is a common trigger of asthma?", a: ["Tobacco smoke", "Calcium supplements", "Cold water", "Vitamin C"], marks: "0.50" }
+    ];
+
+    while(bank.length < 50) {
+        bank.push({
+            q: `Pharmacology & Core Clinical Nursing Practice Question depth block ${bank.length + 1}: Which nursing assessment has immediate priority?`,
+            a: ["Assess airway patency and respiratory rate", "Review secondary diagnostic data", "Check institutional protocol logs", "Consult with pharmacy representatives"],
+            marks: "0.50"
+        });
+    }
+
+    let currentExamIndex = 0; 
+    let examTimeTotalMinutes = 120;
+    let examTimeUsedSeconds = 0; 
+    let textScaleValue = 1.0;
+
+    const examQuestions = bank.map((it, i) => ({
+        id: i + 1,
+        text: it.q,
+        options: it.a.slice(),
+        answer: null, 
+        flagged: false,
+        marks: it.marks
+    }));
+
+    function syncExamOverviewMetrics() {
+        const answeredCount = examQuestions.filter(q => q.answer !== null).length;
+        const totalCount = examQuestions.length;
+        
+        document.getElementById("itemsCountLabel").textContent = `${answeredCount} / ${totalCount}`;
+        const itemsPercent = Math.round((answeredCount / totalCount) * 100);
+        document.getElementById("itemsPercentLabel").textContent = `${itemsPercent}%`;
+        document.getElementById("itemsProgressBarFill").style.width = `${itemsPercent}%`;
+
+        const currentMinutesUsed = Math.floor(examTimeUsedSeconds / 60);
+        document.getElementById("timeMinutesLabel").textContent = `Time ${currentMinutesUsed} / ${examTimeTotalMinutes} (mins)`;
+        const timePercent = Math.round((currentMinutesUsed / examTimeTotalMinutes) * 100);
+        document.getElementById("timePercentLabel").textContent = `${timePercent}%`;
+        document.getElementById("timeProgressBarFill").style.width = `${timePercent}%`;
+
+        document.getElementById("modePercentLabel").textContent = `${itemsPercent}%`;
+        document.getElementById("modeProgressBarFill").style.width = `${itemsPercent}%`;
+    }
+
+    function drawSidebarNavigation() {
+        const container = document.getElementById("examSidebarNavContainer");
+        container.innerHTML = "";
+
+        examQuestions.forEach((q, i) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.textContent = q.id;
+
+            if (q.flagged) {
+                btn.className = "sidebar-q-btn flagged";
+            } else if (i === currentExamIndex) {
+                btn.className = "sidebar-q-btn current";
+            } else if (q.answer !== null) {
+                btn.className = "sidebar-q-btn answered";
+            } else {
+                btn.className = "sidebar-q-btn unanswered";
+            }
+
+            btn.onclick = () => { currentExamIndex = i; displayCurrentQuestion(); };
+            container.appendChild(btn);
+        });
+    }
+
+    function displayCurrentQuestion() {
+        const q = examQuestions[currentExamIndex];
+        
+        document.getElementById("currentQuestionIdLabel").textContent = `Q.${q.id}`;
+        document.getElementById("currentQuestionMarksLabel").textContent = `Marks: ${q.marks}`;
+        document.getElementById("realQuestionTextBody").textContent = q.text;
+
+        const optionsForm = document.getElementById("examOptionsFormContainer");
+        optionsForm.innerHTML = "";
+
+        q.options.forEach((label, i) => {
+            const labelCard = document.createElement("label");
+            labelCard.className = "exam-option-item" + (q.answer === i ? " selected" : "");
+
+            const radioInput = document.createElement("input");
+            radioInput.type = "radio";
+            radioInput.name = "exam-opt";
+            radioInput.checked = q.answer === i;
+            
+            radioInput.onchange = () => {
+                q.answer = i;
+                document.querySelectorAll('.exam-option-item').forEach(el => el.classList.remove('selected'));
+                labelCard.classList.add('selected');
+                syncExamOverviewMetrics();
+                drawSidebarNavigation();
+            };
+
+            const textSpan = document.createElement("span");
+            textSpan.className = "option-item-text";
+            textSpan.textContent = label;
+
+            labelCard.appendChild(radioInput);
+            labelCard.appendChild(textSpan);
+            optionsForm.appendChild(labelCard);
+        });
+
+        document.getElementById("examPrevBtn").disabled = (currentExamIndex === 0);
+        
+        const nextBtn = document.getElementById("examNextBtn");
+        if (currentExamIndex === examQuestions.length - 1) {
+            nextBtn.textContent = "End Exam";
+            nextBtn.className = "dock-nav-btn danger-action";
+        } else {
+            nextBtn.textContent = "Next";
+            nextBtn.className = "dock-nav-btn primary-action";
+        }
+
+        drawSidebarNavigation();
+    }
+
+    document.getElementById("examPrevBtn").onclick = () => { if (currentExamIndex > 0) { currentExamIndex--; displayCurrentQuestion(); } };
+
+    document.getElementById("examNextBtn").onclick = () => {
+        if (currentExamIndex < examQuestions.length - 1) {
+            currentExamIndex++;
+            displayCurrentQuestion();
+        } else {
+            // التوجيه التلقائي الجديد: عند إنهاء الاختبار يتم نقله إلى لوحة النتائج المرفقة
+            document.getElementById('exam-interface-container').style.display = 'none';
+            document.getElementById('post-exam-dashboard').style.display = 'block';
+            document.body.style.backgroundColor = '#1c1c1e'; // إعادة لون الخلفية للرمادي الأساسي
+        }
+    };
+
+    document.getElementById("examFlagBtn").onclick = () => {
+        const q = examQuestions[currentExamIndex];
+        q.flagged = !q.flagged;
+        displayCurrentQuestion();
+    };
+
+    document.getElementById("increaseTextSizeBtn").onclick = () => { if (textScaleValue < 1.5) { textScaleValue += 0.1; applyTextScaleProperty(); } };
+    document.getElementById("decreaseTextSizeBtn").onclick = () => { if (textScaleValue > 0.8) { textScaleValue -= 0.1; applyTextScaleProperty(); } };
+    function applyTextScaleProperty() { document.documentElement.style.setProperty('--qscale', textScaleValue); }
+
+    function initExamSystem() {
+        let remainSeconds = 120 * 60; 
+        setInterval(() => {
+            if (remainSeconds > 0) { remainSeconds--; examTimeUsedSeconds++; }
+            const hrs = Math.floor(remainSeconds / 3600).toString().padStart(2, '0');
+            const mins = Math.floor((remainSeconds % 3600) / 60).toString().padStart(2, '0');
+            const secs = (remainSeconds % 60).toString().padStart(2, '0');
+            document.getElementById("countdownTimerText").textContent = `${hrs}:${mins}:${secs}`;
+            syncExamOverviewMetrics();
+        }, 1000);
+
+        syncExamOverviewMetrics(); displayCurrentQuestion(); applyTextScaleProperty();
+    }
+
+    // --- 4. منطق لوحة تحكم ما بعد الاختبار (Post Exam Logic) ---
+    function togglePostSwitch() {
+        const container = document.getElementById('post-toggle-container');
+        const txt = document.getElementById('post-toggle-text');
+        if (container.classList.contains('active')) {
+            container.classList.remove('active'); txt.textContent = 'Open All';
+        } else {
+            container.classList.add('active'); txt.textContent = 'Close All';
+        }
+    }
+
+    function switchPostTab(type) {
+        const tabSum = document.getElementById('post-tab-sum');
+        const tabForm = document.getElementById('post-tab-form');
+        const container = document.getElementById('post-exams-container');
+        const msg = document.getElementById('post-no-exams-msg');
+        const count = document.getElementById('post-exams-count');
+
+        if (type === 'summative') {
+            tabSum.classList.add('active'); tabForm.classList.remove('active');
+            container.classList.remove('hidden'); msg.classList.add('hidden'); count.textContent = '1';
+        } else {
+            tabForm.classList.add('active'); tabSum.classList.remove('active');
+            container.classList.add('hidden'); msg.classList.remove('hidden'); count.textContent = '0';
+        }
     }
 </script>
 
