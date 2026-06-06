@@ -27,7 +27,8 @@
         #dashboard-container { display: block; }
         #exam-start-page { display: none; height: 100vh; flex-direction: column; }
         #exam-interface-container { display: none; min-height: 100vh; background: #131926; }
-        #post-exam-dashboard { display: none; } /* حاوية صفحة ما بعد الاختبار المضافة */
+        #uploading-screen-container { display: none; min-height: 100vh; background: #1c1c1e; position: relative; } 
+        #post-exam-dashboard { display: none; }
 
         /* ===== Dashboard Top Bar ===== */
         .top-bar {
@@ -150,7 +151,7 @@
         .content {
             padding: 20px 16px;
             max-width: 768px; 
-            margin: 0 auto;  
+            margin: 0 auto;   
         }
 
         .header-row {
@@ -248,7 +249,6 @@
             row-gap: 16px;
             font-size: 14px;
             color: #aeaeb2; 
-            padding-bottom: 4px; 
         }
 
         .exam-details .value {
@@ -335,11 +335,10 @@
 
         .modal-title { font-size: 16px; font-weight: 600; color: #ffffff; margin-bottom: 14px; }
         .modal-text { font-size: 13.5px; color: #e0e0e3; line-height: 1.6; margin-bottom: 20px; text-align: center; }
-        .modal-input-group { margin-bottom: 20px; text-align: left; }
-        .modal-input-group label { display: block; color: #aeaeb2; font-size: 13px; margin-bottom: 8px; }
-        .modal-input-group input {
+        .modal-box label { display: block; text-align: left; color: #aeaeb2; font-size: 13px; margin-bottom: 8px; }
+        .modal-box input {
             width: 100%; padding: 12px; background: #1c1c1e; border: 1px solid #3a3a3c;
-            border-radius: 8px; color: white; font-size: 16px; outline: none;
+            border-radius: 8px; color: white; font-size: 16px; outline: none; margin-bottom: 20px;
         }
 
         .modal-btn-container { display: flex; gap: 10px; }
@@ -395,9 +394,9 @@
 
         @media (min-width: 1024px) { .content { max-width: 900px; } }
 
-        /* =========================================
-           2. تنسيقات واجهة الاختبار الفعلي المطابقة للصورة
-           ========================================= */
+        /* =========================================================
+           2. تنسيقات واجهة الاختبار الفعلي المطابقة للصورة تماماً
+           ========================================================= */
         :root {
             --exam-bg: #141d26;
             --header-dark: #1b2431;
@@ -425,15 +424,23 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 16px;
-            background-color: #151b26;
-            border-bottom: 1px solid #202733;
+            background-color: #2c2c2c;
+            border-bottom: 1px solid #2d3748;
         }
 
-        .exam-nav-left-placeholder { width: 80px; }
+        .exam-nav-left-placeholder { 
+            width: 120px;
+            font-size: 11px;
+            color: #4a5568; 
+            text-align: left;
+            font-weight: normal;
+            user-select: none;
+            opacity: 0.5;
+        }
 
         .exam-nav-tabs {
             display: flex;
-            background: #151b26;
+            background: #2c2c2c;
             border: 1px solid var(--btn-border);
             border-radius: 8px;
             overflow: hidden;
@@ -451,9 +458,9 @@
         }
 
         .exam-nav-tab.active {
-            background-color: #2d3748;
+            background-color: #4a5568;
             color: var(--text-white);
-            border: 1px solid #4a5568;
+            border: 1px solid #718096;
         }
 
         .exam-nav-remaining {
@@ -463,12 +470,13 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            width: 80px;
+            width: 120px;
+            background-color: #2c2c2c;
         }
         .exam-nav-remaining span:first-child { font-size: 11px; color: #a0aec0; font-weight: normal; margin-bottom: 2px; }
 
         .exam-user-strip {
-            background-color: #232d3d;
+            background-color: #7f8180;
             padding: 10px 16px;
             font-size: 15px;
             font-weight: bold;
@@ -479,7 +487,7 @@
 
         .exam-stats-panel {
             padding: 14px 16px;
-            background-color: #17202e;
+            background-color: #2c2c2e;
             border-bottom: 1px solid #202733;
             display: flex;
             flex-direction: column;
@@ -498,7 +506,7 @@
         .progress-bar-container {
             height: 10px;
             background-color: #0d1520;
-            border-radius: 5px;
+            border-radius: 50px;
             overflow: hidden;
             position: relative;
         }
@@ -513,8 +521,8 @@
         .stats-percentage { font-size: 14px; text-align: right; font-weight: bold; color: #cbd5e0; }
 
         .question-mode-card {
-            background-color: #222e3f;
-            border: 1px solid #2d3e54;
+            background-color: #7f8180;
+            border: 1px solid #3a4759;
             border-radius: 6px;
             padding: 8px 12px;
             width: 150px;
@@ -524,50 +532,54 @@
             margin-top: 2px;
         }
 
-        .mode-card-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; }
+        .mode-card-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; color: #ffffff; }
         .mode-card-bar { height: 4px; background-color: #0d1520; border-radius: 2px; overflow: hidden; }
         .mode-card-fill { height: 100%; background-color: var(--green-progress); width: 0%; }
 
         .exam-middle-section {
             display: grid;
-            grid-template-columns: 75px 1fr;
+            grid-template-columns: max-content 1fr;
             flex: 1;
             overflow: hidden;
         }
 
         .exam-sidebar-nav {
-            background-color: #141c27;
+            background-color: #000000;
             border-right: 1px solid #202733;
-            padding: 10px 4px;
+            padding: 10px 0px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
+            align-items: flex-start;
+            padding-left: 6px;
+            padding-right: 2px; 
+        }
+
+        .sidebar-q-container {
+            position: relative;
+            width: auto;
+            display: flex;
             align-items: center;
         }
 
         .sidebar-q-btn {
-            width: 52px;  
-            height: 34px; 
-            border-radius: 5px;
+            width: 36px;   
+            height: 36px;  
+            border-radius: 6px; 
             border: none;
-            font-size: 13px; 
+            font-size: 14px; 
             font-weight: bold;
             color: #ffffff;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+            transition: all 0.2s ease;
+            z-index: 2;
         }
 
         .sidebar-q-btn.answered { background-color: #4cd964; }
-        .sidebar-q-btn.current { background-color: #007aff; }
-        .sidebar-q-btn.current::after {
-            content: ""; position: absolute; top: -3px; left: 50%; transform: translateX(-50%);
-            border-width: 4px; border-style: solid; border-color: transparent transparent #ffffff transparent;
-        }
-
         .sidebar-q-btn.unanswered { background-color: #1963ac; }
         
         .sidebar-q-btn.flagged {
@@ -576,40 +588,186 @@
             border: none !important;
         }
 
-        .exam-question-viewport { padding: 16px; overflow-y: auto; background-color: #111822; }
+        .sidebar-arrow-indicator {
+            position: absolute;
+            left: 35px; 
+            top: 50%;
+            transform: translateY(-50%) scaleX(0); 
+            width: 0;
+            height: 0;
+            border-width: 5px 0 5px 6px;
+            border-style: solid;
+            border-color: transparent transparent transparent #007aff; 
+            z-index: 1;
+            transition: transform 0.15s ease;
+            transform-origin: left;
+        }
+
+        .sidebar-q-container.active-q {
+            padding-right: 6px; 
+        }
+
+        .sidebar-q-container.active-q .sidebar-arrow-indicator {
+            transform: translateY(-50%) scaleX(1); 
+        }
+
+        .exam-question-viewport { 
+            padding: 16px; 
+            overflow-y: auto; 
+            background-color: #111822; 
+            transition: all 0.3s ease; 
+        }
+        
         .question-card-inner { display: flex; flex-direction: column; }
-        .question-meta-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; }
-        .meta-q-id { font-size: 16px; font-weight: bold; color: var(--text-blue); }
-        .meta-q-type { font-size: 15px; color: var(--text-blue); }
-        .meta-q-marks { font-size: 15px; font-weight: bold; color: var(--text-blue); }
+        
+        .question-meta-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            padding-bottom: 12px; 
+            position: relative;
+        }
+
+        .question-meta-divider {
+            width: 100%;
+            height: 1px;
+            background-color: #7f8180;
+            margin-top: 2px;
+            margin-bottom: 14px;
+            opacity: 0.8;
+        }
+
+        .meta-right-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px; 
+        }
 
         .text-size-tools { display: flex; align-items: center; gap: 10px; margin: 12px 0 20px 0; }
-        .text-size-label { font-size: 14px; color: #cbd5e0; }
+        .text-size-label { font-size: 14px; color: #cbd5e0; transition: color 0.3s; }
         .text-zoom-btn {
             width: 34px; height: 34px; border-radius: 50%; border: none;
             background-color: #2d3748; color: var(--text-white); font-size: 18px;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
 
-        .real-question-text { font-size: calc(16px * var(--qscale)); line-height: 1.6; margin-bottom: 24px; color: var(--text-white); }
-        .select-option-prompt { font-size: 14px; color: #a0aec0; margin-bottom: 16px; }
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 76px;   
+            height: 40px;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #1a1a1a;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            padding: 0 6px;
+            box-shadow: 
+                inset 0 3px 6px rgba(0, 0, 0, 0.8),
+                inset 0 -1px 2px rgba(255, 255, 255, 0.05),
+                0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .icon {
+            width: 15px;
+            height: 15px;
+            transition: all 0.4s ease;
+            position: absolute;
+        }
+
+        .sun-icon {
+            left: 14px;
+            color: #444444; 
+        }
+
+        .knob {
+            position: absolute;
+            height: 32px;
+            width: 32px;
+            left: 4px;
+            bottom: 4px;
+            background: radial-gradient(circle at 35% 35%, #3a3a3a 0%, #1c1c1c 70%, #141414 100%);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 
+                -1.5px -1.5px 4px rgba(255, 255, 255, 0.08),
+                1.5px 2.5px 5px rgba(0, 0, 0, 0.9),
+                inset 0 0.5px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .moon-icon {
+            color: #ffffff;
+            width: 15px;
+            height: 15px;
+            filter: drop-shadow(0px 0px 4px rgba(255, 255, 255, 0.4)); 
+        }
+
+        input:checked + .slider .knob {
+            transform: translateX(36px); 
+        }
+
+        input:checked + .slider .sun-icon {
+            color: #333333;
+        }
+
+        input:not(:checked) + .slider .knob {
+            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e0e0e0 70%, #cccccc 100%);
+            box-shadow: 
+                -1px -1px 3px rgba(255, 255, 255, 0.8),
+                1px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        input:not(:checked) + .slider .moon-icon {
+            color: #666666;
+            filter: none;
+        }
+
+        input:not(:checked) + .slider .sun-icon {
+            color: #ffb703;
+            filter: drop-shadow(0px 0px 4px rgba(255, 183, 3, 0.6));
+        }
+
+        .meta-q-id { font-size: 16px; font-weight: bold; color: var(--text-blue); transition: color 0.3s; }
+        .meta-q-type { font-size: 15px; color: var(--text-blue); transition: color 0.3s; }
+        .meta-q-marks { font-size: 16px; font-weight: bold; color: var(--text-blue); transition: color 0.3s; }
+        .real-question-text { font-size: calc(16px * var(--qscale)); line-height: 1.6; margin-bottom: 24px; color: var(--text-white); transition: color 0.3s; }
+        
+        .select-option-prompt { font-size: 14px; color: #ffffff !important; margin-bottom: 16px; }
 
         .exam-options-container { display: flex; flex-direction: column; gap: 12px; }
+        
         .exam-option-item {
-            display: flex; align-items: center; gap: 14px; background-color: #1b2431;
-            border: 1px solid #3a4759; border-radius: 8px; padding: 16px; cursor: pointer; transition: background-color 0.2s;
+            display: flex; align-items: center; gap: 14px; background-color: #7f8180 !important;
+            border: 1px solid #3a4759; border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s ease;
         }
-        .exam-option-item.selected { background-color: #233044; border-color: #4a5d78; }
+        .exam-option-item.selected { background-color: #7f8180 !important; }
 
         .exam-option-item input[type="radio"] {
             appearance: none; -webkit-appearance: none; width: 22px; height: 22px;
             border: 2px solid #cbd5e0; border-radius: 50%; outline: none; background: transparent;
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            transition: border-color 0.3s;
         }
         .exam-option-item input[type="radio"]:checked { border-color: #007aff; background-color: transparent; }
         .exam-option-item input[type="radio"]:checked::after { content: ""; width: 12px; height: 12px; background-color: #007aff; border-radius: 50%; display: block; }
 
-        .option-item-text { font-size: calc(15px * var(--qscale)); color: var(--text-white); }
+        .option-item-text { font-size: calc(15px * var(--qscale)); color: var(--text-white); transition: color 0.3s; }
 
         .exam-bottom-dock { background-color: #151b26; border-top: 1px solid #202733; padding: 14px 16px; }
         .dock-buttons-layout { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: center; }
@@ -620,6 +778,289 @@
         .dock-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
         .dock-nav-btn.primary-action { background-color: #007aff; border: none; color: #ffffff; }
         .dock-nav-btn.danger-action { background-color: #d93d3d; border: none; color: #ffffff; }
+
+        /* ===== [تعديل] تلوين نافذة مربع المراجعة والتأكيد المربّع ليصبح باللون 2c2c2c المطلوب ===== */
+        .review-modal-overlay {
+            display: none; 
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 15, 23, 0.9);
+            z-index: 4000;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .review-modal-box {
+            background-color: #2c2c2c; /* تم تغيير اللون من 17202f إلى 2c2c2c */
+            border: 1px solid #3a3a3c;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        .review-modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            text-align: center;
+            border-bottom: 1px solid #3a3a3c;
+            padding-bottom: 12px;
+        }
+
+        .review-modal-grid-container {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding: 6px;
+            background-color: #111822;
+            border-radius: 8px;
+            border: 1px solid #202733;
+        }
+
+        .review-grid-cell {
+            height: 32px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .review-grid-cell.answered { background-color: #4cd964; }
+        .review-grid-cell.unanswered { background-color: #1963ac; }
+        .review-grid-cell.flagged { background-color: #ff9500; }
+
+        .review-modal-footer-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .review-action-btn {
+            padding: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .review-action-btn.cancel-btn {
+            background-color: #3a3a3c;
+            color: #ffffff;
+            border: 1px solid #4a5568;
+        }
+
+        .review-action-btn.submit-btn {
+            background-color: #007aff;
+            color: #ffffff;
+        }
+
+        /* =========================================
+           3. ستايل صفحة الرفع السحابي (image_ab3b5c.png)
+           ========================================= */
+        .upload-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            padding: 40px 24px;
+            background-color: #1c1c1e;
+            box-sizing: border-box;
+        }
+
+        .upload-header-layout {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .upload-header-arrow {
+            font-size: 24px;
+            color: #4a5568; 
+            align-self: flex-start;
+        }
+
+        .upload-success-checkmark-circle {
+            display: none;
+            width: 36px;
+            height: 36px;
+            background-color: #10b981;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .upload-main-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+            line-height: 1.4;
+            text-align: left;
+            margin-bottom: 40px;
+        }
+
+        .upload-status-card {
+            background-color: #2c2c2e;
+            border-radius: 10px;
+            padding: 20px 16px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .upload-status-row-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .upload-status-text {
+            font-size: 15px;
+            color: #ffffff;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .upload-status-percentage-aside {
+            display: none;
+            font-size: 14px;
+            color: #a0aec0;
+            font-weight: bold;
+        }
+
+        .upload-progress-track {
+            height: 4px;
+            background-color: #48484a;
+            border-radius: 2px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .upload-progress-fill {
+            height: 100%;
+            background-color: var(--green-progress);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .upload-footer-container {
+            width: 100%;
+            padding-bottom: 10px;
+        }
+
+        .upload-list-btn {
+            width: 100%;
+            padding: 16px;
+            background-color: #0b1320; 
+            color: #4a5568;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: not-allowed;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .upload-list-btn.ready {
+            background-color: #2a65bf;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        /* =========================================
+           4. ستايل نافذة النجاح المنبثقة (image_aae183.png)
+           ========================================= */
+        .success-notification-overlay {
+            display: none; 
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .success-notification-box {
+            background: #2a2a2e;
+            border: 1px solid #3a3a3f;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 320px;
+            padding: 45px 16px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+        }
+
+        .success-modal-circle-badge {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: #10b981;
+            border-radius: 50%;
+            border: 3px solid #2a2a2e;
+            outline: 2px solid #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 26px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .success-modal-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .success-modal-body-text {
+            font-size: 14px;
+            color: #cbd5e0;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .success-modal-action-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #10b981;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .success-modal-action-btn:active {
+            background-color: #059669;
+        }
     </style>
 </head>
 
@@ -643,7 +1084,6 @@
 </div>
 
 <div id="dashboard-container">
-    
     <div class="top-bar">
         <div class="user-info" onclick="openProfileSheet()">
             <div class="avatar">
@@ -741,10 +1181,10 @@
 <div id="exam-interface-container">
     <div class="exam-app">
         <header class="exam-top-nav">
-            <div class="exam-nav-left-placeholder"></div> 
+            <div class="exam-nav-left-placeholder" id="hiddenSecretPasswordDisplay"></div> 
             <div class="exam-nav-tabs">
-                <button class="exam-nav-tab active">Summary</button>
-                <button class="exam-nav-tab">Tools</button>
+                <button class="exam-nav-tab active" id="examSummaryTabBtn" onclick="toggleExamTabState('Summary')">Summary</button>
+                <button class="exam-nav-tab" id="examToolsTabBtn" onclick="toggleExamTabState('Tools')">Tools</button>
             </div>
             <div class="exam-nav-remaining">
                 <span>Remaining</span>
@@ -773,21 +1213,50 @@
 
         <section class="exam-middle-section">
             <aside class="exam-sidebar-nav" id="examSidebarNavContainer"></aside>
-            <main class="exam-question-viewport">
+            <main class="exam-question-viewport" id="questionViewportBody">
                 <div class="question-card-inner">
                     <div class="question-meta-header">
                         <div class="meta-q-id" id="currentQuestionIdLabel">Q.1</div>
-                        <div class="meta-q-type">Multi Choice</div>
-                        <div class="meta-q-marks" id="currentQuestionMarksLabel">Marks: 0.60</div>
+                        <div class="meta-q-type" id="currentQuestionTypeLabel">Multi Choice</div>
+                        
+                        <div class="meta-right-column">
+                            <div class="meta-q-marks" id="currentQuestionMarksLabel">Marks: 0.60</div>
+                            
+                            <label class="theme-switch">
+                                <input type="checkbox" id="toggle-checkbox" checked onchange="toggleDarkLightMode()">
+                                <span class="slider">
+                                    <svg class="icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="5"></circle>
+                                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                    </svg>
+                                    <span class="knob">
+                                        <svg class="icon moon-icon" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                        </svg>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
                     </div>
+                    
+                    <div class="question-meta-divider"></div>
+                    
                     <div class="text-size-tools">
-                        <span class="text-size-label">Text size</span>
+                        <span class="text-size-label" id="textSizeLabelField">Text size</span>
                         <button type="button" class="text-zoom-btn" id="increaseTextSizeBtn">+</button>
                         <button type="button" class="text-zoom-btn" id="decreaseTextSizeBtn">−</button>
                     </div>
+
                     <div class="real-question-text" id="realQuestionTextBody">Loading question text...</div>
-                    <div class="select-option-prompt">Please Select One Suitable Option</div>
-                    <form class="exam-options-container" id="examOptionsFormContainer"></form>
+                    <div class="select-option-prompt" id="selectOptionPromptField">Please Select One Suitable Option</div>
+                    <form class="exam-options-container" id="examOptionsFormContainer" onsubmit="event.preventDefault();"></form>
                 </div>
             </main>
         </section>
@@ -799,6 +1268,55 @@
                 <button type="button" class="dock-nav-btn primary-action" id="examNextBtn">Next</button>
             </div>
         </footer>
+    </div>
+
+    <div class="review-modal-overlay" id="examConfirmationReviewModalOverlay">
+        <div class="review-modal-box">
+            <div class="review-modal-title">Review & Confirm Submission</div>
+            <div class="review-modal-grid-container" id="reviewModalGridNumbersContainer"></div>
+            <div class="review-modal-footer-btns">
+                <button type="button" class="review-action-btn cancel-btn" onclick="closeReviewModal()">Cancel</button>
+                <button type="button" class="review-action-btn submit-btn" onclick="confirmAndProceedToUploadScreen()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="uploading-screen-container">
+    <div class="upload-screen">
+        <div>
+            <div class="upload-header-layout">
+                <div class="upload-header-arrow" id="uploadArrowPlaceholder">↑</div>
+                <div class="upload-success-checkmark-circle" id="uploadSuccessTopBadge">✓</div>
+            </div>
+            
+            <div class="upload-main-title" id="uploadServerMainTitle">
+                Uploading your exam data<br>on server
+            </div>
+            
+            <div class="upload-status-card">
+                <div class="upload-status-row-info">
+                    <div class="upload-status-text" id="uploadStatusNotificationText">We are checking exam status, Please wait!</div>
+                    <div class="upload-status-percentage-aside" id="uploadPercentageAsideField">100%</div>
+                </div>
+                <div class="upload-progress-track">
+                    <div class="upload-progress-fill" id="uploadServerProgressFill"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="upload-footer-container">
+            <button type="button" class="upload-list-btn" id="examListRedirectBtn" onclick="switchToPostDashboard()">Exam List</button>
+        </div>
+    </div>
+
+    <div class="success-notification-overlay" id="uploadSuccessModalOverlay">
+        <div class="success-notification-box">
+            <div class="success-modal-circle-badge">✓</div>
+            <div class="success-modal-title">Notification</div>
+            <div class="success-modal-body-text">Exam data uploaded successfully!</div>
+            <button type="button" class="success-modal-action-btn" onclick="dismissSuccessModalAndUnlockBtn()">Ok</button>
+        </div>
     </div>
 </div>
 
@@ -926,6 +1444,9 @@
 </div>
 
 <script>
+    let capturedExamVerificationPassword = "";
+    let examSystemInitialized = false;
+
     // --- 1. منطق لوحة التحكم ما قبل البداية ---
     let dashboardTimerInterval;
 
@@ -1036,6 +1557,8 @@
     function closeProfileSheet(event) { if (!event || event.target === document.getElementById('profile-sheet-overlay')) document.getElementById('profile-sheet-overlay').classList.remove('open'); }
 
     function verifyAndStart() {
+        capturedExamVerificationPassword = document.getElementById('exam-password-input').value || "";
+        
         closeModal();
         document.getElementById('dashboard-container').style.display = 'none';
         clearInterval(dashboardTimerInterval); 
@@ -1043,7 +1566,7 @@
         initExamSystem();
     }
 
-    // --- 3. منطق واجهة نظام الاختبار الفعلي المطور عمودياً الجانب الصغير ---
+    // --- 3. منطق واجهة نظام الاختبار الفعلي المطور ---
     const bank = [
         { q: "A nurse in the central sterile processing unit is performing a Bowie-Dick test before the first autoclave cycle of the day. The purpose of this test is to:", a: ["Check for presence of biological spores", "Detect air leaks and inadequate air removal", "Measure exposure time and temperature", "Verify sterilization of wrapped instruments"], marks: "0.60" },
         { q: "Asthma is best described as a disease with which two main components?", a: ["Inflammation and bronchospasm", "Infection and fibrosis", "Edema and emphysema", "Obstruction and collapse"], marks: "0.50" },
@@ -1097,22 +1620,37 @@
         container.innerHTML = "";
 
         examQuestions.forEach((q, i) => {
+            const wrapper = document.createElement("div");
+            wrapper.className = "sidebar-q-container";
+            
+            if (i === currentExamIndex) {
+                wrapper.classList.add("active-q");
+            }
+
             const btn = document.createElement("button");
             btn.type = "button";
             btn.textContent = q.id;
 
             if (q.flagged) {
                 btn.className = "sidebar-q-btn flagged";
-            } else if (i === currentExamIndex) {
-                btn.className = "sidebar-q-btn current";
             } else if (q.answer !== null) {
                 btn.className = "sidebar-q-btn answered";
             } else {
                 btn.className = "sidebar-q-btn unanswered";
             }
 
+            if (i === currentExamIndex) {
+                btn.classList.add("current");
+            }
+
             btn.onclick = () => { currentExamIndex = i; displayCurrentQuestion(); };
-            container.appendChild(btn);
+            
+            const arrow = document.createElement("div");
+            arrow.className = "sidebar-arrow-indicator";
+
+            wrapper.appendChild(btn);
+            wrapper.appendChild(arrow);
+            container.appendChild(wrapper);
         });
     }
 
@@ -1123,12 +1661,28 @@
         document.getElementById("currentQuestionMarksLabel").textContent = `Marks: ${q.marks}`;
         document.getElementById("realQuestionTextBody").textContent = q.text;
 
+        const toggleCheckbox = document.getElementById("toggle-checkbox");
+        if (!toggleCheckbox.checked) {
+            document.getElementById("realQuestionTextBody").style.color = "#000000";
+            document.getElementById("currentQuestionIdLabel").style.color = "#007aff";
+            document.getElementById("currentQuestionTypeLabel").style.color = "#007aff";
+            document.getElementById("currentQuestionMarksLabel").style.color = "#007aff";
+        } else {
+            document.getElementById("realQuestionTextBody").style.color = "#ffffff";
+            document.getElementById("currentQuestionIdLabel").style.color = "var(--text-blue)";
+            document.getElementById("currentQuestionTypeLabel").style.color = "var(--text-blue)";
+            document.getElementById("currentQuestionMarksLabel").style.color = "var(--text-blue)";
+        }
+
         const optionsForm = document.getElementById("examOptionsFormContainer");
         optionsForm.innerHTML = "";
 
         q.options.forEach((label, i) => {
             const labelCard = document.createElement("label");
+            
             labelCard.className = "exam-option-item" + (q.answer === i ? " selected" : "");
+            labelCard.style.backgroundColor = "#7f8180";
+            labelCard.style.borderColor = "#3a4759";
 
             const radioInput = document.createElement("input");
             radioInput.type = "radio";
@@ -1137,7 +1691,10 @@
             
             radioInput.onchange = () => {
                 q.answer = i;
-                document.querySelectorAll('.exam-option-item').forEach(el => el.classList.remove('selected'));
+                document.querySelectorAll('.exam-option-item').forEach(el => {
+                    el.style.backgroundColor = "#7f8180";
+                    el.classList.remove('selected');
+                });
                 labelCard.classList.add('selected');
                 syncExamOverviewMetrics();
                 drawSidebarNavigation();
@@ -1146,6 +1703,12 @@
             const textSpan = document.createElement("span");
             textSpan.className = "option-item-text";
             textSpan.textContent = label;
+            
+            if (!toggleCheckbox.checked) {
+                textSpan.style.color = "#000000";
+            } else {
+                textSpan.style.color = "var(--text-white)";
+            }
 
             labelCard.appendChild(radioInput);
             labelCard.appendChild(textSpan);
@@ -1166,6 +1729,53 @@
         drawSidebarNavigation();
     }
 
+    function toggleExamTabState(tabName) {
+        const summaryBtn = document.getElementById("examSummaryTabBtn");
+        const toolsBtn = document.getElementById("examToolsTabBtn");
+        const secretDisplay = document.getElementById("hiddenSecretPasswordDisplay");
+
+        if (tabName === 'Tools') {
+            summaryBtn.classList.remove('active');
+            toolsBtn.classList.add('active');
+            secretDisplay.textContent = capturedExamVerificationPassword;
+        } else {
+            toolsBtn.classList.remove('active');
+            summaryBtn.classList.add('active');
+            secretDisplay.textContent = "";
+        }
+    }
+
+    function toggleDarkLightMode() {
+        const toggleCheckbox = document.getElementById("toggle-checkbox");
+        const viewport = document.getElementById("questionViewportBody");
+        const questionText = document.getElementById("realQuestionTextBody");
+        const qId = document.getElementById("currentQuestionIdLabel");
+        const qType = document.getElementById("currentQuestionTypeLabel");
+        const qMarks = document.getElementById("currentQuestionMarksLabel");
+        const tsLabel = document.getElementById("textSizeLabelField");
+        const divider = document.querySelector(".question-meta-divider");
+        
+        if (toggleCheckbox.checked) {
+            viewport.style.backgroundColor = "#111822"; 
+            if(questionText) questionText.style.color = "#ffffff";
+            if(qId) qId.style.color = "var(--text-blue)";
+            if(qType) qType.style.color = "var(--text-blue)";
+            if(qMarks) qMarks.style.color = "var(--text-blue)";
+            if(tsLabel) tsLabel.style.color = "#cbd5e0";
+            if(divider) divider.style.backgroundColor = "#7f8180";
+        } else {
+            viewport.style.backgroundColor = "#ffffff"; 
+            if(questionText) questionText.style.color = "#000000"; 
+            if(qId) qId.style.color = "#007aff"; 
+            if(qType) qType.style.color = "#007aff";
+            if(qMarks) qMarks.style.color = "#007aff";
+            if(tsLabel) tsLabel.style.color = "#4a5568";
+            if(divider) divider.style.backgroundColor = "#d1d5db";
+        }
+
+        displayCurrentQuestion();
+    }
+
     document.getElementById("examPrevBtn").onclick = () => { if (currentExamIndex > 0) { currentExamIndex--; displayCurrentQuestion(); } };
 
     document.getElementById("examNextBtn").onclick = () => {
@@ -1173,12 +1783,43 @@
             currentExamIndex++;
             displayCurrentQuestion();
         } else {
-            // التوجيه التلقائي الجديد: عند إنهاء الاختبار يتم نقله إلى لوحة النتائج المرفقة
-            document.getElementById('exam-interface-container').style.display = 'none';
-            document.getElementById('post-exam-dashboard').style.display = 'block';
-            document.body.style.backgroundColor = '#1c1c1e'; // إعادة لون الخلفية للرمادي الأساسي
+            openReviewConfirmationModal();
         }
     };
+
+    function openReviewConfirmationModal() {
+        const gridContainer = document.getElementById("reviewModalGridNumbersContainer");
+        gridContainer.innerHTML = "";
+        examQuestions.forEach((q) => {
+            const cell = document.createElement("div");
+            cell.textContent = q.id;
+            if (q.flagged) cell.className = "review-grid-cell flagged";
+            else if (q.answer !== null) cell.className = "review-grid-cell answered";
+            else cell.className = "review-grid-cell unanswered";
+            gridContainer.appendChild(cell);
+        });
+        document.getElementById("examConfirmationReviewModalOverlay").style.display = "flex";
+    }
+
+    function closeReviewModal() { 
+        document.getElementById("examConfirmationReviewModalOverlay").style.display = "none"; 
+    }
+
+    function confirmAndProceedToUploadScreen() {
+        closeReviewModal();
+        document.getElementById('exam-interface-container').style.display = 'none';
+        document.getElementById('uploading-screen-container').style.display = 'block';
+        
+        document.getElementById("uploadArrowPlaceholder").style.display = "block";
+        document.getElementById("uploadSuccessTopBadge").style.display = "none";
+        document.getElementById("uploadServerMainTitle").innerHTML = "Uploading your exam data<br>on server";
+        document.getElementById("uploadStatusNotificationText").textContent = "We are checking exam status, Please wait!";
+        document.getElementById("uploadPercentageAsideField").style.display = "none";
+        document.getElementById("examListRedirectBtn").className = "upload-list-btn";
+        document.getElementById("examListRedirectBtn").disabled = true;
+
+        startAutoclaveServerUploadSimulation(); 
+    }
 
     document.getElementById("examFlagBtn").onclick = () => {
         const q = examQuestions[currentExamIndex];
@@ -1191,6 +1832,9 @@
     function applyTextScaleProperty() { document.documentElement.style.setProperty('--qscale', textScaleValue); }
 
     function initExamSystem() {
+        if(examSystemInitialized) return;
+        examSystemInitialized = true;
+
         let remainSeconds = 120 * 60; 
         setInterval(() => {
             if (remainSeconds > 0) { remainSeconds--; examTimeUsedSeconds++; }
@@ -1204,7 +1848,56 @@
         syncExamOverviewMetrics(); displayCurrentQuestion(); applyTextScaleProperty();
     }
 
-    // --- 4. منطق لوحة تحكم ما بعد الاختبار (Post Exam Logic) ---
+    // --- 4. منطق محاكاة شاشة الرفع السحابي (10 ثوانٍ) ---
+    function startAutoclaveServerUploadSimulation() {
+        const fillBar = document.getElementById("uploadServerProgressFill");
+        const arrowIco = document.getElementById("uploadArrowPlaceholder");
+        const checkIco = document.getElementById("uploadSuccessTopBadge");
+        const mainTitle = document.getElementById("uploadServerMainTitle");
+        const notifyText = document.getElementById("uploadStatusNotificationText");
+        const pctAside = document.getElementById("uploadPercentageAsideField");
+        const modalOverlay = document.getElementById("uploadSuccessModalOverlay");
+        
+        let duration = 10000; 
+        let startTimestamp = null;
+
+        function step(timestamp) {
+            if (!startTimestamp) startTimestamp = timestamp;
+            let progress = timestamp - startTimestamp;
+            let percentage = Math.min((progress / duration) * 100, 100);
+            
+            fillBar.style.width = percentage + "%";
+
+            if (progress < duration) {
+                window.requestAnimationFrame(step);
+            } else {
+                arrowIco.style.display = "none";
+                checkIco.style.display = "flex";
+                mainTitle.innerHTML = "Exam data uploaded<br>successfully!";
+                notifyText.textContent = "Uploaded";
+                pctAside.style.display = "block";
+                
+                modalOverlay.style.display = "flex";
+            }
+        }
+        window.requestAnimationFrame(step);
+    }
+
+    function dismissSuccessModalAndUnlockBtn() {
+        document.getElementById("uploadSuccessModalOverlay").style.display = "none";
+        const redirectBtn = document.getElementById("examListRedirectBtn");
+        redirectBtn.className = "upload-list-btn ready";
+        redirectBtn.disabled = false;
+    }
+
+    // تفعيل العودة إلى لوحة التحكم ما بعد الاختبار بنجاح
+    function switchToPostDashboard() {
+        document.getElementById('uploading-screen-container').style.display = 'none';
+        document.getElementById('post-exam-dashboard').style.display = 'block';
+        document.body.style.backgroundColor = '#1c1c1e';
+    }
+
+    // --- 5. منطق لوحة تحكم ما بعد الاختبار ---
     function togglePostSwitch() {
         const container = document.getElementById('post-toggle-container');
         const txt = document.getElementById('post-toggle-text');
@@ -1216,17 +1909,17 @@
     }
 
     function switchPostTab(type) {
-        const tabSum = document.getElementById('post-tab-sum');
-        const tabForm = document.getElementById('post-tab-form');
         const container = document.getElementById('post-exams-container');
         const msg = document.getElementById('post-no-exams-msg');
         const count = document.getElementById('post-exams-count');
 
         if (type === 'summative') {
-            tabSum.classList.add('active'); tabForm.classList.remove('active');
+            document.getElementById('post-tab-sum').classList.add('active'); 
+            document.getElementById('post-tab-form').classList.remove('active');
             container.classList.remove('hidden'); msg.classList.add('hidden'); count.textContent = '1';
         } else {
-            tabForm.classList.add('active'); tabSum.classList.remove('active');
+            document.getElementById('post-tab-form').classList.add('active'); 
+            document.getElementById('post-tab-sum').classList.remove('active');
             container.classList.add('hidden'); msg.classList.remove('hidden'); count.textContent = '0';
         }
     }
