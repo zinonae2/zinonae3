@@ -11,22 +11,22 @@
            ========================================= */
         * {
             box-sizing: border-box;
-            font-family: "Segoe UI", Tahoma, sans-serif;
+            font-family: "Segoe UI", Tahoma, system-ui, sans-serif;
             -webkit-tap-highlight-color: transparent;
             margin: 0;
             padding: 0;
+            transition: background 0.2s, color 0.2s;
         }
 
         body {
             margin: 0;
             background: #1c1c1e;
             color: #e0e0e0;
-            transition: background-color 0.3s ease;
         }
 
         #dashboard-container { display: block; }
         #exam-start-page { display: none; height: 100vh; flex-direction: column; }
-        #exam-interface-container { display: none; min-height: 100vh; background: #131926; }
+        #exam-interface-container { display: none; height: 100vh; background: #222; padding: 0; overflow: hidden; }
         #uploading-screen-container { display: none; min-height: 100vh; background: #1c1c1e; position: relative; } 
         #post-exam-dashboard { display: none; }
 
@@ -151,7 +151,7 @@
         .content {
             padding: 20px 16px;
             max-width: 768px; 
-            margin: 0 auto;   
+            margin: 0 auto;    
         }
 
         .header-row {
@@ -207,6 +207,7 @@
             border: 1px solid #3a3a3c;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .exam-card::before {
@@ -222,10 +223,13 @@
         .exam-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start; 
+            align-items: center; 
             padding-bottom: 16px; 
             border-bottom: 1px solid #3a3a3c; 
             margin-bottom: 18px; 
+            cursor: pointer;
+            user-select: none;
+            transition: margin-bottom 0.3s ease, padding-bottom 0.3s ease, border-color 0.3s ease;
         }
 
         .exam-title {
@@ -236,11 +240,24 @@
             line-height: 1.4;
         }
 
+        .exam-header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .exam-date {
             font-size: 13px;
             color: #aeaeb2;
             text-align: right;
             line-height: 1.4;
+        }
+
+        .arrow-icon {
+            font-size: 12px;
+            color: #aeaeb2;
+            transition: transform 0.3s ease;
+            transform: rotate(180deg);
         }
 
         .exam-details {
@@ -249,6 +266,10 @@
             row-gap: 16px;
             font-size: 14px;
             color: #aeaeb2; 
+            opacity: 1;
+            max-height: 500px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
         }
 
         .exam-details .value {
@@ -257,7 +278,7 @@
             font-weight: 500;
         }
 
-        .exam-details .value.status-upcoming {
+        .exam-details .value.status-Available {
             color: #2a65bf;
             font-weight: bold;
         }
@@ -277,11 +298,35 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            opacity: 1;
+            max-height: 60px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
         }
 
         .view-score:active {
             background: rgba(42, 101, 191, 0.05); 
+        }
+
+        .exam-card.collapsed {
+            padding: 16px 20px;
+        }
+        .exam-card.collapsed .exam-header {
+            border-color: transparent;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .exam-card.collapsed .arrow-icon {
+            transform: rotate(0deg);
+        }
+        .exam-card.collapsed .exam-details,
+        .exam-card.collapsed .view-score {
+            opacity: 0;
+            max-height: 0;
+            margin-top: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            pointer-events: none;
         }
 
         .hidden { display: none !important; }
@@ -335,10 +380,11 @@
 
         .modal-title { font-size: 16px; font-weight: 600; color: #ffffff; margin-bottom: 14px; }
         .modal-text { font-size: 13.5px; color: #e0e0e3; line-height: 1.6; margin-bottom: 20px; text-align: center; }
-        .modal-box label { display: block; text-align: left; color: #aeaeb2; font-size: 13px; margin-bottom: 8px; }
-        .modal-box input {
+        .modal-input-group { margin-bottom: 20px; text-align: left; }
+        .modal-input-group label { display: block; color: #aeaeb2; font-size: 13px; margin-bottom: 8px; }
+        .modal-input-group input {
             width: 100%; padding: 12px; background: #1c1c1e; border: 1px solid #3a3a3c;
-            border-radius: 8px; color: white; font-size: 16px; outline: none; margin-bottom: 20px;
+            border-radius: 8px; color: white; font-size: 16px; outline: none;
         }
 
         .modal-btn-container { display: flex; gap: 10px; }
@@ -370,6 +416,7 @@
         .filter-option.selected .filter-radio { border-color: #2a65bf; }
         .filter-radio::after { content: ""; width: 10px; height: 10px; background: transparent; border-radius: 50%; }
         .filter-option.selected .filter-radio::after { background: #2a65bf; }
+        .filter-option.selected .filter-label { color: #2a65bf; }
         .filter-label { font-size: 15px; color: #ffffff; }
         .filter-show-btn { width: 100%; background: #2a65bf; color: #ffffff; border: none; border-radius: 10px; padding: 12px; font-weight: 600; margin-top: 16px; cursor: pointer; }
 
@@ -382,7 +429,7 @@
         .profile-info-text .name-lbl { color: #ffffff; font-size: 16px; font-weight: bold; }
         .signout-btn { width: 100%; padding: 13px; background: transparent; border: 1px solid #c93b3b; border-radius: 10px; color: #e54343; font-weight: 600; cursor: pointer; }
 
-        /* ===== صفحة التعليمات قبل بدء الاختبار ===== */
+        /* ===== Instructions Page ===== */
         .page-header { padding: 15px; display: flex; align-items: center; background-color: #2c2c2e; border-bottom: 1px solid #3a3a3c; }
         .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; color: #ffffff; }
         .detail-list { padding: 20px; flex-grow: 1; }
@@ -395,672 +442,396 @@
         @media (min-width: 1024px) { .content { max-width: 900px; } }
 
         /* =========================================================
-           2. تنسيقات واجهة الاختبار الفعلي المطابقة للصورة تماماً
+           2. هيكل الاختبار والاعدادات المحفوظة
            ========================================================= */
         :root {
-            --exam-bg: #141d26;
-            --header-dark: #1b2431;
-            --text-white: #ffffff;
-            --text-blue: #3d8bfd;
-            --text-yellow: #ffc107;
-            --green-progress: #4cd964;
-            --card-bg: #1b2431;
-            --border-color: #2d3748;
-            --btn-border: #4a5568;
+            --bg: #1a1b1e;
+            --header-bg: #22252b;
+            --sidebar-bg: #000000; 
+            --card-bg: #2a2d35;
+            --text-primary: #ffffff;
+            --text-muted: #ffffff;
+            --option-bg: #2c2f38;
+            --option-border: #3a3d48;
+            --option-selected-bg: #1a2a4a;
+            --footer-bg: #1a1b1e; 
+            --footer-border: #2a2d35;
+            --sidebar-default: #1e3a5f;
+            --progress-track: #3a3d48;
             --qscale: 1;
         }
 
-        .exam-app {
+        [data-theme="light"] {
+            --bg: #f4f4f4;
+            --header-bg: #1e3a5f;
+            --sidebar-bg: #eef7f6;
+            --card-bg: #e0e0e0;
+            --text-primary: #000000;
+            --text-muted: #ffffff;
+            --option-bg: #d8d8d8;
+            --option-border: #bbbbbb;
+            --option-selected-bg: #cde0fa;
+            --footer-bg: #223553;
+            --footer-border: #bbbbbb;
+            --sidebar-default: #1e3a5f;
+            --progress-track: #aaaaaa;
+        }
+
+        .quiz-container {
+            background: var(--bg);
+            height: 100vh; 
+            color: var(--text-primary);
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            background-color: var(--exam-bg);
-            color: var(--text-white);
-            font-size: 16px;
-        }
-
-        .exam-top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 16px;
-            background-color: #2c2c2c;
-            border-bottom: 1px solid #2d3748;
-        }
-
-        .exam-nav-left-placeholder { 
-            width: 120px;
-            font-size: 11px;
-            color: #4a5568; 
-            text-align: left;
-            font-weight: normal;
-            user-select: none;
-            opacity: 0.5;
-        }
-
-        .exam-nav-tabs {
-            display: flex;
-            background: #2c2c2c;
-            border: 1px solid var(--btn-border);
-            border-radius: 8px;
-            overflow: hidden;
-            padding: 2px;
-        }
-
-        .exam-nav-tab {
-            padding: 6px 16px;
-            font-size: 14px;
-            border: none;
-            background: transparent;
-            color: #a0aec0;
-            cursor: pointer;
-            border-radius: 6px;
-        }
-
-        .exam-nav-tab.active {
-            background-color: #4a5568;
-            color: var(--text-white);
-            border: 1px solid #718096;
-        }
-
-        .exam-nav-remaining {
-            font-size: 14px;
-            color: var(--text-yellow);
-            font-weight: bold;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            width: 120px;
-            background-color: #2c2c2c;
-        }
-        .exam-nav-remaining span:first-child { font-size: 11px; color: #a0aec0; font-weight: normal; margin-bottom: 2px; }
-
-        .exam-user-strip {
-            background-color: #7f8180;
-            padding: 10px 16px;
-            font-size: 15px;
-            font-weight: bold;
-            color: var(--text-white);
-            text-transform: uppercase;
-            border-bottom: 1px solid #2d3748;
-        }
-
-        .exam-stats-panel {
-            padding: 14px 16px;
-            background-color: #2c2c2e;
-            border-bottom: 1px solid #202733;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .stats-row {
-            display: grid;
-            grid-template-columns: 140px 1fr 45px;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .stats-label { font-size: 14px; color: #cbd5e0; }
-
-        .progress-bar-container {
-            height: 10px;
-            background-color: #0d1520;
-            border-radius: 50px;
-            overflow: hidden;
+            max-width: 100%;
+            margin: 0 auto;
             position: relative;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background-color: var(--green-progress);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .stats-percentage { font-size: 14px; text-align: right; font-weight: bold; color: #cbd5e0; }
-
-        .question-mode-card {
-            background-color: #7f8180;
-            border: 1px solid #3a4759;
-            border-radius: 6px;
-            padding: 8px 12px;
-            width: 150px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: 2px;
-        }
-
-        .mode-card-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; color: #ffffff; }
-        .mode-card-bar { height: 4px; background-color: #0d1520; border-radius: 2px; overflow: hidden; }
-        .mode-card-fill { height: 100%; background-color: var(--green-progress); width: 0%; }
-
-        .exam-middle-section {
-            display: grid;
-            grid-template-columns: max-content 1fr;
-            flex: 1;
             overflow: hidden;
+            box-shadow: 0 0 30px rgba(0,0,0,0.6);
         }
 
-        .exam-sidebar-nav {
-            background-color: #000000;
-            border-right: 1px solid #202733;
-            padding: 10px 0px;
-            overflow-y: auto;
+        .timer-bar {
+            background-color: #1f1e24;
+            padding: 6px 14px;
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .timer {
+            color: #f59e0b;
+            font-size: 13.5px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-align: left;
+        }
+
+        .header {
+            background: var(--header-bg);
+            padding: 12px 14px 12px;
+            flex-shrink: 0;
+        }
+
+        .student-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            gap: 10px;
+        }
+
+        .student-name-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .student-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+            position: relative; 
+        }
+
+        #hiddenSecretPasswordDisplay {
+            position: absolute;
+            top: -16px;
+            left: 4px;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            user-select: none;
+            color: rgba(255, 255, 255, 0.045); 
+        }
+
+        [data-theme="light"] #hiddenSecretPasswordDisplay {
+            color: rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--text-muted);
+            color: var(--text-muted);
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .progress-section { margin-top: 10px; }
+        .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+        .progress-label { font-size: 12px; color: var(--text-muted); min-width: 110px; }
+        .progress-track { flex: 1; height: 6px; background: var(--progress-track); border-radius: 3px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: #22c55e; border-radius: 3px; transition: width 0.4s ease; }
+        .progress-pct { font-size: 12px; color: var(--text-muted); min-width: 35px; text-align: right; }
+
+        .section-badge {
+            display: inline-flex;
+            flex-direction: column; 
+            align-items: stretch;
+            background: #41444d; 
+            border: 1.5px solid #3b82f6;
+            border-radius: 5px;
+            padding: 8px 12px;
+            margin-top: 6px;
+            min-width: 140px;
+            gap: 6px; 
+        }
+
+        .section-title { font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
+        .section-pct { font-size: 12.5px; color: var(--text-primary); font-weight: 600; margin-left: 8px; }
+
+        [data-theme="light"] .section-badge {
+            background: #ffffff !important;
+        }
+        [data-theme="light"] .section-title,
+        [data-theme="light"] .section-pct {
+            color: #000000 !important;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1; 
+            overflow: hidden; 
+        }
+
+        .sidebar {
+            background: var(--sidebar-bg);
+            width: 45px;
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            align-items: flex-start;
-            padding-left: 6px;
-            padding-right: 2px; 
+            align-items: center;
+            padding: 14px 0px;
+            gap: 10px;
+            overflow-y: auto; 
+            height: 100%;
         }
+
+        .sidebar::-webkit-scrollbar { width: 0px; background: transparent; }
 
         .sidebar-q-container {
             position: relative;
-            width: auto;
+            width: 100%;
             display: flex;
+            justify-content: center;
             align-items: center;
         }
 
         .sidebar-q-btn {
-            width: 36px;   
-            height: 36px;  
-            border-radius: 6px; 
+            width: 35px;
+            height: 32px;
+            background: #3b82f6; 
             border: none;
-            font-size: 14px; 
-            font-weight: bold;
+            border-radius: 4px 0 0 4px;
             color: #ffffff;
+            font-weight: 700;
+            font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
-            z-index: 2;
+            position: relative;
         }
 
-        .sidebar-q-btn.answered { background-color: #4cd964; }
-        .sidebar-q-btn.unanswered { background-color: #1963ac; }
-        
-        .sidebar-q-btn.flagged {
-            background-color: #ff9500 !important; 
-            color: #ffffff !important;
-            border: none !important;
-        }
+        .sidebar-q-btn.answered { background: #22c55e !important; color: #fff; }
+        .sidebar-q-btn.unanswered { background: #3b82f6; }
+        .sidebar-q-btn.flagged { background: #f59e0b !important; color: #fff !important; }
 
         .sidebar-arrow-indicator {
+            content: '';
             position: absolute;
-            left: 35px; 
-            top: 50%;
-            transform: translateY(-50%) scaleX(0); 
+            right: 0px;
+            top: 0;
             width: 0;
             height: 0;
-            border-width: 5px 0 5px 6px;
-            border-style: solid;
-            border-color: transparent transparent transparent #007aff; 
-            z-index: 1;
-            transition: transform 0.15s ease;
-            transform-origin: left;
+            border-top: 16px solid transparent;
+            border-bottom: 16px solid transparent;
+            border-left: 8px solid #3b82f6;
+            z-index: 10;
+            display: none;
         }
 
-        .sidebar-q-container.active-q {
-            padding-right: 6px; 
-        }
-
-        .sidebar-q-container.active-q .sidebar-arrow-indicator {
-            transform: translateY(-50%) scaleX(1); 
-        }
-
-        .exam-question-viewport { 
-            padding: 16px; 
-            overflow-y: auto; 
-            background-color: #111822; 
-            transition: all 0.3s ease; 
-        }
-        
-        .question-card-inner { display: flex; flex-direction: column; }
-        
-        .question-meta-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-start; 
-            padding-bottom: 12px; 
-            position: relative;
-        }
-
-        .question-meta-divider {
-            width: 100%;
-            height: 1px;
-            background-color: #7f8180;
-            margin-top: 2px;
-            margin-bottom: 14px;
-            opacity: 0.8;
-        }
-
-        .meta-right-column {
+        .sidebar-q-container.active-q .sidebar-arrow-indicator { display: block; }
+        .sidebar-q-container.active-q .sidebar-q-btn.flagged + .sidebar-arrow-indicator { border-left-color: #f59e0b !important; }
+        .sidebar-q-container.active-q .sidebar-q-btn.answered + .sidebar-arrow-indicator { border-left-color: #22c55e !important; }
+         
+        .question-area {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
-            gap: 12px; 
+            overflow: hidden;
+            height: 100%;
         }
 
-        .text-size-tools { display: flex; align-items: center; gap: 10px; margin: 12px 0 20px 0; }
-        .text-size-label { font-size: 14px; color: #cbd5e0; transition: color 0.3s; }
-        .text-zoom-btn {
-            width: 34px; height: 34px; border-radius: 50%; border: none;
-            background-color: #2d3748; color: var(--text-white); font-size: 18px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        .meta-bar {
+            padding: 12px 14px 8px;
+            background: var(--bg);
+            flex-shrink: 0;
         }
 
-        .theme-switch {
-            position: relative;
-            display: inline-block;
-            width: 76px;   
-            height: 40px;
-        }
+        .meta-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .meta-info span { color: #3b82f6; font-weight: 700; font-size: 14px; }
+        .meta-divider { height: 1px; background: var(--option-border); margin-bottom: 10px; }
+        .controls-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .text-size-controls { display: flex; align-items: center; gap: 8px; }
+        .text-size-label { font-size: 12px; color: #3b82f6; font-weight: 600; }
+        .btn-size { width: 28px; height: 28px; border-radius: 50%; background: var(--option-border); border: none; color: var(--text-primary); font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        .theme-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
+        .theme-toggle {
+            width: 54px;
+            height: 28px;
+            border-radius: 14px;
+            background: #3a3d48;
+            border: none;
             cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #1a1a1a;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 50px;
             display: flex;
             align-items: center;
-            padding: 0 6px;
-            box-shadow: 
-                inset 0 3px 6px rgba(0, 0, 0, 0.8),
-                inset 0 -1px 2px rgba(255, 255, 255, 0.05),
-                0 1px 1px rgba(255, 255, 255, 0.1);
+            justify-content: flex-end;
+            padding: 0 4px;
         }
 
-        .icon {
-            width: 15px;
-            height: 15px;
-            transition: all 0.4s ease;
-            position: absolute;
-        }
+        .theme-toggle-circle { width: 22px; height: 22px; border-radius: 50%; background: #1a1b1e; display: flex; align-items: center; justify-content: center; }
 
-        .sun-icon {
-            left: 14px;
-            color: #444444; 
-        }
+        [data-theme="light"] .theme-toggle { justify-content: flex-start; background: #bbbbbb; }
+        [data-theme="light"] .theme-toggle-circle { background: #ffffff; }
 
-        .knob {
-            position: absolute;
-            height: 32px;
-            width: 32px;
-            left: 4px;
-            bottom: 4px;
-            background: radial-gradient(circle at 35% 35%, #3a3a3a 0%, #1c1c1c 70%, #141414 100%);
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 
-                -1.5px -1.5px 4px rgba(255, 255, 255, 0.08),
-                1.5px 2.5px 5px rgba(0, 0, 0, 0.9),
-                inset 0 0.5px 1px rgba(255, 255, 255, 0.2);
-        }
+        .question-body { flex: 1; overflow-y: auto; padding: 0 14px 16px; background: var(--bg); }
+        .question-text { color: var(--text-primary); line-height: 1.5; margin: 0 0 10px; font-size: calc(15px * var(--qscale)); }
+        .question-subtitle { color: var(--text-primary); font-weight: 700; margin: 0 0 14px; font-size: calc(14px * var(--qscale)); }
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
 
-        .moon-icon {
-            color: #ffffff;
-            width: 15px;
-            height: 15px;
-            filter: drop-shadow(0px 0px 4px rgba(255, 255, 255, 0.4)); 
-        }
-
-        input:checked + .slider .knob {
-            transform: translateX(36px); 
-        }
-
-        input:checked + .slider .sun-icon {
-            color: #333333;
-        }
-
-        input:not(:checked) + .slider .knob {
-            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e0e0e0 70%, #cccccc 100%);
-            box-shadow: 
-                -1px -1px 3px rgba(255, 255, 255, 0.8),
-                1px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        input:not(:checked) + .slider .moon-icon {
-            color: #666666;
-            filter: none;
-        }
-
-        input:not(:checked) + .slider .sun-icon {
-            color: #ffb703;
-            filter: drop-shadow(0px 0px 4px rgba(255, 183, 3, 0.6));
-        }
-
-        .meta-q-id { font-size: 16px; font-weight: bold; color: var(--text-blue); transition: color 0.3s; }
-        .meta-q-type { font-size: 15px; color: var(--text-blue); transition: color 0.3s; }
-        .meta-q-marks { font-size: 16px; font-weight: bold; color: var(--text-blue); transition: color 0.3s; }
-        .real-question-text { font-size: calc(16px * var(--qscale)); line-height: 1.6; margin-bottom: 24px; color: var(--text-white); transition: color 0.3s; }
-        
-        .select-option-prompt { font-size: 14px; color: #ffffff !important; margin-bottom: 16px; }
-
-        .exam-options-container { display: flex; flex-direction: column; gap: 12px; }
-        
         .exam-option-item {
-            display: flex; align-items: center; gap: 14px; background-color: #7f8180 !important;
-            border: 1px solid #3a4759; border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s ease;
+            background: var(--option-bg);
+            border: 1.5px solid var(--option-border);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            text-align: left;
+            width: 100%;
         }
-        .exam-option-item.selected { background-color: #7f8180 !important; }
+
+        .exam-option-item.selected {
+            border-color: var(--option-border);
+            background: var(--option-bg);
+        }
 
         .exam-option-item input[type="radio"] {
-            appearance: none; -webkit-appearance: none; width: 22px; height: 22px;
-            border: 2px solid #cbd5e0; border-radius: 50%; outline: none; background: transparent;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-            transition: border-color 0.3s;
+            appearance: none; -webkit-appearance: none; width: 20px; height: 20px;
+            border-radius: 50%; border: 2px solid #5a5f6e; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; background: transparent; outline: none;
+            transition: border-color 0.2s ease;
         }
-        .exam-option-item input[type="radio"]:checked { border-color: #007aff; background-color: transparent; }
-        .exam-option-item input[type="radio"]:checked::after { content: ""; width: 12px; height: 12px; background-color: #007aff; border-radius: 50%; display: block; }
 
-        .option-item-text { font-size: calc(15px * var(--qscale)); color: var(--text-white); transition: color 0.3s; }
-
-        .exam-bottom-dock { background-color: #151b26; border-top: 1px solid #202733; padding: 14px 16px; }
-        .dock-buttons-layout { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: center; }
-        .dock-nav-btn {
-            background: transparent; border: 1px solid var(--btn-border); color: var(--text-white);
-            padding: 12px 0; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; text-align: center;
+        [data-theme="light"] .exam-option-item input[type="radio"] { border-color: #888; }
+        
+        .exam-option-item input[type="radio"]:checked { 
+            border-color: #3b82f6 !important; 
         }
-        .dock-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-        .dock-nav-btn.primary-action { background-color: #007aff; border: none; color: #ffffff; }
-        .dock-nav-btn.danger-action { background-color: #d93d3d; border: none; color: #ffffff; }
+        .exam-option-item input[type="radio"]:checked::after { 
+            content: ''; width: 10px; height: 10px; border-radius: 50%; background: #3b82f6; display: block; 
+        }
 
-        /* ===== [تعديل] تلوين نافذة مربع المراجعة والتأكيد المربّع ليصبح باللون 2c2c2c المطلوب ===== */
-        .review-modal-overlay {
-            display: none; 
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 15, 23, 0.9);
+        .option-item-text { color: var(--text-primary); line-height: 1.4; font-size: calc(14px * var(--qscale)); }
+
+        .footer {
+            background: var(--footer-bg);
+            padding: 16px 16px 32px; 
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;
+            flex-shrink: 0; 
+            border-top: 1px solid var(--footer-border);
+        }
+
+        .btn-footer { border-radius: 6px; padding: 8px 24px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; white-space: nowrap; }
+
+        .btn-prev { background: transparent; border: 1.5px solid #2d3139; color: #4b5261; }
+        .btn-prev.active-btn { border-color: var(--text-primary); color: var(--text-primary); }
+        .btn-flag { background: transparent; border: 1.5px solid var(--text-primary); color: var(--text-primary); }
+        .btn-next { background: #3b82f6; border: none; color: #fff; padding: 8px 32px; }
+
+        /* =========================================
+           4. شاشة ملخص الإجابات المحفوظة (Summary Sheet Modal)
+           ========================================= */
+        .summary-modal {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg);
+            color: var(--text-primary);
             z-index: 4000;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-        }
-
-        .review-modal-box {
-            background-color: #2c2c2c; /* تم تغيير اللون من 17202f إلى 2c2c2c */
-            border: 1px solid #3a3a3c;
-            border-radius: 14px;
-            width: 100%;
-            max-width: 450px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-        }
-
-        .review-modal-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffffff;
-            text-align: center;
-            border-bottom: 1px solid #3a3a3c;
-            padding-bottom: 12px;
-        }
-
-        .review-modal-grid-container {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            max-height: 280px;
-            overflow-y: auto;
-            padding: 6px;
-            background-color: #111822;
-            border-radius: 8px;
-            border: 1px solid #202733;
-        }
-
-        .review-grid-cell {
-            height: 32px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .review-grid-cell.answered { background-color: #4cd964; }
-        .review-grid-cell.unanswered { background-color: #1963ac; }
-        .review-grid-cell.flagged { background-color: #ff9500; }
-
-        .review-modal-footer-btns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 6px;
-        }
-
-        .review-action-btn {
-            padding: 12px;
-            font-size: 15px;
-            font-weight: bold;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .review-action-btn.cancel-btn {
-            background-color: #3a3a3c;
-            color: #ffffff;
-            border: 1px solid #4a5568;
-        }
-
-        .review-action-btn.submit-btn {
-            background-color: #007aff;
-            color: #ffffff;
-        }
-
-        /* =========================================
-           3. ستايل صفحة الرفع السحابي (image_ab3b5c.png)
-           ========================================= */
-        .upload-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100vh;
-            padding: 40px 24px;
-            background-color: #1c1c1e;
-            box-sizing: border-box;
-        }
-
-        .upload-header-layout {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .upload-header-arrow {
-            font-size: 24px;
-            color: #4a5568; 
-            align-self: flex-start;
-        }
-
-        .upload-success-checkmark-circle {
-            display: none;
-            width: 36px;
-            height: 36px;
-            background-color: #10b981;
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .upload-main-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #ffffff;
-            line-height: 1.4;
-            text-align: left;
-            margin-bottom: 40px;
-        }
-
-        .upload-status-card {
-            background-color: #2c2c2e;
-            border-radius: 10px;
-            padding: 20px 16px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .upload-status-row-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .upload-status-text {
-            font-size: 15px;
-            color: #ffffff;
-            font-weight: 500;
-            text-align: left;
-        }
-
-        .upload-status-percentage-aside {
-            display: none;
-            font-size: 14px;
-            color: #a0aec0;
-            font-weight: bold;
-        }
-
-        .upload-progress-track {
-            height: 4px;
-            background-color: #48484a;
-            border-radius: 2px;
-            overflow: hidden;
-            width: 100%;
-        }
-
-        .upload-progress-fill {
-            height: 100%;
-            background-color: var(--green-progress);
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        .upload-footer-container {
-            width: 100%;
-            padding-bottom: 10px;
-        }
-
-        .upload-list-btn {
-            width: 100%;
-            padding: 16px;
-            background-color: #0b1320; 
-            color: #4a5568;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: not-allowed;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .upload-list-btn.ready {
-            background-color: #2a65bf;
-            color: #ffffff;
-            cursor: pointer;
-        }
-
-        /* =========================================
-           4. ستايل نافذة النجاح المنبثقة (image_aae183.png)
-           ========================================= */
-        .success-notification-overlay {
             display: none; 
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: 3000;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
+            flex-direction: column;
+            padding: 18px;
+            overflow-y: auto;
         }
 
-        .success-notification-box {
-            background: #2a2a2e;
-            border: 1px solid #3a3a3f;
-            border-radius: 14px;
-            width: 100%;
-            max-width: 320px;
-            padding: 45px 16px 20px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
-        }
+        .summary-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .summary-header h3 { font-size: 16.5px; font-weight: 600; }
+        .close-summary-btn { background: transparent; border: none; color: var(--text-primary); font-size: 22px; font-weight: 300; cursor: pointer; line-height: 1; }
 
-        .success-modal-circle-badge {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background: #10b981;
-            border-radius: 50%;
-            border: 3px solid #2a2a2e;
-            outline: 2px solid #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 26px;
-            color: white;
-            font-weight: bold;
-        }
+        .summary-section-title { font-size: 15px; font-weight: 600; margin-bottom: 20px; }
+        .filters-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 30px; margin-bottom: 24px; }
+        .filter-item { display: flex; align-items: center; justify-content: space-between; font-size: 13.5px; }
+        .filter-color-box { width: 24px; height: 24px; border-radius: 2px; flex-shrink: 0; }
 
-        .success-modal-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 16px;
-        }
+        .box-all { background: #ffffff; border: 1px solid #ccc; position: relative; }
+        .box-all::after { content: ''; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); width: 7px; height: 7px; background: #ef4444; border-radius: 50%; }
+        .box-not-attempted { background: #3b82f6; }
+        .box-attempted { background: #22c55e; }
+        .box-flagged { background: #f59e0b; }
 
-        .success-modal-body-text {
-            font-size: 14px;
-            color: #cbd5e0;
-            line-height: 1.5;
-            margin-bottom: 22px;
-        }
+        .summary-divider { height: 1px; background: var(--option-border); margin: 10px 0 20px; }
+        .items-title-red { color: #ef4444; font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+        
+        .summary-items-grid { display: flex; flex-wrap: wrap; gap: 10px; max-height: 320px; overflow-y: auto; padding-bottom: 10px; }
+        .summary-item-block { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #ffffff; border-radius: 3px; cursor: pointer; }
 
-        .success-modal-action-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #10b981;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+        .summary-item-block.status-answered { background: #82cc6c; } 
+        .summary-item-block.status-not-attempted { background: #3b82f6; }
+        .summary-item-block.status-flagged { background: #f59e0b; }
 
-        .success-modal-action-btn:active {
-            background-color: #059669;
-        }
+        .summary-footer { margin-top: auto; display: flex; justify-content: center; padding: 20px 0 14px; flex-shrink: 0; }
+        .btn-summary-end { background: #ef4444; border: none; color: #ffffff; padding: 12px 0; border-radius: 4px; font-size: 15px; font-weight: 600; cursor: pointer; width: 45%; text-align: center; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25); }
+
+        /* =========================================
+           5. ستايل صفحة الرفع السحابي والمودالز
+           ========================================= */
+        .upload-screen { display: flex; flex-direction: column; justify-content: space-between; height: 100vh; padding: 40px 24px; background-color: #1c1c1e; box-sizing: border-box; }
+        .upload-header-layout { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+        .upload-header-arrow { font-size: 24px; color: #4a5568; align-self: flex-start; }
+        .upload-success-checkmark-circle { display: none; width: 36px; height: 36px; background-color: #10b981; border-radius: 50%; align-items: center; justify-content: center; color: #ffffff; font-weight: bold; font-size: 18px; }
+        .upload-main-title { font-size: 28px; font-weight: bold; color: #ffffff; line-height: 1.4; text-align: left; margin-bottom: 40px; }
+        .upload-status-card { background-color: #2c2c2e; border-radius: 10px; padding: 20px 16px; width: 100%; display: flex; flex-direction: column; gap: 14px; }
+        .upload-status-row-info { display: flex; justify-content: space-between; align-items: center; }
+        .upload-status-text { font-size: 15px; color: #ffffff; font-weight: 500; text-align: left; }
+        .upload-status-percentage-aside { display: none; font-size: 14px; color: #a0aec0; font-weight: bold; }
+        .upload-progress-track { height: 4px; background-color: #48484a; border-radius: 2px; overflow: hidden; width: 100%; }
+        .upload-progress-fill { height: 100%; background-color: #4cd964; width: 0%; transition: width 0.1s linear; }
+        .upload-footer-container { width: 100%; padding-bottom: 10px; }
+        .upload-list-btn { width: 100%; padding: 16px; background-color: #0b1320; color: #4a5568; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: not-allowed; text-align: center; transition: all 0.3s ease; }
+        .upload-list-btn.ready { background-color: #2a65bf; color: #ffffff; cursor: pointer; }
+
+        .success-notification-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); z-index: 3000; justify-content: center; align-items: center; padding: 24px; }
+        .success-notification-box { background: #2a2a2e; border: 1px solid #3a3a3f; border-radius: 14px; width: 100%; max-width: 320px; padding: 45px 16px 20px; text-align: center; position: relative; box-shadow: 0 12px 35px rgba(0,0,0,0.6); }
+        .success-modal-circle-badge { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); width: 60px; height: 60px; background: #10b981; border-radius: 50%; border: 3px solid #2a2a2e; outline: 2px solid #ffffff; display: flex; justify-content: center; align-items: center; font-size: 26px; color: white; font-weight: bold; }
+        .success-modal-title { font-size: 16px; font-weight: bold; color: #ffffff; margin-bottom: 16px; }
+        .success-modal-body-text { font-size: 14px; color: #cbd5e0; line-height: 1.5; margin-bottom: 22px; }
+        .success-modal-action-btn { width: 100%; padding: 12px; background-color: #10b981; color: #ffffff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 
@@ -1128,23 +899,26 @@
     <div id="dashboard-page" class="content">
         <div class="header-row">
             <div>Total Exams: <span id="exams-count">1</span></div>
-            <div class="toggle" id="toggle-container" onclick="toggleSwitch()">
+            <div class="toggle active" id="toggle-container" onclick="toggleSwitch()">
                 <span id="toggle-text">Close All</span>
                 <div class="toggle-switch"></div>
             </div>
         </div>
 
         <div id="exams-container">
-            <div class="exam-card">
-                <div class="exam-header">
-                    <div class="exam-title">NURS 226 FINAL EXAM 1ST SEM 1447</div>
-                    <div class="exam-date">29 Dec 2025<br>01:00 PM</div>
+            <div class="exam-card" id="main-exam-card">
+                <div class="exam-header" onclick="toggleCardAccordion(event)">
+                    <div class="exam-title">الاختبار النهائي</div>
+                    <div class="exam-header-right">
+                        <div class="exam-date">07 Jun 2026<br>01:00 PM</div>
+                        <div class="arrow-icon">▼</div>
+                    </div>
                 </div>
                 <div class="exam-details">
-                    <span>Course</span> <span class="value">Pharmacology for Nursing</span>
-                    <span>Duration</span> <span class="value">02:00:00</span>
+                    <span>Course</span> <span class="value">Maternal Health Nursing</span>
+                    <span>Duration</span> <span class="value">03:30:00</span>
                     <span>Proctored</span> <span class="value">No</span>
-                    <span>Status</span> <span class="value status-upcoming">Upcoming</span>
+                    <span>Status</span> <span class="value status-Available">Available</span>
                     <span>Upload Status</span> <span class="value">-</span>
                 </div>
                 <button class="view-score" onclick="goToExamPage()">Attempt (Take Exam)</button>
@@ -1159,12 +933,12 @@
     <div id="exam-start-page">
         <div class="page-header">
             <span class="back-arrow" onclick="goBackToDashboard()">&#8592;</span>
-            <span style="font-weight: bold; color: white;">NURS 226 FINAL EXAM 1ST SEM 1447</span>
+            <span style="font-weight: bold; color: white;">الاختبار النهائي</span>
         </div>
         <div class="detail-list">
-            <div class="detail-item"><span>Course</span><span class="dt-value">Pharmacology for Nursing</span></div>
-            <div class="detail-item"><span>Total Duration</span><span class="dt-value">02:00:00</span></div>
-            <div class="detail-item"><span>Remaining Duration</span><span class="dt-value" id="timer-display" style="color: #2a65bf;">02:00:00</span></div>
+            <div class="detail-item"><span>Course</span><span class="dt-value">Maternal Health Nursing</span></div>
+            <div class="detail-item"><span>Total Duration</span><span class="dt-value">03:30:00</span></div>
+            <div class="detail-item"><span>Remaining Duration</span><span class="dt-value" id="timer-display" style="color: #2a65bf;">03:30:00</span></div>
             <div class="detail-item"><span>Language</span><span class="dt-value">English</span></div>
             <div class="detail-item"><span>Proctored</span><span class="dt-value">No</span></div>
             <div style="margin-top: 20px;">
@@ -1178,106 +952,134 @@
     </div>
 </div>
 
+
 <div id="exam-interface-container">
-    <div class="exam-app">
-        <header class="exam-top-nav">
-            <div class="exam-nav-left-placeholder" id="hiddenSecretPasswordDisplay"></div> 
-            <div class="exam-nav-tabs">
-                <button class="exam-nav-tab active" id="examSummaryTabBtn" onclick="toggleExamTabState('Summary')">Summary</button>
-                <button class="exam-nav-tab" id="examToolsTabBtn" onclick="toggleExamTabState('Tools')">Tools</button>
+    <div class="quiz-container" id="quizApp">
+        
+        <div class="summary-modal" id="summaryScreen">
+            <div class="summary-header">
+                <h3>Answer Sheet Summary</h3>
+                <button type="button" class="close-summary-btn" onclick="closeSummary()">✕</button>
             </div>
-            <div class="exam-nav-remaining">
-                <span>Remaining</span>
-                <span id="countdownTimerText">02:00:00</span>
-            </div>
-        </header>
-
-        <div class="exam-user-strip" id="examUserNameStrip">MOHAMMED HUSSAIN MOHAMMED HAKMI</div>
-
-        <section class="exam-stats-panel">
-            <div class="stats-row">
-                <div class="stats-label">Items <span id="itemsCountLabel">0 / 50</span></div>
-                <div class="progress-bar-container"><div class="progress-bar-fill" id="itemsProgressBarFill"></div></div>
-                <div class="stats-percentage" id="itemsPercentLabel">0%</div>
-            </div>
-            <div class="stats-row">
-                <div class="stats-label" id="timeMinutesLabel">Time 0 / 120 (mins)</div>
-                <div class="progress-bar-container"><div class="progress-bar-fill" id="timeProgressBarFill"></div></div>
-                <div class="stats-percentage" id="timePercentLabel">0%</div>
-            </div>
-            <div class="question-mode-card">
-                <div class="mode-card-header"><span>Multi Choice</span><span id="modePercentLabel">0%</span></div>
-                <div class="mode-card-bar"><div class="mode-card-fill" id="modeProgressBarFill"></div></div>
-            </div>
-        </section>
-
-        <section class="exam-middle-section">
-            <aside class="exam-sidebar-nav" id="examSidebarNavContainer"></aside>
-            <main class="exam-question-viewport" id="questionViewportBody">
-                <div class="question-card-inner">
-                    <div class="question-meta-header">
-                        <div class="meta-q-id" id="currentQuestionIdLabel">Q.1</div>
-                        <div class="meta-q-type" id="currentQuestionTypeLabel">Multi Choice</div>
-                        
-                        <div class="meta-right-column">
-                            <div class="meta-q-marks" id="currentQuestionMarksLabel">Marks: 0.60</div>
-                            
-                            <label class="theme-switch">
-                                <input type="checkbox" id="toggle-checkbox" checked onchange="toggleDarkLightMode()">
-                                <span class="slider">
-                                    <svg class="icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="5"></circle>
-                                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                                    </svg>
-                                    <span class="knob">
-                                        <svg class="icon moon-icon" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                                        </svg>
-                                    </span>
-                                </span>
-                            </label>
-                        </div>
+            
+            <div class="summary-body">
+                <div class="summary-section-title">Filters</div>
+                <div class="filters-grid">
+                    <div class="filter-item">
+                        <span>All</span>
+                        <div class="filter-color-box box-all"></div>
                     </div>
-                    
-                    <div class="question-meta-divider"></div>
-                    
-                    <div class="text-size-tools">
-                        <span class="text-size-label" id="textSizeLabelField">Text size</span>
-                        <button type="button" class="text-zoom-btn" id="increaseTextSizeBtn">+</button>
-                        <button type="button" class="text-zoom-btn" id="decreaseTextSizeBtn">−</button>
+                    <div class="filter-item">
+                        <span>Not Attempted</span>
+                        <div class="filter-color-box box-not-attempted"></div>
                     </div>
-
-                    <div class="real-question-text" id="realQuestionTextBody">Loading question text...</div>
-                    <div class="select-option-prompt" id="selectOptionPromptField">Please Select One Suitable Option</div>
-                    <form class="exam-options-container" id="examOptionsFormContainer" onsubmit="event.preventDefault();"></form>
+                    <div class="filter-item">
+                        <span>Attempted</span>
+                        <div class="filter-color-box box-attempted"></div>
+                    </div>
+                    <div class="filter-item">
+                        <span>Flagged</span>
+                        <div class="filter-color-box box-flagged"></div>
+                    </div>
                 </div>
-            </main>
-        </section>
 
-        <footer class="exam-bottom-dock">
-            <div class="dock-buttons-layout">
-                <button type="button" class="dock-nav-btn" id="examPrevBtn">Previous</button>
-                <button type="button" class="dock-nav-btn" id="examFlagBtn">Flag</button>
-                <button type="button" class="dock-nav-btn primary-action" id="examNextBtn">Next</button>
+                <div class="summary-divider"></div>
+                
+                <div class="items-title-red">Items</div>
+                <div class="summary-items-grid" id="summaryItemsGrid"></div>
             </div>
-        </footer>
-    </div>
 
-    <div class="review-modal-overlay" id="examConfirmationReviewModalOverlay">
-        <div class="review-modal-box">
-            <div class="review-modal-title">Review & Confirm Submission</div>
-            <div class="review-modal-grid-container" id="reviewModalGridNumbersContainer"></div>
-            <div class="review-modal-footer-btns">
-                <button type="button" class="review-action-btn cancel-btn" onclick="closeReviewModal()">Cancel</button>
-                <button type="button" class="review-action-btn submit-btn" onclick="confirmAndProceedToUploadScreen()">Submit</button>
+            <div class="summary-footer">
+                <button type="button" class="btn-summary-end" onclick="confirmAndProceedToUploadScreen()">End Exam</button>
             </div>
+        </div>
+
+        <div class="timer-bar">
+            <div class="timer" id="countdownTimerText">03:30:00</div>
+        </div>
+        
+        <div class="header">
+            <div class="student-row">
+                <div>
+                    <div class="student-name-label">Student Name</div>
+                    <div class="student-name">MOHAMMED HUSSAIN HAKMI</div>
+                </div>
+                <div class="header-buttons">
+                    <div id="hiddenSecretPasswordDisplay"></div>
+                    <button type="button" class="btn-outline" id="examToolsTabBtn" onclick="toggleExamTabState('Tools')">Tools</button>
+                    <button type="button" class="btn-outline" id="examSummaryTabBtn" onclick="showSummary()">Summary</button>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-row">
+                    <span class="progress-label" id="itemsCountLabel">Items 0 / 50</span>
+                    <div class="progress-track">
+                        <div class="progress-bar" id="itemsProgressBarFill"></div>
+                    </div>
+                    <span class="progress-pct" id="itemsPercentLabel">0%</span>
+                </div>
+                <div class="progress-row">
+                    <span class="progress-label" id="timeMinutesLabel">Time 0 / 210 (mins)</span>
+                    <div class="progress-track">
+                        <div class="progress-bar" id="timeProgressBarFill"></div>
+                    </div>
+                    <span class="progress-pct" id="timePercentLabel">0%</span>
+                </div>
+                <div class="section-badge">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%;">
+                        <span class="section-title">Default Section</span>
+                        <span class="section-pct" id="modePercentLabel">0%</span>
+                    </div>
+                    
+                    <div class="progress-track" style="height: 5px; background: rgba(0, 0, 0, 0.4); border-radius: 3px; overflow: hidden; width: 100%; margin-top: 2px; flex: none;">
+                        <div class="progress-bar" id="modeProgressBarFill" style="width: 0%; height: 100%; background: #22c55e; transition: width 0.4s ease; border-radius: 3px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar" id="examSidebarNavContainer"></div>
+
+            <div class="question-area">
+                <div class="meta-bar">
+                    <div class="meta-info">
+                        <span id="currentQuestionIdLabel">Q.1</span>
+                        <span id="currentQuestionTypeLabel">Multi Choice</span>
+                        <span id="currentQuestionMarksLabel">Marks: 0.50</span>
+                    </div>
+                    <div class="meta-divider"></div>
+                    <div class="controls-row">
+                        <div class="text-size-controls">
+                            <span class="text-size-label">Text size</span>
+                            <button type="button" class="btn-size" id="increaseTextSizeBtn">+</button>
+                            <button type="button" class="btn-size" id="decreaseTextSizeBtn">−</button>
+                        </div>
+                        
+                        <label class="theme-switch-wrapper">
+                            <input type="checkbox" id="toggle-checkbox" checked onchange="toggleDarkLightMode()" style="display:none;">
+                            <div class="theme-toggle">
+                                <div class="theme-toggle-circle" id="themeIcon">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-body" id="questionViewportBody">
+                    <p class="question-text" id="realQuestionTextBody">Loading question...</p>
+                    <p class="question-subtitle" id="selectOptionPromptField">Please Select One Suitable Option</p>
+                    <form class="options-list" id="examOptionsFormContainer" onsubmit="event.preventDefault();"></form>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <button type="button" class="btn-footer btn-prev" id="examPrevBtn">Previous</button>
+            <button type="button" class="btn-footer btn-flag" id="examFlagBtn">Flag</button>
+            <button type="button" class="btn-footer btn-next" id="examNextBtn">Next</button>
         </div>
     </div>
 </div>
@@ -1340,18 +1142,6 @@
             </svg>
             <svg class="icon-svg" viewBox="0 0 24 24">
                 <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <svg class="icon-svg" viewBox="0 0 24 24" style="fill: none; stroke: #ffffff; stroke-width: 2.5;" onclick="openFilter()">
-                <line x1="2" y1="8" x2="22" y2="8"></line>
-                <circle cx="9" cy="8" r="2.5" style="fill: #ffffff; stroke: none;"></circle>
-                <line x1="2" y1="16" x2="22" y2="16"></line>
-                <circle cx="15" cy="16" r="2.5" style="fill: #ffffff; stroke: none;"></circle>
-            </svg>
-            <svg class="icon-svg" viewBox="0 0 24 24" onclick="openNotificationModal()">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="16" x2="12" y2="12"></line>
-                <line x1="12" y1="8" x2="12.01" y2="8"></line>
             </svg>
         </div>
     </div>
@@ -1364,21 +1154,24 @@
     <div class="content">
         <div class="header-row">
             <div>Total Exams: <span id="post-exams-count">1</span></div>
-            <div class="toggle" id="post-toggle-container" onclick="togglePostSwitch()">
-                <span id="post-toggle-text">Open All</span>
+            <div class="toggle active" id="post-toggle-container" onclick="togglePostSwitch()">
+                <span id="post-toggle-text">Close All</span>
                 <div class="toggle-switch"></div>
             </div>
         </div>
 
         <div id="post-exams-container">
-            <div class="exam-card">
-                <div class="exam-header">
-                    <div class="exam-title">Midterm Exam 312</div>
-                    <div class="exam-date">26 Feb 2026<br>11:00 AM</div>
+            <div class="exam-card" id="post-exam-card">
+                <div class="exam-header" onclick="togglePostCardAccordion(event)">
+                    <div class="exam-title">الاختبار النهائي</div>
+                    <div class="exam-header-right">
+                        <div class="exam-date">07 Jun 2026<br>01:00 PM</div>
+                        <div class="arrow-icon">▼</div>
+                    </div>
                 </div>
                 <div class="exam-details">
-                    <span>Course</span> <span class="value">Infection Control for Nursing</span>
-                    <span>Duration</span> <span class="value">02:00:00</span>
+                    <span>Course</span> <span class="value">Maternal Health Nursing</span>
+                    <span>Duration</span> <span class="value">03:30:00</span>
                     <span>Proctored</span> <span class="value">No</span>
                     <span>Status</span> <span class="value status-ended">Exam Ended</span>
                     <span>Upload Status</span> <span class="value">Uploaded</span>
@@ -1395,14 +1188,15 @@
 
 <div id="score-modal" class="modal-overlay hidden">
     <div class="modal-box">
-        <div class="modal-icon">i</div>
+        <div class="modal-icon" id="modal-badge-icon">i</div>
         <div class="modal-title" id="modal-title-text">Notification</div>
-        <div class="modal-text" id="modal-body-text">Exam Result is not published.</div>
+        <div class="modal-text" id="modal-body-text">Exam Result is not published. Once your result is published, you will receive a notification.</div>
         
         <div id="modal-password-group" class="modal-input-group hidden">
             <label>Examination Password</label>
             <input type="password" id="exam-password-input" placeholder="********">
         </div>
+        
         <div class="modal-btn-container" id="modal-buttons-container">
             <button class="modal-btn" onclick="closeModal()">Ok</button>
         </div>
@@ -1446,9 +1240,8 @@
 <script>
     let capturedExamVerificationPassword = "";
     let examSystemInitialized = false;
-
-    // --- 1. منطق لوحة التحكم ما قبل البداية ---
     let dashboardTimerInterval;
+    let toolsToggleActive = false;
 
     function triggerRefresh() {
         const loading = document.getElementById('refresh-loading');
@@ -1459,12 +1252,64 @@
     function toggleSwitch() {
         const toggleContainer = document.getElementById('toggle-container');
         const toggleText = document.getElementById('toggle-text');
+        const examCard = document.getElementById('main-exam-card');
+
         if (toggleContainer.classList.contains('active')) {
+            toggleContainer.classList.remove('active');
+            toggleText.textContent = 'Open All';
+            examCard.classList.add('collapsed');
+        } else {
+            toggleContainer.classList.add('active');
+            toggleText.textContent = 'Close All';
+            examCard.classList.remove('collapsed');
+        }
+    }
+
+    function toggleCardAccordion(event) {
+        const examCard = document.getElementById('main-exam-card');
+        const toggleContainer = document.getElementById('toggle-container');
+        const toggleText = document.getElementById('toggle-text');
+        
+        examCard.classList.toggle('collapsed');
+        
+        if (examCard.classList.contains('collapsed')) {
             toggleContainer.classList.remove('active');
             toggleText.textContent = 'Open All';
         } else {
             toggleContainer.classList.add('active');
             toggleText.textContent = 'Close All';
+        }
+    }
+
+    function togglePostCardAccordion(event) {
+        const postExamCard = document.getElementById('post-exam-card');
+        const postToggleContainer = document.getElementById('post-toggle-container');
+        const postToggleText = document.getElementById('post-toggle-text');
+        
+        postExamCard.classList.toggle('collapsed');
+        
+        if (postExamCard.classList.contains('collapsed')) {
+            postToggleContainer.classList.remove('active');
+            postToggleText.textContent = 'Open All';
+        } else {
+            postToggleContainer.classList.add('active');
+            postToggleText.textContent = 'Close All';
+        }
+    }
+
+    function togglePostSwitch() {
+        const container = document.getElementById('post-toggle-container');
+        const txt = document.getElementById('post-toggle-text');
+        const postExamCard = document.getElementById('post-exam-card');
+
+        if (container.classList.contains('active')) {
+            container.classList.remove('active'); 
+            txt.textContent = 'Open All';
+            postExamCard.classList.add('collapsed'); 
+        } else {
+            container.classList.add('active'); 
+            txt.textContent = 'Close All';
+            postExamCard.classList.remove('collapsed'); 
         }
     }
 
@@ -1503,7 +1348,7 @@
     }
 
     function startDashboardTimer() {
-        let hours = 2, minutes = 0, seconds = 0;
+        let hours = 3, minutes = 30, seconds = 0;
         const display = document.getElementById('timer-display');
         if(dashboardTimerInterval) clearInterval(dashboardTimerInterval);
 
@@ -1520,16 +1365,17 @@
         }, 1000);
     }
 
-    // --- 2. التحكم بالمودال والقوائم السفلية المشتركة ---
     function openNotificationModal() {
+        document.getElementById('modal-badge-icon').textContent = 'i';
         document.getElementById('modal-title-text').textContent = 'Notification';
-        document.getElementById('modal-body-text').innerHTML = 'The QQ app was first launched at 12 Oct 2025 06:07:15 PM...';
+        document.getElementById('modal-body-text').innerHTML = 'The exam portal is ready for evaluation.';
         document.getElementById('modal-password-group').classList.add('hidden');
         document.getElementById('modal-buttons-container').innerHTML = `<button class="modal-btn" onclick="closeModal()">Ok</button>`;
         document.getElementById('score-modal').classList.remove('hidden');
     }
 
     function openPasswordModal() {
+        document.getElementById('modal-badge-icon').textContent = '?';
         document.getElementById('modal-title-text').textContent = 'Verification';
         document.getElementById('modal-body-text').textContent = 'Please enter the examination password to proceed.';
         document.getElementById('modal-password-group').classList.remove('hidden');
@@ -1542,6 +1388,7 @@
     }
 
     function openResultsNotificationModal() {
+        document.getElementById('modal-badge-icon').textContent = 'i';
         document.getElementById('modal-title-text').textContent = 'Notification';
         document.getElementById('modal-body-text').textContent = 'Exam Result is not published. Once your result is published, you will receive a notification.';
         document.getElementById('modal-password-group').classList.add('hidden');
@@ -1558,7 +1405,6 @@
 
     function verifyAndStart() {
         capturedExamVerificationPassword = document.getElementById('exam-password-input').value || "";
-        
         closeModal();
         document.getElementById('dashboard-container').style.display = 'none';
         clearInterval(dashboardTimerInterval); 
@@ -1566,24 +1412,512 @@
         initExamSystem();
     }
 
-    // --- 3. منطق واجهة نظام الاختبار الفعلي المطور ---
+    // تم تحديث واستبدال كامل مصفوفة الأسئلة بـ 50 سؤالاً الخاصة بـ Maternal Health Nursing ودرجة 0.50 لكل منها
     const bank = [
-        { q: "A nurse in the central sterile processing unit is performing a Bowie-Dick test before the first autoclave cycle of the day. The purpose of this test is to:", a: ["Check for presence of biological spores", "Detect air leaks and inadequate air removal", "Measure exposure time and temperature", "Verify sterilization of wrapped instruments"], marks: "0.60" },
-        { q: "Asthma is best described as a disease with which two main components?", a: ["Inflammation and bronchospasm", "Infection and fibrosis", "Edema and emphysema", "Obstruction and collapse"], marks: "0.50" },
-        { q: "Status asthmaticus refers to:", a: ["A prolonged asthma attack", "Exercise-induced asthma", "Mild intermittent asthma", "Nocturnal asthma"], marks: "0.50" },
-        { q: "Which of the following is a common trigger of asthma?", a: ["Tobacco smoke", "Calcium supplements", "Cold water", "Vitamin C"], marks: "0.50" }
+      { 
+        "q": "Which of the following is best conditions to use mini-pill (progestin-only pill)?", 
+        "a": [
+          "Women over 35 who smoke.", 
+          "Women seeking permanent contraception.", 
+          "Women who need emergency contraception.", 
+          "Women who want to regulate their menstrual cycle."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following is a contraindication for combined oral contraceptives pills (COCs)?", 
+        "a": [
+          "Smoking more than 15 cigarettes per day after age 35.", 
+          "Being under 18 years old.", 
+          "Using condoms simultaneously.", 
+          "Having a history of irregular periods."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A woman on combined oral contraceptives (COCs) reports severe leg pain and swelling. What should the nurse suspect?", 
+        "a": [
+          "Thromboembolism.", 
+          "Endometriosis.", 
+          "Pulmonary embolism.", 
+          "Normal side effect of the pill."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A nurse is explaining to group of women about the combined oral contraceptives pills (COCs). Which of the following consider the primary mechanism for the COCs?", 
+        "a": [
+          "Suppressing ovulation by inhibiting FSH and LH.", 
+          "Increasing FSH and LH levels.", 
+          "Stimulating estrogen production.", 
+          "Thickening of the endometrial lining."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following are the five T’s causes Postpartum Hemorrhage?", 
+        "a": [
+          "Tone, Tissue, Trauma, Thrombin, Traction.", 
+          "Tone, Tissue, Trauma, Thyroid, Traction.", 
+          "Tone, Tissue, Threads, Thrombin, Trauma.", 
+          "Toxins, Tissue, Trauma, Thrombin, Thyroid."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "The generally accepted definition of postpartum hemorrhage (PPH) following vaginal delivery is when blood loss exceeds:", 
+        "a": [
+          "500 mL", 
+          "200 mL", 
+          "1000 mL", 
+          "1500 mL"
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Sarah, a 32-year-old woman, just delivered a baby vaginally. After delivery, she experiences excessive vaginal bleeding, and her uterus feels soft upon palpation. What is the most likely cause of Sarah’s condition?", 
+        "a": [
+          "Uterine atony.", 
+          "Uterine rupture.", 
+          "Coagulation disorder.", 
+          "Retained placental fragments."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A postpartum woman presents to the emergency department with heavy bleeding 10 days after her caesarean section. What type of postpartum haemorrhage is she experiencing?", 
+        "a": [
+          "Late postpartum haemorrhage.", 
+          "Normal lochia progression.", 
+          "Secondary postpartum infection.", 
+          "Primary postpartum haemorrhage."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A postpartum woman is experiencing heavy vaginal bleeding, and the nurse notes a boggy uterus. Despite fundal massage and IV oxytocin, the bleeding continues. What should the nurse anticipate as the next step?", 
+        "a": [
+          "Performing a bimanual uterine compression.", 
+          "Encouraging ambulation.", 
+          "Administering IV antibiotics.", 
+          "Applying ice packs to the abdomen."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A 2nd day postpartum woman presents with heavy vaginal bleeding, cramping, and a boggy uterus. What is the most likely cause?", 
+        "a": [
+          "Retained placental fragments.", 
+          "Endometritis.", 
+          "Deep vein thrombosis.", 
+          "Urinary tract infection."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "In the postpartum ward, a nurse is caring for a primipara diagnosed with deep vein thrombosis who is receiving treatment with bed rest and intravenous heparin therapy. Which of the following assessment findings should the nurse prioritise and report immediately?", 
+        "a": [
+          "Pulmonary embolism.", 
+          "Edema.", 
+          "Malaise.", 
+          "Hypertension."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A nurse educates a postpartum patient about preventing blood clots after a cesarean section. Which statement by the patient indicates understanding?", 
+        "a": [
+          "“I will perform leg exercises and ambulate frequently to prevent blood clots.”", 
+          "“I will cross my legs when sitting to improve circulation.”", 
+          "“I will wear tight stockings all the time to reduce swelling.”", 
+          "“I should stay in bed as much as possible to avoid stressing my legs.”"
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Fatima, a 28-year-old woman, is three days postpartum following a caesarean section. She reports pain, redness, and swelling in her left calf. The nurse suspects deep vein thrombosis (DVT). Which nursing intervention is most appropriate?", 
+        "a": [
+          "Keep the affected leg elevated and apply warm compresses.", 
+          "Massage the affected leg.", 
+          "Encourage early ambulation.", 
+          "Administer acetaminophen for pain relief."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A 4-week postpartum mother presents with breast pain, redness, and fever. She has been diagnosed with mastitis. Which advice should the nurse provide?", 
+        "a": [
+          "“Continue breastfeeding, empty the breast, and take antibiotics.”", 
+          "“Apply cold compresses to the affected area.”", 
+          "“Stop breastfeeding until the infection clears.”", 
+          "“Only nurse on the unaffected breast until symptoms resolve.”"
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A 30-year-old postpartum woman presents with fever, lower abdominal pain, and foul-smelling lochia. What postpartum complication is she likely to have?", 
+        "a": [
+          "Endometritis.", 
+          "Mastitis.", 
+          "Deep vein thrombosis.", 
+          "Urinary tract infection."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A 22-year-old woman at 6 weeks’ gestation presents with slight vaginal bleeding and mild cramping. Her cervix is closed. A pregnancy test is positive. How would you classify this pregnancy complication?", 
+        "a": [
+          "Threatened abortion.", 
+          "Missed abortion.", 
+          "Inevitable abortion.", 
+          "Incomplete abortion."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "At 18 weeks pregnant woman came to the emergency room experiencing persistent bleeding, rupture of the membrane and strong abdominal cramping with dilation of the cervix. Which type of abortion did the woman experience?", 
+        "a": [
+          "Inevitable.", 
+          "Habitual.", 
+          "Threatened.", 
+          "Therapeutic."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A 25-year-old woman at 8 weeks gestation experiences sudden, sharp, unilateral abdominal pain and light vaginal bleeding. Her blood pressure is low, and her pulse is rapid. Which complication is most likely present in this case?", 
+        "a": [
+          "Rupture of ectopic pregnancy.", 
+          "Placenta previa.", 
+          "Spontaneous abortion.", 
+          "Gestational trophoblastic disease."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A woman presents with a positive pregnancy test and an ultrasound showing a uterus filled with grape-like vesicles. Her HCG levels are very high. What condition is suspected in this case?", 
+        "a": [
+          "Gestational trophoblastic disease.", 
+          "Placenta previa.", 
+          "Ectopic pregnancy.", 
+          "Placental abruption."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "The nurse should emphasize the importance of continued follow-up care for the women who have had evacuation of a hydatidiform mole to detect the occurrence of which of the following?", 
+        "a": [
+          "Choriocarcinoma.", 
+          "Endometriosis.", 
+          "Ectopic pregnancy.", 
+          "Continued Bleeding."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A patient at 28 weeks gestation experiences painless, bright red vaginal bleeding that spontaneously stops, then recurs. The uterus is soft and relaxed. What complication is suspected in this case?", 
+        "a": [
+          "Placenta previa.", 
+          "Ectopic pregnancy.", 
+          "Placental abruption.", 
+          "Gestational trophoblastic disease."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following is a risk factor for placenta previa?", 
+        "a": [
+          "Previous caesarean birth.", 
+          "Low parity.", 
+          "Previous vaginal delivery.", 
+          "Maternal age under 25 years."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A patient at 32 weeks gestation reports sudden onset of severe abdominal pain, dark red vaginal bleeding, and a rigid uterus. Fetal heart rate is absent. What is the most likely diagnosis?", 
+        "a": [
+          "Placental abruption.", 
+          "Placenta previa.", 
+          "Ectopic pregnancy.", 
+          "Spontaneous abortion."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "In a patient with suspected placental abruption, what is a crucial nursing intervention?", 
+        "a": [
+          "Continuous fetal monitoring.", 
+          "Encouraging ambulation.", 
+          "Administering ibuprofen for pain.", 
+          "Frequent vaginal exams to assess bleeding."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A 37-year-old pregnant mother, newly diagnosed with gestational diabetes, her history revealed no previous medical problems. Which of the following is the first line of therapy to manage this woman?", 
+        "a": [
+          "Diet & Exercise therapy.", 
+          "Insulin therapy.", 
+          "Exercise therapy.", 
+          "Oral hypoglycemic therapy."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "When is the additional screening needed for women considered at risk for gestational diabetes?", 
+        "a": [
+          "24 to 28 weeks", 
+          "32 to 36 weeks", 
+          "16 to 20 weeks", 
+          "12 to 16 weeks"
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following tests is primarily used to confirm gestational diabetes?", 
+        "a": [
+          "Oral Glucose Tolerance Test.", 
+          "HbA1c.", 
+          "Fasting Insulin Test.", 
+          "Random Blood Glucose."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A Nurse implements a teaching plan for a primipara woman who is newly diagnosed with gestational diabetes. Which of the following statements if made by the woman, indicates a need for further education?", 
+        "a": [
+          "“I need to avoid exercise because of the negative effects of insulin”.", 
+          "“I need to maintain the diabetic diet”.", 
+          "“I will perform glucose monitoring at home”.", 
+          "“I need to monitor for signs and symptoms of abnormal glucose levels”."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following is the most accurate reason to encourage breastfeeding in postpartum diabetic women?", 
+        "a": [
+          "It helps normalize maternal glucose levels.", 
+          "It causes weight loss.", 
+          "It increases maternal appetite.", 
+          "It prevents postpartum depression."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following blood pressure readings (on two separate occasions) confirms the diagnosis of preeclampsia?", 
+        "a": [
+          "≥140/90 mm Hg", 
+          "≥120/80 mm Hg", 
+          "≥130/85 mm Hg", 
+          "≥160/100 mm Hg"
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "HELLP syndrome stands for which of the following?", 
+        "a": [
+          "Hemolysis, Elevated Liver enzymes, Low Platelets.", 
+          "Hemorrhage, Elevated Lipids, Low Potassium.", 
+          "Hypertension, Elevated Liver enzymes, Low Platelets.", 
+          "Hyperglycemia, Elevated Lactic acid, Low Prothrombin."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A 36-year-old pregnant woman has been admitted to the hospital for administration of magnesium sulfate to treat severe preeclampsia. Which of the following is considered the action for this therapy?", 
+        "a": [
+          "Prevent Seizures.", 
+          "Improve Vision.", 
+          "Treat hyper flexion.", 
+          "Reduce Ankle edema."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A patient with preeclampsia is advised to spend most of her time in a lateral position while on bed rest. What is the rationale for this recommendation?", 
+        "a": [
+          "It promotes sodium excretion.", 
+          "It increases blood pressure.", 
+          "It causes discomfort to prevent excessive activity.", 
+          "It is only recommended for women with HELLP syndrome."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A woman with eclampsia experiences a tonic-clonic seizure in the hospital. What is the first action the nurse should take?", 
+        "a": [
+          "Clear and maintain her airway.", 
+          "Start IV fluids quickly.", 
+          "Restrain the patient tightly.", 
+          "Insert a tongue blade into her mouth."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A multipara woman who is 36 weeks gestation is diagnosed with mild preeclampsia. Which of the following educational interventions is appropriate for this woman?", 
+        "a": [
+          "Monitor fetal movement count daily.", 
+          "Complete bed rest.", 
+          "Monitor B.P weekly.", 
+          "Monitor weight weekly."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A woman at 30 weeks’ gestation has Premature Rupture of Membranes (PROM). Which of the following is the primary goal of tocolytic therapy for PROM?", 
+        "a": [
+          "Delay birth for up to 48 hours to allow for corticosteroid administration.", 
+          "Perform an amniotomy.", 
+          "Immediately induce labour.", 
+          "Administer antibiotics only."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Amal is 39 weeks’ gestation. She had prolonged labour, and the medical team decided to perform an artificial rupture of membrane (AROM) to induce her labour. Which of the following nursing intervention need to be done immediately after AROM?", 
+        "a": [
+          "Assess color and amount of amniotic fluid, fetal heart rate.", 
+          "Administer analgesic.", 
+          "Emptying the bladder.", 
+          "Check mother vital signs, fetal heart rate."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A nurse in the labor room is performing a vaginal assessment on a pregnant client in labor. The nurse notes the presence of the umbilical cord protruding from the vagina. Which of the following would be the initial nursing action?", 
+        "a": [
+          "Positioning in knees-chest position.", 
+          "Administer IV fluids.", 
+          "Emptying the bladder.", 
+          "Administer tocolytic medication."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A 32-year-old, 41 weeks of gestation, is being monitored and induced with IV oxytocin (Pitocin). The nurse notes fetal distress. Which of the following is the first action the nurse should take?", 
+        "a": [
+          "Discontinue the oxytocin (Pitocin) infusion.", 
+          "Prepare for fetal oximetry.", 
+          "Anticipate rupture of the membranes.", 
+          "Continue to observe the fetal heart rate."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A woman is undergoing a caesarean birth. Which of the following is the first postoperative nursing care?", 
+        "a": [
+          "Monitoring vital signs.", 
+          "Assessing bowel sounds.", 
+          "Limiting fluids to prevent edema.", 
+          "Discouraging deep breathing exercises."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following is the definition of Secondary infertility?", 
+        "a": [
+          "The inability to conceive after a previous pregnancy.", 
+          "Infertility due to male factors only.", 
+          "Infertility due to female factors only.", 
+          "The inability to conceive for the first time."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following is a risk factor for infertility in women?", 
+        "a": [
+          "Overweight or underweight.", 
+          "Healthy diet.", 
+          "Sufficient sleep.", 
+          "Regular exercise."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following is a method used for male factor infertility assessment?", 
+        "a": [
+          "Semen analysis.", 
+          "Laparoscopy.", 
+          "Hysterosalpingogram.", 
+          "Home ovulation predictor kits."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "A major treatment option for infertility is:", 
+        "a": [
+          "Drugs or surgery.", 
+          "Acupuncture.", 
+          "Homeopathy.", 
+          "Herbal remedies."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "What is the recommended lifestyle modification for managing prolapse?", 
+        "a": [
+          "Maintaining high-fiber diet.", 
+          "Avoiding all exercise.", 
+          "Reducing fluid intake.", 
+          "Increasing caffeine consumption."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "What term describes the bulging of the small intestine into the vagina?", 
+        "a": [
+          "Enterocele.", 
+          "Cystocele.", 
+          "Rectocele.", 
+          "Uterine prolapse."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following is a major risk factor for uterine prolapse?", 
+        "a": [
+          "Multiple pregnancies.", 
+          "A healthy diet.", 
+          "Regular exercise.", 
+          "Never having children."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following is a common symptom of all types of pelvic organ prolapse?", 
+        "a": [
+          "Feeling of dragging or pressure.", 
+          "Fever.", 
+          "Severe pain.", 
+          "Irregular menstruation."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "Which of the following therapeutic interventions is non-surgical for pelvic organ prolapse?", 
+        "a": [
+          "Pessaries.", 
+          "Colporrhaphy.", 
+          "Laparoscopic repair.", 
+          "Vaginal hysterectomy."
+        ], 
+        "marks": "0.50" 
+      },
+      { 
+        "q": "What exercise is recommended for strengthening pelvic floor muscles?", 
+        "a": [
+          "Kegel exercises.", 
+          "Running.", 
+          "Jumping jacks.", 
+          "High-impact aerobics."
+        ], 
+        "marks": "0.50" 
+      }
     ];
 
-    while(bank.length < 50) {
-        bank.push({
-            q: `Pharmacology & Core Clinical Nursing Practice Question depth block ${bank.length + 1}: Which nursing assessment has immediate priority?`,
-            a: ["Assess airway patency and respiratory rate", "Review secondary diagnostic data", "Check institutional protocol logs", "Consult with pharmacy representatives"],
-            marks: "0.50"
-        });
-    }
-
     let currentExamIndex = 0; 
-    let examTimeTotalMinutes = 120;
+    let examTimeTotalMinutes = 210;
     let examTimeUsedSeconds = 0; 
     let textScaleValue = 1.0;
 
@@ -1600,7 +1934,7 @@
         const answeredCount = examQuestions.filter(q => q.answer !== null).length;
         const totalCount = examQuestions.length;
         
-        document.getElementById("itemsCountLabel").textContent = `${answeredCount} / ${totalCount}`;
+        document.getElementById("itemsCountLabel").textContent = `Items ${answeredCount} / ${totalCount}`;
         const itemsPercent = Math.round((answeredCount / totalCount) * 100);
         document.getElementById("itemsPercentLabel").textContent = `${itemsPercent}%`;
         document.getElementById("itemsProgressBarFill").style.width = `${itemsPercent}%`;
@@ -1662,27 +1996,12 @@
         document.getElementById("realQuestionTextBody").textContent = q.text;
 
         const toggleCheckbox = document.getElementById("toggle-checkbox");
-        if (!toggleCheckbox.checked) {
-            document.getElementById("realQuestionTextBody").style.color = "#000000";
-            document.getElementById("currentQuestionIdLabel").style.color = "#007aff";
-            document.getElementById("currentQuestionTypeLabel").style.color = "#007aff";
-            document.getElementById("currentQuestionMarksLabel").style.color = "#007aff";
-        } else {
-            document.getElementById("realQuestionTextBody").style.color = "#ffffff";
-            document.getElementById("currentQuestionIdLabel").style.color = "var(--text-blue)";
-            document.getElementById("currentQuestionTypeLabel").style.color = "var(--text-blue)";
-            document.getElementById("currentQuestionMarksLabel").style.color = "var(--text-blue)";
-        }
-
         const optionsForm = document.getElementById("examOptionsFormContainer");
         optionsForm.innerHTML = "";
 
         q.options.forEach((label, i) => {
             const labelCard = document.createElement("label");
-            
             labelCard.className = "exam-option-item" + (q.answer === i ? " selected" : "");
-            labelCard.style.backgroundColor = "#7f8180";
-            labelCard.style.borderColor = "#3a4759";
 
             const radioInput = document.createElement("input");
             radioInput.type = "radio";
@@ -1692,7 +2011,6 @@
             radioInput.onchange = () => {
                 q.answer = i;
                 document.querySelectorAll('.exam-option-item').forEach(el => {
-                    el.style.backgroundColor = "#7f8180";
                     el.classList.remove('selected');
                 });
                 labelCard.classList.add('selected');
@@ -1703,11 +2021,15 @@
             const textSpan = document.createElement("span");
             textSpan.className = "option-item-text";
             textSpan.textContent = label;
-            
+
             if (!toggleCheckbox.checked) {
-                textSpan.style.color = "#000000";
+                labelCard.style.backgroundColor = "#ffffff"; 
+                labelCard.style.borderColor = "#d1d5db";
+                textSpan.style.color = "#000000"; 
             } else {
-                textSpan.style.color = "var(--text-white)";
+                labelCard.style.backgroundColor = "#2c2f38"; 
+                labelCard.style.borderColor = "#3a3d48";
+                textSpan.style.color = "var(--text-white)"; 
             }
 
             labelCard.appendChild(radioInput);
@@ -1715,64 +2037,89 @@
             optionsForm.appendChild(labelCard);
         });
 
-        document.getElementById("examPrevBtn").disabled = (currentExamIndex === 0);
+        const prevBtn = document.getElementById("examPrevBtn");
+        if (currentExamIndex === 0) {
+            prevBtn.style.visibility = "hidden";
+        } else {
+            prevBtn.style.visibility = "visible";
+            prevBtn.classList.add("active-btn");
+        }
         
         const nextBtn = document.getElementById("examNextBtn");
         if (currentExamIndex === examQuestions.length - 1) {
             nextBtn.textContent = "End Exam";
-            nextBtn.className = "dock-nav-btn danger-action";
+            nextBtn.style.backgroundColor = "#ef4444";
         } else {
             nextBtn.textContent = "Next";
-            nextBtn.className = "dock-nav-btn primary-action";
+            nextBtn.style.backgroundColor = "#3b82f6";
+        }
+
+        const flagBtn = document.getElementById("examFlagBtn");
+        if (q.flagged) {
+            flagBtn.style.borderColor = "#f59e0b";
+            flagBtn.style.color = "#f59e0b";
+        } else {
+            flagBtn.style.borderColor = "var(--text-primary)";
+            flagBtn.style.color = "var(--text-primary)";
         }
 
         drawSidebarNavigation();
     }
 
-    function toggleExamTabState(tabName) {
-        const summaryBtn = document.getElementById("examSummaryTabBtn");
-        const toolsBtn = document.getElementById("examToolsTabBtn");
-        const secretDisplay = document.getElementById("hiddenSecretPasswordDisplay");
+    function showSummary() {
+        const gridContainer = document.getElementById("summaryItemsGrid");
+        gridContainer.innerHTML = ""; 
 
+        examQuestions.forEach((q, idx) => {
+            const itemBlock = document.createElement("div");
+            itemBlock.className = "summary-item-block";
+            itemBlock.innerText = q.id;
+
+            if (q.flagged) {
+                itemBlock.classList.add("status-flagged"); 
+            } else if (q.answer !== null) {
+                itemBlock.classList.add("status-answered"); 
+            } else {
+                itemBlock.classList.add("status-not-attempted"); 
+            }
+
+            itemBlock.onclick = () => {
+                currentExamIndex = idx;
+                closeSummary();
+                displayCurrentQuestion();
+            };
+
+            gridContainer.appendChild(itemBlock);
+        });
+
+        document.getElementById("summaryScreen").style.display = "flex";
+    }
+
+    function closeSummary() {
+        document.getElementById("summaryScreen").style.display = "none";
+    }
+
+    function toggleExamTabState(tabName) {
+        const secretDisplay = document.getElementById("hiddenSecretPasswordDisplay");
         if (tabName === 'Tools') {
-            summaryBtn.classList.remove('active');
-            toolsBtn.classList.add('active');
-            secretDisplay.textContent = capturedExamVerificationPassword;
-        } else {
-            toolsBtn.classList.remove('active');
-            summaryBtn.classList.add('active');
-            secretDisplay.textContent = "";
+            toolsToggleActive = !toolsToggleActive;
+            if (toolsToggleActive) {
+                secretDisplay.textContent = capturedExamVerificationPassword;
+            } else {
+                secretDisplay.textContent = "";
+            }
         }
     }
 
     function toggleDarkLightMode() {
         const toggleCheckbox = document.getElementById("toggle-checkbox");
-        const viewport = document.getElementById("questionViewportBody");
-        const questionText = document.getElementById("realQuestionTextBody");
-        const qId = document.getElementById("currentQuestionIdLabel");
-        const qType = document.getElementById("currentQuestionTypeLabel");
-        const qMarks = document.getElementById("currentQuestionMarksLabel");
-        const tsLabel = document.getElementById("textSizeLabelField");
-        const divider = document.querySelector(".question-meta-divider");
+        const app = document.getElementById("quizApp");
         
         if (toggleCheckbox.checked) {
-            viewport.style.backgroundColor = "#111822"; 
-            if(questionText) questionText.style.color = "#ffffff";
-            if(qId) qId.style.color = "var(--text-blue)";
-            if(qType) qType.style.color = "var(--text-blue)";
-            if(qMarks) qMarks.style.color = "var(--text-blue)";
-            if(tsLabel) tsLabel.style.color = "#cbd5e0";
-            if(divider) divider.style.backgroundColor = "#7f8180";
+            app.removeAttribute("data-theme");
         } else {
-            viewport.style.backgroundColor = "#ffffff"; 
-            if(questionText) questionText.style.color = "#000000"; 
-            if(qId) qId.style.color = "#007aff"; 
-            if(qType) qType.style.color = "#007aff";
-            if(qMarks) qMarks.style.color = "#007aff";
-            if(tsLabel) tsLabel.style.color = "#4a5568";
-            if(divider) divider.style.backgroundColor = "#d1d5db";
+            app.setAttribute("data-theme", "light");
         }
-
         displayCurrentQuestion();
     }
 
@@ -1783,42 +2130,15 @@
             currentExamIndex++;
             displayCurrentQuestion();
         } else {
-            openReviewConfirmationModal();
+            showSummary(); 
         }
     };
 
-    function openReviewConfirmationModal() {
-        const gridContainer = document.getElementById("reviewModalGridNumbersContainer");
-        gridContainer.innerHTML = "";
-        examQuestions.forEach((q) => {
-            const cell = document.createElement("div");
-            cell.textContent = q.id;
-            if (q.flagged) cell.className = "review-grid-cell flagged";
-            else if (q.answer !== null) cell.className = "review-grid-cell answered";
-            else cell.className = "review-grid-cell unanswered";
-            gridContainer.appendChild(cell);
-        });
-        document.getElementById("examConfirmationReviewModalOverlay").style.display = "flex";
-    }
-
-    function closeReviewModal() { 
-        document.getElementById("examConfirmationReviewModalOverlay").style.display = "none"; 
-    }
-
     function confirmAndProceedToUploadScreen() {
-        closeReviewModal();
+        closeSummary();
         document.getElementById('exam-interface-container').style.display = 'none';
         document.getElementById('uploading-screen-container').style.display = 'block';
-        
-        document.getElementById("uploadArrowPlaceholder").style.display = "block";
-        document.getElementById("uploadSuccessTopBadge").style.display = "none";
-        document.getElementById("uploadServerMainTitle").innerHTML = "Uploading your exam data<br>on server";
-        document.getElementById("uploadStatusNotificationText").textContent = "We are checking exam status, Please wait!";
-        document.getElementById("uploadPercentageAsideField").style.display = "none";
-        document.getElementById("examListRedirectBtn").className = "upload-list-btn";
-        document.getElementById("examListRedirectBtn").disabled = true;
-
-        startAutoclaveServerUploadSimulation(); 
+        startUploadSimulation(); 
     }
 
     document.getElementById("examFlagBtn").onclick = () => {
@@ -1827,15 +2147,15 @@
         displayCurrentQuestion();
     };
 
-    document.getElementById("increaseTextSizeBtn").onclick = () => { if (textScaleValue < 1.5) { textScaleValue += 0.1; applyTextScaleProperty(); } };
-    document.getElementById("decreaseTextSizeBtn").onclick = () => { if (textScaleValue > 0.8) { textScaleValue -= 0.1; applyTextScaleProperty(); } };
+    document.getElementById("increaseTextSizeBtn").onclick = () => { if (textScaleValue < 1.4) { textScaleValue += 0.1; applyTextScaleProperty(); } };
+    document.getElementById("decreaseTextSizeBtn").onclick = () => { if (textScaleValue > 0.85) { textScaleValue -= 0.1; applyTextScaleProperty(); } };
     function applyTextScaleProperty() { document.documentElement.style.setProperty('--qscale', textScaleValue); }
 
     function initExamSystem() {
         if(examSystemInitialized) return;
         examSystemInitialized = true;
 
-        let remainSeconds = 120 * 60; 
+        let remainSeconds = 210 * 60; 
         setInterval(() => {
             if (remainSeconds > 0) { remainSeconds--; examTimeUsedSeconds++; }
             const hrs = Math.floor(remainSeconds / 3600).toString().padStart(2, '0');
@@ -1848,8 +2168,7 @@
         syncExamOverviewMetrics(); displayCurrentQuestion(); applyTextScaleProperty();
     }
 
-    // --- 4. منطق محاكاة شاشة الرفع السحابي (10 ثوانٍ) ---
-    function startAutoclaveServerUploadSimulation() {
+    function startUploadSimulation() {
         const fillBar = document.getElementById("uploadServerProgressFill");
         const arrowIco = document.getElementById("uploadArrowPlaceholder");
         const checkIco = document.getElementById("uploadSuccessTopBadge");
@@ -1858,14 +2177,13 @@
         const pctAside = document.getElementById("uploadPercentageAsideField");
         const modalOverlay = document.getElementById("uploadSuccessModalOverlay");
         
-        let duration = 10000; 
+        let duration = 6000; 
         let startTimestamp = null;
 
         function step(timestamp) {
             if (!startTimestamp) startTimestamp = timestamp;
             let progress = timestamp - startTimestamp;
             let percentage = Math.min((progress / duration) * 100, 100);
-            
             fillBar.style.width = percentage + "%";
 
             if (progress < duration) {
@@ -1876,7 +2194,6 @@
                 mainTitle.innerHTML = "Exam data uploaded<br>successfully!";
                 notifyText.textContent = "Uploaded";
                 pctAside.style.display = "block";
-                
                 modalOverlay.style.display = "flex";
             }
         }
@@ -1890,14 +2207,11 @@
         redirectBtn.disabled = false;
     }
 
-    // تفعيل العودة إلى لوحة التحكم ما بعد الاختبار بنجاح
-    function switchToPostDashboard() {
+    switchToPostDashboard = () => {
         document.getElementById('uploading-screen-container').style.display = 'none';
         document.getElementById('post-exam-dashboard').style.display = 'block';
-        document.body.style.backgroundColor = '#1c1c1e';
     }
 
-    // --- 5. منطق لوحة تحكم ما بعد الاختبار ---
     function togglePostSwitch() {
         const container = document.getElementById('post-toggle-container');
         const txt = document.getElementById('post-toggle-text');
