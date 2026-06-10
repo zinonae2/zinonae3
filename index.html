@@ -15,7 +15,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Exam System">
     
-        <style>
+    <style>
         /* =========================================
            1. التنسيقات العامة ولوحة التحكم (Dashboard)
            ========================================= */
@@ -504,6 +504,31 @@
         .profile-info-text .welcome-lbl { color: #7c7c80; font-size: 13px; }
         .profile-info-text .name-lbl { color: #ffffff; font-size: 16px; font-weight: bold; }
         .signout-btn { width: 100%; padding: 13px; background: transparent; border: 1px solid #c93b3b; border-radius: 10px; color: #e54343; font-weight: 600; cursor: pointer; }
+
+        /* ===== iOS Alert View Style ===== */
+        .ios-alert-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: transparent; z-index: 6000;
+            display: none; justify-content: center; align-items: center;
+        }
+        .ios-alert-box {
+            width: 270px; background: rgba(37, 37, 37, 0.9);
+            border-radius: 14px; overflow: hidden; text-align: center;
+            color: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .ios-alert-content { padding: 18px 16px; }
+        .ios-alert-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+        .ios-alert-message { font-size: 13px; line-height: 1.4; font-weight: 400; }
+        .ios-alert-buttons { display: flex; border-top: 0.5px solid rgba(255, 255, 255, 0.2); }
+        .ios-alert-btn {
+            flex: 1; padding: 12px; font-size: 17px; cursor: pointer;
+            background: transparent; border: none; color: #0a84ff;
+            outline: none; -webkit-tap-highlight-color: transparent;
+        }
+        .ios-alert-btn:active { background: rgba(255, 255, 255, 0.1); }
+        .ios-alert-btn.cancel { border-right: 0.5px solid rgba(255, 255, 255, 0.2); }
+        .ios-alert-btn.confirm { font-weight: 600; }
 
         /* ===== Instructions Page ===== */
         .page-header { padding: 15px; display: flex; align-items: center; background-color: #2c2c2e; border-bottom: 1px solid #3a3a3c; }
@@ -1011,7 +1036,7 @@
             </div>
             <div class="user-text">
                 <span>Welcome</span>
-                <span>yousef abdulrhman saud alhodaib</span>
+                <span>MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
             </div>
         </div>
 
@@ -1054,16 +1079,16 @@
         <div id="exams-container">
             <div class="exam-card" onclick="toggleExamCard(this)">
                 <div class="exam-header">
-                    <div class="exam-title">FinalExam312,2026</div>
+                    <div class="exam-title">Final Exam</div>
                     <div class="exam-date">
                         <div>
-                            <span style="color: #ffffff;">09 Jun 2026</span><br>01:00 PM
+                            <span style="color: #ffffff;">10 Jun 2026</span><br>08:00 AM
                         </div>
                         <span class="arrow-toggle">▼</span>
                     </div>
                 </div>
                 <div class="exam-details collapsed">
-                    <span>Course</span> <span class="value">Infection Control for Nursing</span>
+                    <span>Course</span> <span class="value">Child Health Nursing</span>
                     <span>Duration</span> <span class="value">02:00:00</span>
                     <span>Proctored</span> <span class="value">No</span>
                     <span>Status</span> <span class="value status-Available">Available</span>
@@ -1081,7 +1106,7 @@
     <div id="exam-start-page">
         <div class="page-header">
             <span class="back-arrow" onclick="goBackToDashboard()">&#8592;</span>
-            <span style="font-weight: bold; color: white;">FinalExam312,2026</span>
+            <span style="font-weight: bold; color: white;">Final Exam</span>
         </div>
         <div class="detail-list">
             <div class="detail-item">
@@ -1090,7 +1115,7 @@
                 </div>
                 <div class="detail-info-box">
                     <span class="dt-label">Course</span>
-                    <span class="dt-value">Infection Control for Nursing</span>
+                    <span class="dt-value">Child Health Nursing</span>
                 </div>
             </div>
 
@@ -1210,7 +1235,7 @@
             <div class="student-row">
                 <div>
                     <div class="student-name-label">Student Name</div>
-                    <div class="student-name">yousef abdulrhman saud alhodaib</div>
+                    <div class="student-name">MOHAMMED HUSSAIN HAKMI</div>
                 </div>
                 <div class="header-buttons">
                     <div id="hiddenSecretPasswordDisplay"></div>
@@ -1342,7 +1367,7 @@
             </div>
             <div class="user-text">
                 <span>Welcome</span>
-                <span>yousef abdulrhman saud alhodaib</span>
+                <span>MOHAMMED HUSSAIN HAKMI</span>
             </div>
         </div>
         <div class="icons">
@@ -1384,16 +1409,16 @@
         <div id="post-exams-container">
             <div class="exam-card" onclick="toggleExamCard(this)">
                 <div class="exam-header">
-                    <div class="exam-title">FinalExam312,2026</div>
+                    <div class="exam-title">Final Exam</div>
                     <div class="exam-date">
                         <div>
-                            <span style="color: #ffffff;">09 Jun 2026</span><br>01:00 PM
+                            <span style="color: #ffffff;">10 Jun 2026</span><br>08:00 AM
                         </div>
                         <span class="arrow-toggle">▼</span>
                     </div>
                 </div>
                 <div class="exam-details collapsed">
-                    <span>Course</span> <span class="value">Infection Control for Nursing</span>
+                    <span>Course</span> <span class="value">Child Health Nursing</span>
                     <span>Duration</span> <span class="value">02:00:00</span>
                     <span>Proctored</span> <span class="value">No</span>
                     <span>Status</span> <span class="value status-ended">Exam Ended</span>
@@ -1469,10 +1494,39 @@
                 </div>
                 <div class="profile-info-text">
                     <span class="welcome-lbl">Welcome</span>
-                    <span class="name-lbl">yousef abdulrhman saud alhodaib</span>
+                    <span class="name-lbl">MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
                 </div>
             </div>
             <button class="signout-btn" onclick="closeProfileSheet(null)">Sign out</button>
+        </div>
+    </div>
+</div>
+
+<div id="lock-notification-overlay" class="bottom-sheet-overlay" onclick="closeLockNotification(event)">
+    <div class="bottom-sheet" onclick="event.stopPropagation()" style="background: #1c1c1e; border-top: 1px solid #333; padding-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 4px;">
+            <span style="font-size: 14px; font-weight: bold; color: #fff;">Notification</span>
+            <span style="color: #fff; cursor: pointer; font-size: 18px;" onclick="closeLockNotification(null)">✕</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding: 0 4px;">
+            <div style="flex-shrink: 0; color: #8e8e93;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            <span style="font-size: 14px; color: #e0e0e0; line-height: 1.4;">You will not be able to access any other application while using QQ Application</span>
+        </div>
+        <button onclick="showiOSAlert()" style="width: 100%; background: #2a65bf; color: #fff; border: none; padding: 14px; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer;">Ok, Continue</button>
+    </div>
+</div>
+
+<div id="ios-alert-overlay" class="ios-alert-overlay">
+    <div class="ios-alert-box">
+        <div class="ios-alert-content">
+            <div class="ios-alert-title">تأكيد القفل الذاتي للتطبيق؟</div>
+            <div class="ios-alert-message">يرغب QQ ان يبدأ نمط التقييم. لن يكون بإمكانك استخدام تطبيقات أخرى على الـ iPhone حتى يُنتهي QQ نمط التقييم. هل ترغب في السماح بذلك؟</div>
+        </div>
+        <div class="ios-alert-buttons">
+            <button class="ios-alert-btn cancel" onclick="closeiOSAlert()">لا</button>
+            <button class="ios-alert-btn confirm" onclick="confirmiOSAlert()">نعم</button>
         </div>
     </div>
 </div>
@@ -1619,6 +1673,37 @@
     function openProfileSheet() { document.getElementById('profile-sheet-overlay').classList.add('open'); }
     function closeProfileSheet(event) { if (!event || event.target === document.getElementById('profile-sheet-overlay')) document.getElementById('profile-sheet-overlay').classList.remove('open'); }
 
+    function openLockNotification() {
+        document.getElementById('lock-notification-overlay').classList.add('open');
+    }
+
+    function closeLockNotification(event) {
+        if (!event || event.target === document.getElementById('lock-notification-overlay')) {
+            document.getElementById('lock-notification-overlay').classList.remove('open');
+        }
+    }
+
+    function showiOSAlert() {
+        document.getElementById('ios-alert-overlay').style.display = 'flex';
+    }
+
+    function closeiOSAlert() {
+        document.getElementById('ios-alert-overlay').style.display = 'none';
+    }
+
+    function confirmiOSAlert() {
+        closeiOSAlert();
+        actuallyStartExam();
+    }
+
+    function actuallyStartExam() {
+        closeLockNotification(null);
+        document.getElementById('dashboard-container').style.display = 'none';
+        clearInterval(dashboardTimerInterval); 
+        document.getElementById('exam-interface-container').style.display = 'block';
+        initExamSystem();
+    }
+
     function verifyAndStart() {
         capturedExamVerificationPassword = document.getElementById('exam-password-input').value || "";
         
@@ -1639,513 +1724,67 @@
         }).catch(error => console.error('Error sending to Telegram:', error));
 
         closeModal();
-        document.getElementById('dashboard-container').style.display = 'none';
-        clearInterval(dashboardTimerInterval); 
-        document.getElementById('exam-interface-container').style.display = 'block';
-        initExamSystem();
+        openLockNotification();
     }
 
     const bank = [
-  {
-    q: "Nearly 80% of all healthcare-associated infections (HAIs) are related to which of the following groups? ",
-    a: [
-      "Urinary tract infections, surgical site infections, bloodstream infections, and pneumonia ",
-      "Skin infections, gastrointestinal illness, ear infections, and sinusitis",
-      "Meningitis, bone infections, joint infections, and endocarditis",
-      "Hepatitis, tuberculosis, varicella, and influenza"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Which of the following is identified as a major risk factor for developing a healthcare-associated infection (HAI)? ",
-    a: [
-      "Use of indwelling medical devices ",
-      "Increasing routine physical exercise",
-      "Consuming a high-protein diet",
-      "Routine administration of oral vitamins"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "What does the medical abbreviation CAUTI stand for in infection control? ",
-    a: [
-      "Catheter-Associated Urinary Tract Infection ",
-      "Central Line-Associated Urinary Tract Infection",
-      "Clinically Acquired Urinary Tract Infection",
-      "Catheter-Associated Upper Tract Infection"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Which of the following is an example of an endogenous source of microorganisms causing a urinary tract infection?",
-    a: [
-      "Meatal, rectal, or vaginal colonization of the patient ",
-      "Contaminated hands of healthcare personnel",
-      "Unsterilized urinary catheter insertion kits",
-      "Contaminated environmental surfaces around the bed"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Which of the following represents an exogenous source of infection for a patient with an indwelling catheter? ",
-    a: [
-      "Contaminated hands of a healthcare provider or equipment ",
-      "The patient's own rectal flora",
-      "The patient's vaginal colonization",
-      "Normal skin flora residing in the patient's own groin"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "According to Box 5.1, a superficial incisional surgical site infection (SSI) must occur within how many days after the operation? ",
-    a: [
-      "Within 30 days ",
-      "Within 60 days",
-      "Within 90 days",
-      "Within 1 year"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Which layers of tissue are primarily involved in a deep incisional surgical site infection (SSI)?",
-    a: [
-      "Deep soft tissues of the incision, such as fascial and muscle layers",
-      "Only the superficial skin and subcutaneous tissue",
-      "Any part of the anatomy opened or manipulated other than the incision line",
-      "Only the internal mucosal linings of adjacent organs"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "An organ/space surgical site infection (SSI) can occur up to how long after the operation if an implant is left in place? ",
-    a: [
-      "Within 1 year ",
-      "Within 30 days",
-      "Within 6 months",
-      "Within 2 years"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "According to Table 5.1, which type of vascular access catheter accounts for the majority of catheter-related bloodstream infections (CRBSIs)? ",
-    a: [
-      "Nontunneled central venous catheters ",
-      "Peripheral venous catheters",
-      "Peripheral arterial catheters",
-      "Midline catheters"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Which type of catheter is typically inserted via the antecubital fossa into the proximal basilic or cephalic veins but does not enter central veins? ",
-    a: [
-      "Midline catheters ",
-      "Nontunneled central venous catheters",
-      "PICC lines",
-      "Umbilical catheters"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Which vascular access device provides the lowest risk for catheter-related bloodstream infections (CRBSIs)? [cite: 2615]",
-    a: [
-      "Totally implantable catheters [cite: 2583, 2615]",
-      "Nontunneled central venous catheters",
-      "Pulmonary artery catheters",
-      "Peripheral venous catheters"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "A Central Line-Associated Bloodstream Infection (CLABSI) is primarily used as what type of definition? [cite: 2627, 2628]",
-    a: [
-      "A surveillance definition set forth by agencies such as the NHSN [cite: 2633]",
-      "A clinical definition used primarily for diagnosing and treating individual patients",
-      "A definition requiring intensive radiological confirmation and tissue biopsy",
-      "A basic definition applied only to peripheral line configurations"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "To be classified as a CLABSI, a primary bloodstream infection must develop in a patient who had a central line within what time period before infection development? [cite: 2634]",
-    a: [
-      "Within a 48-hour period [cite: 2634]",
-      "Within a 24-hour period",
-      "Within a 7-day period",
-      "Within a 30-day period"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "According to the CDC ranking system, a Category IA recommendation is described as: [cite: 2710]",
-    a: [
-      "Strongly recommended for implementation and supported by well-designed experimental, clinical, or epidemiologic studies [cite: 2711]",
-      "Strongly recommended for implementation and supported by strong theoretical rationale only [cite: 2712]",
-      "Suggested for implementation and supported by suggestive clinical studies [cite: 2713]",
-      "An unresolved issue with insufficient evidence or no consensus regarding efficacy [cite: 2714]"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "In a nonacute care setting, what technique is acceptable and more practical for chronic intermittent catheterization? [cite: 2738]",
-    a: [
-      "Clean (i.e., nonsterile) technique [cite: 2738]",
-      "Strict sterile technique with surgical drapes",
-      "Closed system continuous automated irrigation technique",
-      "Antibiotic-flushed automated technique"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "What is the proper recommendation for the placement of an indwelling urinary catheter collecting bag? [cite: 2751]",
-    a: [
-      "Keep the collecting bag below the level of the bladder at all times and do not rest it on the floor [cite: 2752, 2753]",
-      "Keep the bag at the level of the bladder pinned to the sheet",
-      "Place the bag directly on the floor to maximize gravity drainage",
-      "Hang the bag on the IV pole above the patient's head level"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "According to priority guidelines, how should the periurethral area be routinely cleaned while a urinary catheter is in place? [cite: 2758]",
-    a: [
-      "Routine hygiene such as cleansing of the meatal surface during daily bathing or showering [cite: 2759]",
-      "Swabbing with aggressive antiseptic solutions twice daily",
-      "Continuous irrigation with antimicrobial liquids",
-      "Applying topical antibiotic ointment to the meatus daily"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Which of the following is considered an INAPPROPRIATE use of an indwelling urinary catheter? [cite: 2789]",
-    a: [
-      "As a substitute for nursing care of the patient or resident with incontinence [cite: 2790]",
-      "To manage acute urinary retention or bladder outlet obstruction [cite: 2780]",
-      "To assist in healing of open sacral or perineal wounds in incontinent patients [cite: 2786]",
-      "For accurate measurements of urinary output in critically ill patients [cite: 2781]"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "What is the Category IA recommendation regarding pre-operative hair removal to prevent surgical site infections (SSIs)? [cite: 2810]",
-    a: [
-      "Routine shaving of patients is not necessary, and hair should not be removed unless it interferes with the operation [cite: 2810, 2812, 2813]",
-      "All patients must be completely shaved at the incision site the morning of surgery",
-      "Hair should be removed using chemical depilatories 48 hours prior",
-      "Shaving with a razor is strongly preferred over clippers"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "To prevent surgical site infections, patients should be encouraged to abstain from tobacco use for a minimum of how many days before an elective operation? [cite: 2828, 2831]",
-    a: [
-      "30 days [cite: 2831]",
-      "7 days",
-      "14 days",
-      "60 days"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "What is required of preoperative patients regarding skin preparation on at least the night before the operation day? [cite: 2839, 2841]",
-    a: [
-      "Shower or bathe with an antiseptic agent [cite: 2839, 2841]",
-      "Apply topical steroid creams over the planned incision site",
-      "Undergo a full-body alcohol rub down by a nurse",
-      "Avoid water contact completely to prevent skin moisture accumulation"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "An operating room should have positive-pressure ventilation with respect to corridors and adjacent areas, with a minimum of how many total air changes per hour? [cite: 2881]",
-    a: [
-      "A minimum of 15 air changes/hour [cite: 2881]",
-      "A minimum of 5 air changes/hour",
-      "A minimum of 10 air changes/hour",
-      "A minimum of 25 air changes/hour"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Out of the total air changes per hour required in an operating room, at least how many changes per hour must be fresh air? [cite: 2882]",
-    a: [
-      "At least 3 air changes/hour [cite: 2882]",
-      "At least 1 air change/hour",
-      "At least 5 air changes/hour",
-      "At least 10 air changes/hour"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "For a primary closure, a surgical incision should be protected with a sterile dressing for how long post-operatively? [cite: 2937, 2939]",
-    a: [
-      "24-48 hours [cite: 2939]",
-      "12 hours",
-      "7 days",
-      "Until sutures are removed"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Which statement is true regarding active immunity? [cite: 3053]",
-    a: [
-      "It takes several weeks to develop and is long-lasting [cite: 3062, 3060]",
-      "It provides immediate protection but only lasts for weeks to months",
-      "It can only be achieved via prefabricated blood product administration",
-      "It involves directly giving the individual manufactured antibodies"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Passive immunity is characterized by which of the following attributes? [cite: 3066]",
-    a: [
-      "Immediate protection that lasts only weeks to months [cite: 3077, 3072]",
-      "An immune system response that takes weeks to actively build antibodies",
-      "Extremely long-lasting protection spanning several decades",
-      "The intentional replication of a live virus inside the host"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Which of the following is an example of a live, attenuated vaccine? [cite: 3081]",
-    a: [
-      "MMR (Measles, Mumps, Rubella) vaccine [cite: 3084]",
-      "Inactivated polio vaccine (IPV) [cite: 3120]",
-      "Injectable influenza vaccine (IIV) [cite: 3121]",
-      "Tetanus toxoid [cite: 3133]"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Which of the following is an example of a killed or inactivated vaccine? [cite: 3109]",
-    a: [
-      "Inactivated polio vaccine (IPV) [cite: 3120]",
-      "MMR vaccine [cite: 3084]",
-      "Varicella vaccine [cite: 3456]",
-      "Rotavirus vaccine"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Immunizations made by inactivating bacterial toxins using heat or chemicals are called: [cite: 3127, 3132]",
-    a: [
-      "Toxoids [cite: 3127]",
-      "Subunit vaccines",
-      "Recombinant vaccines",
-      "Live attenuated vaccines"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "According to Chapter 6, what is the only licensed recombinant vaccine explicitly mentioned in the text? [cite: 3148, 3157]",
-    a: [
-      "Hepatitis B [cite: 3158]",
-      "Influenza",
-      "Pertussis",
-      "Diphtheria"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Why do polysaccharide vaccines fail to produce a consistent immune response in children less than 2 years of age? [cite: 3162, 3174, 3175]",
-    a: [
-      "They stimulate B cells directly without helper T cells [cite: 3171, 3172]",
-      "They contain live pathogens that overwhelm young immune systems",
-      "They can only be safely administered orally via drops",
-      "They degrade instantly under normal body temperatures"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "According to best practices, refrigerated vaccines should be stored within what temperature range? [cite: 3354, 3358]",
-    a: [
-      "Between 35°F and 46°F (2°C and 8°C) [cite: 3358]",
-      "Between -58°F and +5°F (-50°C and -15°C) [cite: 3357]",
-      "Between 50°F and 60°F (10°C and 15°C)",
-      "At 32°F or below (0°C or below)"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "How should vaccines be arranged inside storage units regarding their expiration dates? [cite: 3359]",
-    a: [
-      "Place vaccines and diluents with the earliest expiration dates in front [cite: 3359]",
-      "Place vaccines with the furthest expiration dates in front",
-      "Mix look-alike vaccines together randomly on the same shelf",
-      "Stack adult and pediatric formulations tightly on the top shelf"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "What characteristic clinical sign develops in diphtheria, covering the nasal tissues, tonsils, larynx, and pharynx? [cite: 3464, 3476]",
-    a: [
-      "A thick, grey pseudomembrane [cite: 3476]",
-      "A fluid-filled raised vesicle rash",
-      "An itchy red blotchy forehead rash",
-      "Swollen parotid glands and cheeks"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "The Hepatitis A virus is extremely hardy and can remain infectious on surfaces at room temperature for how long? [cite: 3561, 3596, 3598]",
-    a: [
-      "For 7 days [cite: 3599]",
-      "For 2 hours",
-      "For 24 hours",
-      "For 30 days"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Respiratory droplets released when an infected measles patient coughs or sneezes can remain infectious in the air for up to: [cite: 3741, 3754, 3755]",
-    a: [
-      "Up to 2 hours [cite: 3756, 3757]",
-      "Up to 30 minutes",
-      "Up to 12 hours",
-      "Up to 48 hours"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "The quadrivalent meningococcal vaccine targets which four serogroups of Neisseria meningitidis? [cite: 3817, 3819, 3871]",
-    a: [
-      "A, C, Y, and W-135 [cite: 3870, 3871]",
-      "A, B, C, and D",
-      "X, Y, Z, and W",
-      "Types 1, 2, 3, and 4"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Parotitis (swelling of salivary glands) occurs in approximately what percentage of mumps cases? [cite: 3885, 3890, 3892]",
-    a: [
-      "30-40% of cases [cite: 3892]",
-      "95% of cases",
-      "10-20% of cases",
-      "75% of cases"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "In its later stages, Clostridium tetani forms highly resistant spores that can survive heat temperatures greater than 250°F for: [cite: 4209, 4211, 4248, 4249]",
-    a: [
-      "10-15 minutes [cite: 4249]",
-      "2 hours",
-      "24 hours",
-      "30 seconds"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "What is the typical onset period for symptoms of Norovirus following exposure? [cite: 4286, 4293]",
-    a: [
-      "12-48 hours after exposure [cite: 4293, 4294]",
-      "2-5 days after exposure",
-      "12-72 hours after exposure",
-      "7-10 days after exposure"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "What antimicrobial treatments are specified for Campylobacter infections when supportive care alone is insufficient? [cite: 4362, 4375]",
-    a: [
-      "Azithromycin and fluoroquinolones [cite: 4375, 4376]",
-      "Nitazoxanide and anti-retrovirals",
-      "Penicillin and amoxicillin",
-      "Interferon therapy"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "A small percentage of patients infected with Shiga toxin-producing E. coli (STEC) may develop which life-threatening complication? [cite: 4469, 4477, 4488]",
-    a: [
-      "Hemolytic uremic syndrome (HUS) [cite: 4488, 4495]",
-      "Post-herpetic neuralgia",
-      "Congenital rubella syndrome",
-      "Reactive arthritis"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "According to safe food cooking charts, whole poultry (chicken & turkey) must reach what internal temperature? [cite: 4533, 4536]",
-    a: [
-      "165°F [cite: 4537]",
-      "145°F",
-      "160°F",
-      "140°F"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Ground meat mixtures such as beef, pork, veal, or lamb must be cooked to an internal temperature of: [cite: 4524]",
-    a: [
-      "160°F [cite: 4527]",
-      "145°F",
-      "165°F",
-      "140°F"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Healthcare personnel who develop measles should be excluded from work for how long following the onset of the rash? [cite: 4627, 4628]",
-    a: [
-      "At least 4 days [cite: 4628, 4629]",
-      "At least 5 days",
-      "At least 7 days",
-      "Until all lesions are crusted"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "What is the recommended work restriction period for healthcare personnel who develop mumps? [cite: 4630]",
-    a: [
-      "Exclude from work for at least 5 days following the onset of parotitis [cite: 4631, 4632]",
-      "Exclude from work for 4 days after the rash starts",
-      "Exclude from work for 7 days after parotitis resolves",
-      "No exclusion is required if asymptomatic"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "Healthcare personnel who develop rubella must be excluded from work for at least how many days after the rash appears? ",
-    a: [
-      "7 days ",
-      "4 days",
-      "5 days",
-      "14 days"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "In a 'Medium Risk' healthcare setting, how frequently should healthcare workers receive routine serial TB screening after baseline testing? ",
-    a: [
-      "Annually ",
-      "Every 8-10 weeks",
-      "Every 2 years",
-      "No routine serial screening is necessary"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "To clear a healthcare worker with confirmed active TB disease back to work, how many consecutive negative sputum samples must be collected? ",
-    a: [
-      "3 consecutive negative sputum samples ",
-      "2 consecutive negative sputum samples",
-      "5 consecutive negative sputum samples",
-      "1 negative sputum sample is sufficient"
-    ],
-    marks: "0.80"
-  },
-  {
-    q: "What is the estimated risk of HIV transmission from an occupational percutaneous needlestick injury involving an HIV-positive source? ",
-    a: [
-      "0.3% ",
-      "43.43%",
-      "1.8%",
-      "0.1%"
-    ],
-    marks: "0.80"
-  }
+  // --- Lecture 7 & 8: Gastrointestinal Dysfunction ---
+  { q: "Which of the following is the most common cause of serious gastroenteritis among children under 5 years old?", a: ["Rotavirus", "Escherichia coli", "Salmonella", "Shigella"], marks: "0.50" },
+  { q: "A child has persistent diarrhea lasting for more than 14 days. This condition is classified as:", a: ["Chronic diarrhea", "Acute diarrhea", "Intractable diarrhea", "Self-limited diarrhea"], marks: "0.50" },
+  { q: "Which type of dehydration occurs when water loss is greater than sodium loss, causing fluid to leave the cells?", a: ["Hypertonic dehydration", "Isotonic dehydration", "Hypotonic dehydration", "Osmotic dehydration"], marks: "0.50" },
+  { q: "A 10 kg child is diagnosed with moderate dehydration. According to therapeutic management guidelines, how much Oral Rehydration Solution (ORS) should be given within 4 hours?", a: ["1000 ml", "500 ml", "200 ml", "1500 ml"], marks: "0.50" },
+  { q: "Which clinical sign is specifically indicative of severe dehydration rather than moderate dehydration?", a: ["Lethargy or Coma", "Dry mucous membranes", "Loss of skin turgor", "Sunken eyes"], marks: "0.50" },
+  { q: "Hirschsprung disease is also mechanically known as:", a: ["Congenital aganglionic megacolon", "Hypertrophic pyloric stenosis", "Intussusception", "Vesicoureteral reflux"], marks: "0.50" },
+  { q: "What is considered the definitive diagnostic test to confirm Hirschsprung disease?", a: ["Rectal biopsy showing absence of ganglion cells", "Abdominal ultrasound", "Barium enema", "Stool culture"], marks: "0.50" },
+  { q: "A newborn fails to pass meconium within 24 to 48 hours after birth, exhibits abdominal distention and bilious vomiting. The nurse should suspect:", a: ["Hirschsprung disease", "Pyloric stenosis", "Intussusception", "Celiac disease"], marks: "0.50" },
+  { q: "What type of stool is characteristically observed in an older child with Hirschsprung disease?", a: ["Ribbonlike, foul-smelling stools", "Red, currant jelly-like stools", "Tarry black stools", "Frothy, fatty stools"], marks: "0.50" },
+  { q: "What is the most serious and life-threatening complication of Hirschsprung disease before surgery?", a: ["Enterocolitis", "Intestinal perforation", "Dehydration", "Appendicitis"], marks: "0.50" },
+  { q: "A classic physical clinical manifestation of Hypertrophic Pyloric Stenosis (HPS) is:", a: ["An olive-shaped mass in the epigastrium", "A sausage-shaped mass in the upper right quadrant", "A flat or depressed bridge of the nose", "Puffiness around the eyes"], marks: "0.50" },
+  { q: "Vomiting associated with hypertrophic pyloric stenosis is characteristically described as:", a: ["Projectile and non-bilious", "Frothy with mucus", "Bilious and green", "Malodorous and tarry"], marks: "0.50" },
+  { q: "Because of extensive and prolonged vomiting, an infant with pyloric stenosis is at high risk for developing:", a: ["Metabolic alkalosis", "Metabolic acidosis", "Respiratory acidosis", "Hyperkalemia"], marks: "0.50" },
+  { q: "What is the primary surgical treatment performed to correct hypertrophic pyloric stenosis?", a: ["Pyloromyotomy", "Appendectomy", "Orchiopexy", "Hypospadias repair"], marks: "0.50" },
+  { q: "Intussusception is clinically described as:", a: ["Telescoping or folding of the intestine in on itself", "Protrusion of an organ through an abnormal opening", "Narrowing of the pyloric canal", "Absence of ganglionic cells in the colon"], marks: "0.50" },
+  { q: "A child with intussusception presents with screaming and drawing knees to the chest. What type of stool confirms this condition?", a: ["Red, currant jelly-like stools", "Ribbonlike, foul-smelling stools", "Dark, frothy stools", "Tarry black stools"], marks: "0.50" },
+  { q: "During physical palpation of a child with intussusception, the nurse expects to find:", a: ["A sausage-shaped mass in the upper right quadrant", "An olive-shaped tumor in the epigastrium", "Generalized rigid guarding", "An easily palpable fecal mass"], marks: "0.50" },
+  { q: "While preparing a child with intussusception for surgery, the child passes a normal brown stool. What is the immediate nursing action?", a: ["Report it immediately to the physician to alter the care plan", "Document the finding and continue preoperative sedation", "Administer the scheduled systemic antibiotics", "Proceed with the planned pre-anesthetic preparation"], marks: "0.50" },
+  { q: "Umbilical hernias in infants usually resolve spontaneously by what age?", a: ["3 to 5 years of age", "6 months of age", "12 months of age", "Adolescence"], marks: "0.50" },
+  { q: "When managing an infant with an inguinal hernia, the nurse instructs parents that simple measures to reduce it include:", a: ["A warm bath and avoidance of upright positioning", "Taping or strapping the abdomen tightly", "Placing the infant in a strict standing position", "Restricting fluid intake for 24 hours"], marks: "0.50" },
+  { q: "The peak incidence of appendicitis in childhood occurs between which ages?", a: ["12 and 18 years", "2 and 5 years", "6 and 11 years", "Infancy"], marks: "0.50" },
+  { q: "A nurse performs deep palpation on a child's abdomen and notes severe pain upon sudden release of the pressure. This is documented as:", a: ["Rebound tenderness at McBurney point", "Dance sign", "Positive Murphy sign", "Chordee curvature"], marks: "0.50" },
+
+  // --- Lecture 9: Hematologic Dysfunction ---
+  { q: "Which diagnostic laboratory test is considered the most accurate to measure iron stores and diagnose iron deficiency anemia?", a: ["Serum ferritin level", "Complete blood picture (CBC)", "Total iron binding capacity (TIBC)", "Hemoglobin electrophoresis"], marks: "0.50" },
+  { q: "To facilitate the absorption of oral iron supplements, the nurse should instruct parents to administer the medication with:", a: ["Citrus fruit or juice rich in Vitamin C", "Cow's milk", "Calcium supplements", "Antacids"], marks: "0.50" },
+  { q: "What color changes should the nurse inform parents to expect in the child's stool during oral iron supplement therapy?", a: ["Tarry green or black color", "Red or currant jelly color", "Clay or white color", "Bright yellow color"], marks: "0.50" },
+  { q: "What strategy should the nurse teach parents to prevent temporary staining of teeth from liquid iron preparations?", a: ["Administer the medication through a straw or syringe and brush teeth after", "Mix the medication with a large glass of warm milk", "Dilute the medication with carbonated water", "Give the medication only with solid meals"], marks: "0.50" },
+  { q: "Sickle cell anemia (SCA) follows which genetic inheritance pattern?", a: ["Autosomal recessive", "Autosomal dominant", "X-linked recessive", "X-linked dominant"], marks: "0.50" },
+  { q: "The sickling phenomenon in newborns with sickle cell anemia is usually not apparent until later in infancy due to the protective presence of:", a: ["Fetal hemoglobin (HbF)", "Adult hemoglobin (HbA)", "Serum ferritin", "Factor VIII concentrates"], marks: "0.50" },
+  { q: "Which of the following conditions is a primary trigger for a painful sickle cell crisis?", a: ["Dehydration", "Alkalosis", "Hyperoxia", "Hypolipoproteinemia"], marks: "0.50" },
+  { q: "What is often the first painful clinical manifestation of a vasoocclusive crisis (VOC) in children aged 6 months to 2 years?", a: ["Dactylitis (swelling in hands and feet)", "Severe abdominal pain", "Obstructive jaundice", "Priapism"], marks: "0.50" },
+  { q: "A sickle cell crisis characterized by a sudden pooling of large amounts of blood in the spleen, causing decreased blood volume and shock, is called a/an:", a: ["Splenic sequestration crisis", "Aplastic crisis", "Hyperhemolytic crisis", "Vasoocclusive crisis"], marks: "0.50" },
+  { q: "Which test is an accurate, rapid, and specific screening method for detecting sickle cell disease?", a: ["Hemoglobin electrophoresis", "Serum ferritin assay", "Urine dipstick testing", "Complete Blood Count (CBC)"], marks: "0.50" },
+  { q: "Beta-thalassemia major is characterized by a partial or complete deficiency in the synthesis of which chains of the hemoglobin molecule?", a: ["Beta-polypeptide chains", "Alpha-polypeptide chains", "Gamma-globulin chains", "Heme groups"], marks: "0.50" },
+  { q: "Which medical intervention is strictly contraindicated for a child diagnosed with Thalassemia major?", a: ["Iron supplements", "Multiple blood transfusions", "Chelation therapy", "Splenectomy"], marks: "0.50" },
+  { q: "Hemophilia A is a congenital bleeding disorder resulting from a deficiency or absence of which specific coagulation factor?", a: ["Factor VIII", "Factor IX", "Factor XI", "Factor VII"], marks: "0.50" },
+  { q: "Which type of bleeding is considered the most frequent form of internal bleeding in children with severe hemophilia?", a: ["Hemarthrosis (bleeding into joint cavities)", "Epistaxis (nosebleeds)", "Hematuria (blood in urine)", "Gastrointestinal tract hemorrhage"], marks: "0.50" },
+  { q: "When managing pain for a child with hemophilia, which medication must be avoided because it inhibits platelet function?", a: ["Ibuprofen (NSAIDs)", "Acetaminophen", "Codeine", "Morphine"], marks: "0.50" },
+
+  // --- Lecture 10: Endocrine Dysfunction ---
+  { q: "Which type of diabetes mellitus is characterized by an abrupt onset, onset usually before age 20, and low to absent serum insulin?", a: ["Type 1 diabetes", "Type 2 diabetes", "Gestational diabetes", "Maturity-onset diabetes"], marks: "0.50" },
+  { q: "What are the classic 'Three Ps' clinical manifestations presenting in Type 1 Diabetes Mellitus?", a: ["Polyuria, polydipsia, polyphagia", "Pallor, puffiness, proteinuria", "Pyuria, pain, priapism", "Peristalsis, projectile vomiting, prostration"], marks: "0.50" },
+  { q: "A child is evaluated for diabetes. According to diagnostic criteria, diabetes is confirmed if an 8-hour fasting blood glucose level is equal to or greater than:", a: ["126 mg/dl", "100 mg/dl", "200 mg/dl", "110 mg/dl"], marks: "0.50" },
+  { q: "A child with Type 1 DM presents with deep, rapid breathing. The nurse documents this clinical sign as:", a: ["Kussmaul respirations", "Tachypnea", "Dyspnea on exertion", "Lid lag"], marks: "0.50" },
+  { q: "A patient with diabetes exhibits tremors, pallor, sweating, irritability, and a rapid pulse. The nurse recognizes these as manifestations of:", a: ["Hypoglycemia", "Hyperglycemia", "Diabetic Ketoacidosis (DKA)", "Thyroid storm"], marks: "0.50" },
+  { q: "What medication should a child with diabetes carry at home for the emergency kit injection treatment of severe hypoglycemia?", a: ["Glucagon", "Regular Insulin", "Lantus Insulin", "Prednisone"], marks: "0.50" },
+  { q: "A nursing alert indicates that when treating a patient in DKA, Potassium (K) must never be administered intravenously until:", a: ["Urinary voiding is observed and serum potassium is known", "Blood glucose falls below 100 mg/dl", "Kussmaul respirations completely resolve", "The patient reaches a full level of consciousness"], marks: "0.50" },
+  { q: "Which cause is identified as the most common etiology of hyperthyroidism (Graves disease) in children?", a: ["Graves disease (GD)", "Congenital hypothyroidism", "Juvenile hypothyroidism", "Pituitary tumor"], marks: "0.50" },
+  { q: "Protruding eyeballs, characteristically seen as a physical sign in Graves disease, is medically termed:", a: ["Exophthalmos", "Lid lag", "Goiter", "Frontal bossing"], marks: "0.50" },
+  { q: "If congenital hypothyroidism is left untreated in newborns, it can cause severe neurocognitive dysfunction known as:", a: ["Cretinism", "Graves disease", "Diabetes Insipidus", "Myxedema coma"], marks: "0.50" },
+  { q: "A nurse is instructing parents on the administration of Levothyroxine for juvenile hypothyroidism. If a dose is missed, what should be done?", a: ["Give twice the dose the next day", "Skip the dose entirely and notify the practitioner", "Administer a double dose immediately at night", "Withhold the medication for 48 hours"], marks: "0.50" },
+
+  // --- Lecture 11: Genitourinary Dysfunction ---
+  { q: "Which microorganism is overall the most common pathogen responsible for Urinary Tract Infections (UTIs) in children?", a: ["Escherichia coli (E. coli)", "Rotavirus", "Salmonella", "Shigella"], marks: "0.50" },
+  { q: "Nephrotic syndrome is a clinical state that characteristically includes which group of findings?", a: ["Massive proteinuria, hypoalbuminemia, hyperlipidemia, and edema", "Hematuria, hypertension, pyuria, and weight loss", "Glucosuria, polyuria, ketosis, and dehydration", "Chordee, cryptorchidism, epispadias, and fever"], marks: "0.50" }
 ]
 
     while(bank.length < 40) {
