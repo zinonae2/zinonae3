@@ -1060,7 +1060,7 @@
             </div>
             <div class="user-text">
                 <span>Welcome</span>
-                <span>yousef abdulrhman saud alhodaib</span>
+                <span>MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
             </div>
         </div>
 
@@ -1103,17 +1103,17 @@
         <div id="exams-container">
             <div class="exam-card" onclick="toggleExamCard(this)">
                 <div class="exam-header">
-                    <div class="exam-title">Final exam 314</div>
+                    <div class="exam-title">Final exam</div>
                     <div class="exam-date">
                         <div>
-                            <span style="color: #ffffff;">14 Jun 2026</span><br>8:00 AM
+                            <span style="color: #ffffff;">15 Jun 2026</span><br>10:30 AM
                         </div>
                         <span class="arrow-toggle">▼</span>
                     </div>
                 </div>
                 <div class="exam-details collapsed">
-                    <span>Course</span> <span class="value">Adult Health Nursing (2)</span>
-                    <span>Duration</span> <span class="value">03:01:00</span>
+                    <span>Course</span> <span class="value">Human Growth and Development</span>
+                    <span>Duration</span> <span class="value">02:00:00</span>
                     <span>Proctored</span> <span class="value">No</span>
                     <span>Status</span> <span class="value status-Available">Available</span>
                     <span>Upload Status</span> <span class="value">-</span>
@@ -1139,7 +1139,7 @@
                 </div>
                 <div class="detail-info-box">
                     <span class="dt-label">Course</span>
-                    <span class="dt-value">Adult Health Nursing (2)</span>
+                    <span class="dt-value">Human Growth and Development</span>
                 </div>
             </div>
 
@@ -1149,7 +1149,7 @@
                 </div>
                 <div class="detail-info-box">
                     <span class="dt-label">Total Duration</span>
-                    <span class="dt-value">03:01:00</span>
+                    <span class="dt-value">02:00:00</span>
                 </div>
             </div>
 
@@ -1159,7 +1159,7 @@
                 </div>
                 <div class="detail-info-box">
                     <span class="dt-label">Remaining Duration</span>
-                    <span class="dt-value" id="timer-display" style="color: #2a65bf;">03:00:00</span>
+                    <span class="dt-value" id="timer-display" style="color: #2a65bf;">02:00:00</span>
                 </div>
             </div>
 
@@ -1245,7 +1245,7 @@
         </div>
 
         <div class="timer-bar">
-            <div class="timer" id="countdownTimerText">03:00:00</div>
+            <div class="timer" id="countdownTimerText">02:00:00</div>
             <div class="timer-icon-btn">
                 <svg class="timer-icon-svg" viewBox="0 0 24 24">
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
@@ -1259,7 +1259,7 @@
             <div class="student-row">
                 <div>
                     <div class="student-name-label">Student Name</div>
-                    <div class="student-name">yousef abdulrhman saud alhodaib</div>
+                    <div class="student-name">MOHAMMED HUSSAIN MOHAMMED HAKMI</div>
                 </div>
                 <div class="header-buttons">
                     <div id="hiddenSecretPasswordDisplay"></div>
@@ -1391,7 +1391,7 @@
             </div>
             <div class="user-text">
                 <span>Welcome</span>
-                <span>yousef abdulrhman saud alhodaib</span>
+                <span>MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
             </div>
         </div>
         <div class="icons">
@@ -1433,17 +1433,17 @@
         <div id="post-exams-container">
             <div class="exam-card" onclick="toggleExamCard(this)">
                 <div class="exam-header">
-                    <div class="exam-title">Final exam 314</div>
+                    <div class="exam-title">Final exam</div>
                     <div class="exam-date">
                         <div>
-                            <span style="color: #ffffff;">14 Jun 2026</span><br>8:00 AM
+                            <span style="color: #ffffff;">15 Jun 2026</span><br>10:30 AM
                         </div>
                         <span class="arrow-toggle">▼</span>
                     </div>
                 </div>
                 <div class="exam-details collapsed">
-                    <span>Course</span> <span class="value">Adult Health Nursing (2)</span>
-                    <span>Duration</span> <span class="value">03:01:00</span>
+                    <span>Course</span> <span class="value">Human Growth and Development</span>
+                    <span>Duration</span> <span class="value">02:00:00</span>
                     <span>Proctored</span> <span class="value">No</span>
                     <span>Status</span> <span class="value status-ended">Exam Ended</span>
                     <span>Upload Status</span> <span class="value">Uploaded</span>
@@ -1518,7 +1518,7 @@
                 </div>
                 <div class="profile-info-text">
                     <span class="welcome-lbl">Welcome</span>
-                    <span class="name-lbl">yousef abdulrhman saud alhodaib</span>
+                    <span class="name-lbl">MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
                 </div>
             </div>
             <button class="signout-btn" onclick="closeProfileSheet(null)">Sign out</button>
@@ -1648,7 +1648,7 @@
     }
 
     function startDashboardTimer() {
-        let hours = 3, minutes = 0, seconds = 0;
+        let hours = 2, minutes = 0, seconds = 0;
         const display = document.getElementById('timer-display');
         if(dashboardTimerInterval) clearInterval(dashboardTimerInterval);
 
@@ -1814,7 +1814,7 @@
     }
 
     let currentExamIndex = 0; 
-    let examTimeTotalMinutes = 180;
+    let examTimeTotalMinutes = 120;
     let examTimeUsedSeconds = 0; 
     let textScaleValue = 1.0;
 
@@ -2113,7 +2113,7 @@ document.getElementById("modeProgressBarFill").style.width = `${itemsPercent}%`;
         if(examSystemInitialized) return;
         examSystemInitialized = true;
 
-        let remainSeconds = 180 * 60; 
+        let remainSeconds = 120 * 60; 
         setInterval(() => {
             if (remainSeconds > 0) { remainSeconds--; examTimeUsedSeconds++; }
             const hrs = Math.floor(remainSeconds / 3600).toString().padStart(2, '0');
