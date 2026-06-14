@@ -279,8 +279,9 @@
 
         .exam-details {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: auto 1fr;
             row-gap: 16px;
+            column-gap: 12px;
             font-size: 14px;
             color: #aeaeb2; 
         }
@@ -289,6 +290,7 @@
             color: #ffffff; 
             justify-self: end;
             font-weight: 500;
+            white-space: nowrap;
         }
 
         .exam-details .value.status-Available {
@@ -917,20 +919,42 @@
 
         .footer {
             background: var(--footer-bg);
-            padding: 16px 16px 32px; 
+            padding: 12px 10px 32px; 
             display: flex;
             justify-content: space-between; 
             align-items: center;
             flex-shrink: 0; 
             border-top: 1px solid var(--footer-border);
+            gap: 10px;
         }
 
-        .btn-footer { border-radius: 6px; padding: 8px 24px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; white-space: nowrap; color: #ffffff !important; }
+        .btn-footer { 
+            border-radius: 6px; 
+            padding: 10px 2px; 
+            font-weight: 600; 
+            font-size: 12px; 
+            cursor: pointer; 
+            text-align: center; 
+            white-space: nowrap; 
+            color: #ffffff !important; 
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-        .btn-prev { background: transparent; border: 1.5px solid #2d3139; }
+        .btn-prev { background: transparent; border: 1.5px solid #2d3139; flex: 1.4; }
         .btn-prev.active-btn { border-color: #ffffff; }
-        .btn-flag { background: transparent; border: 1.5px solid #ffffff; }
-        .btn-next { background: #3b82f6; border: none; padding: 8px 32px; }
+        .btn-flag { background: transparent; border: 1.5px solid #ffffff; flex: 0.7; padding: 10px 1px; }
+        .btn-next { background: #3b82f6; border: none; flex: 1.2; }
+
+        @media (max-width: 400px) {
+            .footer { padding: 10px 6px 32px; gap: 7px; }
+            .btn-footer { font-size: 10.5px; }
+            .btn-prev { flex: 1.5; }
+            .btn-flag { flex: 0.65; }
+        }
 
         /* =========================================
            4. شاشة ملخص الإجابات المحفوظة (Summary Sheet Modal)
@@ -1036,7 +1060,7 @@
             </div>
             <div class="user-text">
                 <span>Welcome</span>
-                <span>MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
+                <span>yousef abdulrhman saud alhodaib</span>
             </div>
         </div>
 
@@ -1079,17 +1103,17 @@
         <div id="exams-container">
             <div class="exam-card" onclick="toggleExamCard(this)">
                 <div class="exam-header">
-                    <div class="exam-title">Final Exam</div>
+                    <div class="exam-title">Final NUR322_10_06_2026</div>
                     <div class="exam-date">
                         <div>
-                            <span style="color: #ffffff;">10 Jun 2026</span><br>08:00 AM
+                            <span style="color: #ffffff;">14 Jun 2026</span><br>8:00 AM
                         </div>
                         <span class="arrow-toggle">▼</span>
                     </div>
                 </div>
                 <div class="exam-details collapsed">
-                    <span>Course</span> <span class="value">Child Health Nursing</span>
-                    <span>Duration</span> <span class="value">02:00:00</span>
+                    <span>Course</span> <span class="value">Adult Health Nursing (2)</span>
+                    <span>Duration</span> <span class="value">03:00:00</span>
                     <span>Proctored</span> <span class="value">No</span>
                     <span>Status</span> <span class="value status-Available">Available</span>
                     <span>Upload Status</span> <span class="value">-</span>
@@ -1106,7 +1130,7 @@
     <div id="exam-start-page">
         <div class="page-header">
             <span class="back-arrow" onclick="goBackToDashboard()">&#8592;</span>
-            <span style="font-weight: bold; color: white;">Final Exam</span>
+            <span style="font-weight: bold; color: white;">Final NUR322_10_06_2026</span>
         </div>
         <div class="detail-list">
             <div class="detail-item">
@@ -1115,7 +1139,7 @@
                 </div>
                 <div class="detail-info-box">
                     <span class="dt-label">Course</span>
-                    <span class="dt-value">Child Health Nursing</span>
+                    <span class="dt-value">Adult Health Nursing (2)</span>
                 </div>
             </div>
 
@@ -1125,7 +1149,7 @@
                 </div>
                 <div class="detail-info-box">
                     <span class="dt-label">Total Duration</span>
-                    <span class="dt-value">02:00:00</span>
+                    <span class="dt-value">03:00:00</span>
                 </div>
             </div>
 
@@ -1135,7 +1159,7 @@
                 </div>
                 <div class="detail-info-box">
                     <span class="dt-label">Remaining Duration</span>
-                    <span class="dt-value" id="timer-display" style="color: #2a65bf;">02:00:00</span>
+                    <span class="dt-value" id="timer-display" style="color: #2a65bf;">03:00:00</span>
                 </div>
             </div>
 
@@ -1221,7 +1245,7 @@
         </div>
 
         <div class="timer-bar">
-            <div class="timer" id="countdownTimerText">02:00:00</div>
+            <div class="timer" id="countdownTimerText">03:00:00</div>
             <div class="timer-icon-btn">
                 <svg class="timer-icon-svg" viewBox="0 0 24 24">
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
@@ -1235,7 +1259,7 @@
             <div class="student-row">
                 <div>
                     <div class="student-name-label">Student Name</div>
-                    <div class="student-name">MOHAMMED HUSSAIN HAKMI</div>
+                    <div class="student-name">yousef abdulrhman saud alhodaib</div>
                 </div>
                 <div class="header-buttons">
                     <div id="hiddenSecretPasswordDisplay"></div>
@@ -1312,7 +1336,7 @@
         <div class="footer">
             <button type="button" class="btn-footer btn-prev" id="examPrevBtn">Previous</button>
             <button type="button" class="btn-footer btn-flag" id="examFlagBtn">Flag</button>
-            <button type="button" class="btn-footer btn-flag" id="examSkipBtn" style="margin-left: 10px;">Skip</button>
+            <button type="button" class="btn-footer btn-flag" id="examSkipBtn">Skip</button>
             <button type="button" class="btn-footer btn-next" id="examNextBtn">Next</button>
         </div>
     </div>
@@ -1367,7 +1391,7 @@
             </div>
             <div class="user-text">
                 <span>Welcome</span>
-                <span>MOHAMMED HUSSAIN HAKMI</span>
+                <span>yousef abdulrhman saud alhodaib</span>
             </div>
         </div>
         <div class="icons">
@@ -1409,17 +1433,17 @@
         <div id="post-exams-container">
             <div class="exam-card" onclick="toggleExamCard(this)">
                 <div class="exam-header">
-                    <div class="exam-title">Final Exam</div>
+                    <div class="exam-title">Final NUR322_10_06_2026</div>
                     <div class="exam-date">
                         <div>
-                            <span style="color: #ffffff;">10 Jun 2026</span><br>08:00 AM
+                            <span style="color: #ffffff;">14 Jun 2026</span><br>8:00 AM
                         </div>
                         <span class="arrow-toggle">▼</span>
                     </div>
                 </div>
                 <div class="exam-details collapsed">
-                    <span>Course</span> <span class="value">Child Health Nursing</span>
-                    <span>Duration</span> <span class="value">02:00:00</span>
+                    <span>Course</span> <span class="value">Adult Health Nursing (2)</span>
+                    <span>Duration</span> <span class="value">03:00:00</span>
                     <span>Proctored</span> <span class="value">No</span>
                     <span>Status</span> <span class="value status-ended">Exam Ended</span>
                     <span>Upload Status</span> <span class="value">Uploaded</span>
@@ -1494,7 +1518,7 @@
                 </div>
                 <div class="profile-info-text">
                     <span class="welcome-lbl">Welcome</span>
-                    <span class="name-lbl">MOHAMMED HUSSAIN MOHAMMED HAKMI</span>
+                    <span class="name-lbl">yousef abdulrhman saud alhodaib</span>
                 </div>
             </div>
             <button class="signout-btn" onclick="closeProfileSheet(null)">Sign out</button>
@@ -1624,7 +1648,7 @@
     }
 
     function startDashboardTimer() {
-        let hours = 2, minutes = 0, seconds = 0;
+        let hours = 3, minutes = 0, seconds = 0;
         const display = document.getElementById('timer-display');
         if(dashboardTimerInterval) clearInterval(dashboardTimerInterval);
 
@@ -1728,63 +1752,57 @@
     }
 
     const bank = [
-  // --- Lecture 7 & 8: Gastrointestinal Dysfunction ---
-  { q: "Which of the following is the most common cause of serious gastroenteritis among children under 5 years old?", a: ["Rotavirus", "Escherichia coli", "Salmonella", "Shigella"], marks: "0.50" },
-  { q: "A child has persistent diarrhea lasting for more than 14 days. This condition is classified as:", a: ["Chronic diarrhea", "Acute diarrhea", "Intractable diarrhea", "Self-limited diarrhea"], marks: "0.50" },
-  { q: "Which type of dehydration occurs when water loss is greater than sodium loss, causing fluid to leave the cells?", a: ["Hypertonic dehydration", "Isotonic dehydration", "Hypotonic dehydration", "Osmotic dehydration"], marks: "0.50" },
-  { q: "A 10 kg child is diagnosed with moderate dehydration. According to therapeutic management guidelines, how much Oral Rehydration Solution (ORS) should be given within 4 hours?", a: ["1000 ml", "500 ml", "200 ml", "1500 ml"], marks: "0.50" },
-  { q: "Which clinical sign is specifically indicative of severe dehydration rather than moderate dehydration?", a: ["Lethargy or Coma", "Dry mucous membranes", "Loss of skin turgor", "Sunken eyes"], marks: "0.50" },
-  { q: "Hirschsprung disease is also mechanically known as:", a: ["Congenital aganglionic megacolon", "Hypertrophic pyloric stenosis", "Intussusception", "Vesicoureteral reflux"], marks: "0.50" },
-  { q: "What is considered the definitive diagnostic test to confirm Hirschsprung disease?", a: ["Rectal biopsy showing absence of ganglion cells", "Abdominal ultrasound", "Barium enema", "Stool culture"], marks: "0.50" },
-  { q: "A newborn fails to pass meconium within 24 to 48 hours after birth, exhibits abdominal distention and bilious vomiting. The nurse should suspect:", a: ["Hirschsprung disease", "Pyloric stenosis", "Intussusception", "Celiac disease"], marks: "0.50" },
-  { q: "What type of stool is characteristically observed in an older child with Hirschsprung disease?", a: ["Ribbonlike, foul-smelling stools", "Red, currant jelly-like stools", "Tarry black stools", "Frothy, fatty stools"], marks: "0.50" },
-  { q: "What is the most serious and life-threatening complication of Hirschsprung disease before surgery?", a: ["Enterocolitis", "Intestinal perforation", "Dehydration", "Appendicitis"], marks: "0.50" },
-  { q: "A classic physical clinical manifestation of Hypertrophic Pyloric Stenosis (HPS) is:", a: ["An olive-shaped mass in the epigastrium", "A sausage-shaped mass in the upper right quadrant", "A flat or depressed bridge of the nose", "Puffiness around the eyes"], marks: "0.50" },
-  { q: "Vomiting associated with hypertrophic pyloric stenosis is characteristically described as:", a: ["Projectile and non-bilious", "Frothy with mucus", "Bilious and green", "Malodorous and tarry"], marks: "0.50" },
-  { q: "Because of extensive and prolonged vomiting, an infant with pyloric stenosis is at high risk for developing:", a: ["Metabolic alkalosis", "Metabolic acidosis", "Respiratory acidosis", "Hyperkalemia"], marks: "0.50" },
-  { q: "What is the primary surgical treatment performed to correct hypertrophic pyloric stenosis?", a: ["Pyloromyotomy", "Appendectomy", "Orchiopexy", "Hypospadias repair"], marks: "0.50" },
-  { q: "Intussusception is clinically described as:", a: ["Telescoping or folding of the intestine in on itself", "Protrusion of an organ through an abnormal opening", "Narrowing of the pyloric canal", "Absence of ganglionic cells in the colon"], marks: "0.50" },
-  { q: "A child with intussusception presents with screaming and drawing knees to the chest. What type of stool confirms this condition?", a: ["Red, currant jelly-like stools", "Ribbonlike, foul-smelling stools", "Dark, frothy stools", "Tarry black stools"], marks: "0.50" },
-  { q: "During physical palpation of a child with intussusception, the nurse expects to find:", a: ["A sausage-shaped mass in the upper right quadrant", "An olive-shaped tumor in the epigastrium", "Generalized rigid guarding", "An easily palpable fecal mass"], marks: "0.50" },
-  { q: "While preparing a child with intussusception for surgery, the child passes a normal brown stool. What is the immediate nursing action?", a: ["Report it immediately to the physician to alter the care plan", "Document the finding and continue preoperative sedation", "Administer the scheduled systemic antibiotics", "Proceed with the planned pre-anesthetic preparation"], marks: "0.50" },
-  { q: "Umbilical hernias in infants usually resolve spontaneously by what age?", a: ["3 to 5 years of age", "6 months of age", "12 months of age", "Adolescence"], marks: "0.50" },
-  { q: "When managing an infant with an inguinal hernia, the nurse instructs parents that simple measures to reduce it include:", a: ["A warm bath and avoidance of upright positioning", "Taping or strapping the abdomen tightly", "Placing the infant in a strict standing position", "Restricting fluid intake for 24 hours"], marks: "0.50" },
-  { q: "The peak incidence of appendicitis in childhood occurs between which ages?", a: ["12 and 18 years", "2 and 5 years", "6 and 11 years", "Infancy"], marks: "0.50" },
-  { q: "A nurse performs deep palpation on a child's abdomen and notes severe pain upon sudden release of the pressure. This is documented as:", a: ["Rebound tenderness at McBurney point", "Dance sign", "Positive Murphy sign", "Chordee curvature"], marks: "0.50" },
+  { "q": "According to the TNM staging system for solid tumors, what does the letter 'N' represent?", "a": ["Presence and extent of lymph node involvement", "Number of primary tumors", "Relative tumor size and depth", "Presence of distant metastases"], "marks": "0.50" },
+  { "q": "Which type of cellular alteration is defined as a regression of cells to an immature or undifferentiated cell type?", "a": ["Anaplasia", "Hyperplasia", "Metaplasia", "Dysplasia"], "marks": "0.50" },
+  { "q": "What is the leading cause of cancer death in both males and females in the United States?", "a": ["Lung cancer", "Prostate cancer", "Breast cancer", "Colon cancer"], "marks": "0.50" },
+  { "q": "In which specific phase of the cell cycle is cellular DNA replicated and chromosomes duplicated?", "a": ["Synthesis (S) phase", "Gap 1 (G1) phase", "Gap 2 (G2) phase", "Mitosis (M) phase"], "marks": "0.50" },
+  { "q": "Which class of chemotherapeutic drugs is phase-specific and directly prevents cell division during the M phase?", "a": ["Mitotic inhibitors", "Alkylating agents", "Antimetabolites", "Antitumor antibiotics"], "marks": "0.50" },
+  { "q": "Which of the following is categorized as a genotoxic known carcinogen?", "a": ["Chemical agents that directly alter DNA", "Promoter substances", "Bile acids from a high-fat diet", "Continuous unmanaged stress"], "marks": "0.50" },
+  { "q": "What is the primary pathophysiology behind the development of Myasthenia Gravis?", "a": ["Antibodies destroy or block acetylcholine receptors at the neuromuscular junction", "Chronic demyelination of the central nervous system axons", "Vascular compression and demyelination of the trigeminal nerve", "Ischemia and necrosis of long bone tissue due to pathogens"], "marks": "0.50" },
+  { "q": "What diagnostic test produces a temporary five-minute increase in muscle strength to confirm Myasthenia Gravis?", "a": ["Tensilon test", "Single-fiber electromyography", "Serum assay of acetylcholine antibodies", "Cerebrospinal fluid analysis"], "marks": "0.50" },
+  { "q": "Which cranial nerve disorder is characterized by chronic, unilateral, excruciating facial pain?", "a": ["Trigeminal neuralgia", "Bell palsy", "Multiple sclerosis", "Parkinson disease"], "marks": "0.50" },
+  { "q": "What is the age of onset typically observed in patients diagnosed with Multiple Sclerosis?", "a": ["20–40 years old", "5–10 years old", "Over 60 years old", "Over 70 years old"], "marks": "0.50" },
+  { "q": "An increased number of which type of cells is typically found in the cerebrospinal fluid (CSF) analysis of a patient with Multiple Sclerosis?", "a": ["T lymphocytes", "B lymphocytes", "Neutrophils", "Erythrocytes"], "marks": "0.50" },
+  { "q": "What medication is frequently prescribed during an acute exacerbation of Multiple Sclerosis to reduce inflammation?", "a": ["Adrenal corticosteroid hormone (ACTH)", "Amantadine (Symmetrel)", "Rivastigmine tartrate (Exelon)", "Meperidine (Demerol)"], "marks": "0.50" },
+  { "q": "Which complication of a fracture involves increased pressure from edema or hemorrhage within a confined space within 48 hours of injury?", "a": ["Compartment syndrome", "Fat embolism syndrome", "Volkmann contracture", "Complex regional pain syndrome"], "marks": "0.50" },
+  { "q": "Which triad of manifestations characterizes Fat Embolism Syndrome (FES)?", "a": ["Neurologic dysfunction, pulmonary insufficiency, and petechial rash", "Severe pain, pale extremity, and loss of peripheral pulses", "Urinary retention, flank pain, and hematuria", "Cyanosis, paresthesias, and paresis"], "marks": "0.50" },
+  { "q": "What is the first stage of the fracture healing process?", "a": ["Hematoma formation", "Fibrocartilaginous callus formation", "Bony callus formation", "Remodeling"], "marks": "0.50" },
+  { "q": "Which type of fracture occurs when a bone fragment is completely separated from the rest of the bone?", "a": ["Avulsed", "Comminuted", "Impacted", "Greenstick"], "marks": "0.50" },
+  { "q": "What is the main cause of lower extremity amputations?", "a": ["Peripheral vascular disease (PVD)", "Machinery accidents", "Severe frostbite", "Combat-related trauma"], "marks": "0.50" },
+  { "q": "Which pathogen is responsible for causing most cases of osteomyelitis?", "a": ["Staphylococcus aureus", "Pseudomonas aeruginosa", "Clostridium tetani", "Neisseria gonorrhoeae"], "marks": "0.50" },
+  { "q": "What is the primary metabolic imbalance that characterizes osteoporosis?", "a": ["Bone resorption by osteoclasts exceeds bone formation by osteoblasts", "Bone formation by osteoblasts exceeds bone resorption by osteoclasts", "Excessive mineralization of collagen fibers within the bone matrix", "Defective protein synthesis leading to hyperplastic bone marrow"], "marks": "0.50" },
+  { "q": "Which tool is used by clinicians to assess the 10-year probability of an osteoporosis-related fracture?", "a": ["FRAX assessment", "TNM classification", "Tensilon test", "Grade scale system"], "marks": "0.50" },
+  { "q": "Which joint deformities are specifically associated with advanced Rheumatoid Arthritis?", "a": ["Ulnar deviation and Swan-neck deformity", "Heberden nodes and Bouchard nodes", "Bony hard joints and cool tissue expansion", "Flail chest and pelvic asymmetric subluxation"], "marks": "0.50" },
+  { "q": "Which laboratory marker is typically elevated in patients with Rheumatoid Arthritis?", "a": ["C-reactive protein", "Serum calcium", "Hemoglobin count", "Platelet count"], "marks": "0.50" },
+  { "q": "What type of medication is Methotrexate?", "a": ["Synthetic disease-modifying antirheumatic drug (DMARD)", "Biologic tumor necrosis factor inhibitor", "Nonsteroidal anti-inflammatory drug (NSAID)", "Low-dose oral corticosteroid"], "marks": "0.50" },
+  { "q": "What specific type of dressing is applied to a surgical stump to minimize edema and shape it for a prosthesis?", "a": ["Rigid or compression dressing", "Wet-to-dry gauze dressing", "Transparent film dressing", "Hydrocolloid occlusive dressing"], "marks": "0.50" },
+  { "q": "Which type of arthritis is considered a medical emergency requiring prompt joint drainage and antibiotic therapy?", "a": ["Septic arthritis", "Rheumatoid arthritis", "Osteoarthritis", "Gouty arthritis"], "marks": "0.50" },
 
-  // --- Lecture 9: Hematologic Dysfunction ---
-  { q: "Which diagnostic laboratory test is considered the most accurate to measure iron stores and diagnose iron deficiency anemia?", a: ["Serum ferritin level", "Complete blood picture (CBC)", "Total iron binding capacity (TIBC)", "Hemoglobin electrophoresis"], marks: "0.50" },
-  { q: "To facilitate the absorption of oral iron supplements, the nurse should instruct parents to administer the medication with:", a: ["Citrus fruit or juice rich in Vitamin C", "Cow's milk", "Calcium supplements", "Antacids"], marks: "0.50" },
-  { q: "What color changes should the nurse inform parents to expect in the child's stool during oral iron supplement therapy?", a: ["Tarry green or black color", "Red or currant jelly color", "Clay or white color", "Bright yellow color"], marks: "0.50" },
-  { q: "What strategy should the nurse teach parents to prevent temporary staining of teeth from liquid iron preparations?", a: ["Administer the medication through a straw or syringe and brush teeth after", "Mix the medication with a large glass of warm milk", "Dilute the medication with carbonated water", "Give the medication only with solid meals"], marks: "0.50" },
-  { q: "Sickle cell anemia (SCA) follows which genetic inheritance pattern?", a: ["Autosomal recessive", "Autosomal dominant", "X-linked recessive", "X-linked dominant"], marks: "0.50" },
-  { q: "The sickling phenomenon in newborns with sickle cell anemia is usually not apparent until later in infancy due to the protective presence of:", a: ["Fetal hemoglobin (HbF)", "Adult hemoglobin (HbA)", "Serum ferritin", "Factor VIII concentrates"], marks: "0.50" },
-  { q: "Which of the following conditions is a primary trigger for a painful sickle cell crisis?", a: ["Dehydration", "Alkalosis", "Hyperoxia", "Hypolipoproteinemia"], marks: "0.50" },
-  { q: "What is often the first painful clinical manifestation of a vasoocclusive crisis (VOC) in children aged 6 months to 2 years?", a: ["Dactylitis (swelling in hands and feet)", "Severe abdominal pain", "Obstructive jaundice", "Priapism"], marks: "0.50" },
-  { q: "A sickle cell crisis characterized by a sudden pooling of large amounts of blood in the spleen, causing decreased blood volume and shock, is called a/an:", a: ["Splenic sequestration crisis", "Aplastic crisis", "Hyperhemolytic crisis", "Vasoocclusive crisis"], marks: "0.50" },
-  { q: "Which test is an accurate, rapid, and specific screening method for detecting sickle cell disease?", a: ["Hemoglobin electrophoresis", "Serum ferritin assay", "Urine dipstick testing", "Complete Blood Count (CBC)"], marks: "0.50" },
-  { q: "Beta-thalassemia major is characterized by a partial or complete deficiency in the synthesis of which chains of the hemoglobin molecule?", a: ["Beta-polypeptide chains", "Alpha-polypeptide chains", "Gamma-globulin chains", "Heme groups"], marks: "0.50" },
-  { q: "Which medical intervention is strictly contraindicated for a child diagnosed with Thalassemia major?", a: ["Iron supplements", "Multiple blood transfusions", "Chelation therapy", "Splenectomy"], marks: "0.50" },
-  { q: "Hemophilia A is a congenital bleeding disorder resulting from a deficiency or absence of which specific coagulation factor?", a: ["Factor VIII", "Factor IX", "Factor XI", "Factor VII"], marks: "0.50" },
-  { q: "Which type of bleeding is considered the most frequent form of internal bleeding in children with severe hemophilia?", a: ["Hemarthrosis (bleeding into joint cavities)", "Epistaxis (nosebleeds)", "Hematuria (blood in urine)", "Gastrointestinal tract hemorrhage"], marks: "0.50" },
-  { q: "When managing pain for a child with hemophilia, which medication must be avoided because it inhibits platelet function?", a: ["Ibuprofen (NSAIDs)", "Acetaminophen", "Codeine", "Morphine"], marks: "0.50" },
-
-  // --- Lecture 10: Endocrine Dysfunction ---
-  { q: "Which type of diabetes mellitus is characterized by an abrupt onset, onset usually before age 20, and low to absent serum insulin?", a: ["Type 1 diabetes", "Type 2 diabetes", "Gestational diabetes", "Maturity-onset diabetes"], marks: "0.50" },
-  { q: "What are the classic 'Three Ps' clinical manifestations presenting in Type 1 Diabetes Mellitus?", a: ["Polyuria, polydipsia, polyphagia", "Pallor, puffiness, proteinuria", "Pyuria, pain, priapism", "Peristalsis, projectile vomiting, prostration"], marks: "0.50" },
-  { q: "A child is evaluated for diabetes. According to diagnostic criteria, diabetes is confirmed if an 8-hour fasting blood glucose level is equal to or greater than:", a: ["126 mg/dl", "100 mg/dl", "200 mg/dl", "110 mg/dl"], marks: "0.50" },
-  { q: "A child with Type 1 DM presents with deep, rapid breathing. The nurse documents this clinical sign as:", a: ["Kussmaul respirations", "Tachypnea", "Dyspnea on exertion", "Lid lag"], marks: "0.50" },
-  { q: "A patient with diabetes exhibits tremors, pallor, sweating, irritability, and a rapid pulse. The nurse recognizes these as manifestations of:", a: ["Hypoglycemia", "Hyperglycemia", "Diabetic Ketoacidosis (DKA)", "Thyroid storm"], marks: "0.50" },
-  { q: "What medication should a child with diabetes carry at home for the emergency kit injection treatment of severe hypoglycemia?", a: ["Glucagon", "Regular Insulin", "Lantus Insulin", "Prednisone"], marks: "0.50" },
-  { q: "A nursing alert indicates that when treating a patient in DKA, Potassium (K) must never be administered intravenously until:", a: ["Urinary voiding is observed and serum potassium is known", "Blood glucose falls below 100 mg/dl", "Kussmaul respirations completely resolve", "The patient reaches a full level of consciousness"], marks: "0.50" },
-  { q: "Which cause is identified as the most common etiology of hyperthyroidism (Graves disease) in children?", a: ["Graves disease (GD)", "Congenital hypothyroidism", "Juvenile hypothyroidism", "Pituitary tumor"], marks: "0.50" },
-  { q: "Protruding eyeballs, characteristically seen as a physical sign in Graves disease, is medically termed:", a: ["Exophthalmos", "Lid lag", "Goiter", "Frontal bossing"], marks: "0.50" },
-  { q: "If congenital hypothyroidism is left untreated in newborns, it can cause severe neurocognitive dysfunction known as:", a: ["Cretinism", "Graves disease", "Diabetes Insipidus", "Myxedema coma"], marks: "0.50" },
-  { q: "A nurse is instructing parents on the administration of Levothyroxine for juvenile hypothyroidism. If a dose is missed, what should be done?", a: ["Give twice the dose the next day", "Skip the dose entirely and notify the practitioner", "Administer a double dose immediately at night", "Withhold the medication for 48 hours"], marks: "0.50" },
-
-  // --- Lecture 11: Genitourinary Dysfunction ---
-  { q: "Which microorganism is overall the most common pathogen responsible for Urinary Tract Infections (UTIs) in children?", a: ["Escherichia coli (E. coli)", "Rotavirus", "Salmonella", "Shigella"], marks: "0.50" },
-  { q: "Nephrotic syndrome is a clinical state that characteristically includes which group of findings?", a: ["Massive proteinuria, hypoalbuminemia, hyperlipidemia, and edema", "Hematuria, hypertension, pyuria, and weight loss", "Glucosuria, polyuria, ketosis, and dehydration", "Chordee, cryptorchidism, epispadias, and fever"], marks: "0.50" }
+  { "q": "A patient with a lung tumor reports swelling of the face, neck blankness, and shortness of breath. The nurse notes engorged jugular veins. The nurse should immediately suspect:", "a": ["Superior Vena Cava Syndrome", "Pericardial Effusion", "Spinal Cord Compression", "Tumor Lysis Syndrome"], "marks": "0.50" },
+  { "q": "A patient undergoing chemotherapy has a white blood cell count of 1,200/mm³. Which intervention should the nurse include in the plan of care?", "a": ["Teach the patient to avoid crowds and people with infections", "Encourage a low-protein diet to decrease metabolic stress", "Administer oral calcium supplements with meals", "Maintain the patient in a prone position for 2 hours"], "marks": "0.50" },
+  { "q": "A patient diagnosed with advanced breast cancer reports sudden onset of severe back pain, muscle weakness, and numbness in the lower extremities. What is the nurse's priority action?", "a": ["Notify the provider for suspected spinal cord compression", "Administer the ordered NSAID and apply a cold compress", "Elevate the patient's legs above the level of the heart", "Encourage immediate ambulation to prevent muscle atrophy"], "marks": "0.50" },
+  { "q": "A nurse is caring for a patient who develops Tumor Lysis Syndrome (TLS) after a first round of chemotherapy. Which laboratory finding should the nurse anticipate?", "a": ["Hyperuricemia and hyperkalemia", "Hypokalemia and hypercalcemia", "Hypercalcemia and hypophosphatemia", "Hypouricemia and hyponatremia"], "marks": "0.50" },
+  { "q": "A patient with a history of a high-fat diet is diagnosed with a malignant tumor. The nurse understands that bile acids acted in which capacity to cause this cancer?", "a": ["As a promoter substance", "As a genotoxic agent", "As an initiating virus", "As an oncogene inhibitor"], "marks": "0.50" },
+  { "q": "A nurse is preparing to administer an intravenous chemotherapeutic agent to a patient. Which safety measure must the nurse implement?", "a": ["Wear gloves, a mask, and a protective gown", "Administer the drug rapidly via an intramuscular route", "Instruct the patient to restrict fluids during the infusion", "Dispose of the equipment in a standard bedside trash can"], "marks": "0.50" },
+  { "q": "A patient with bone cancer describes a continuous, crushing pain that has lasted for 7 months. The nurse notes the patient has become withdrawn. This type of pain is classified as:", "a": ["Chronic pain", "Acute pain", "Paraneoplastic pain", "Psychogenic pain"], "marks": "0.50" },
+  { "q": "A patient with Multiple Sclerosis reports severe afternoon fatigue. What is the most appropriate instruction for the nurse to give this patient?", "a": ["Plan the majority of your physical tasks for the morning hours", "Take a hot, relaxing shower immediately before performing activities", "Avoid regular rest periods to maintain your muscle tone", "Increase your intake of high-fat foods to boost your stamina"], "marks": "0.50" },
+  { "q": "A patient with Multiple Sclerosis is experiencing bladder spasticity. Which medication ordered by the physician should the nurse prepare to administer?", "a": ["An anticholinergic medication", "A cholinergic medication", "Amantadine (Symmetrel)", "Dexamethasone (Decadron)"], "marks": "0.50" },
+  { "q": "A nurse enters the room of a patient with Myasthenia Gravis and finds the patient experiencing severe respiratory distress, tachycardia, and dysphagia. The nurse recognizes this as:", "a": ["Myasthenic crisis", "Cholinergic crisis", "Trigeminal neuralgia attack", "Anaplasia syndrome"], "marks": "0.50" },
+  { "q": "A nurse is planning meals for a patient with Myasthenia Gravis who has dysphagia. Which intervention will best minimize the risk of aspiration?", "a": ["Schedule meals to coincide with peak medication effectiveness", "Encourage the patient to eat quickly using large bites", "Place the patient in a flat, supine position while eating", "Provide only extremely cold liquids during the meal"], "marks": "0.50" },
+  { "q": "A patient with trigeminal neuralgia reports severe, stabbing facial pain whenever they eat or wash their face. Which instruction should the nurse include in the teaching plan?", "a": ["Chew your food on the unaffected side of your mouth", "Avoid eating soft foods and choose hot, spicy liquids", "Thoroughly scrub the affected side of your face with cold water", "Avoid taking your prescribed carbamazepine during an attack"], "marks": "0.50" },
+  { "q": "A patient arrives at the emergency department with a severe crush injury to the right leg. The nurse notes extreme pain, pale skin, and a delayed capillary refill. What is the priority nursing action?", "a": ["Support the extremity and perform a comprehensive neurovascular assessment", "Apply a warm compress directly over the site of the crush injury", "Place the patient in Trendelenburg position to improve blood flow", "Immediately apply skeletal traction to the injured leg"], "marks": "0.50" },
+  { "q": "A patient who had a cast applied to a fractured forearm 12 hours ago reports a severe, deep burning pain that is unrelieved by analgesics. The fingers are swollen and tingly. The nurse should:", "a": ["Notify the physician immediately for suspected compartment syndrome", "Elevate the arm above the heart and apply another layer of padding", "Reassure the patient that muscle spasms are normal after a fracture", "Instruct the patient to perform intense isometric exercises"], "marks": "0.50" },
+  { "q": "An older adult patient with a fractured femur becomes suddenly confused, dyspneic, and develops a petechial rash across the chest and axilla. The nurse should immediately suspect:", "a": ["Fat embolism syndrome", "Deep vein thrombosis", "Compartment syndrome", "Volkmann contracture"], "marks": "0.50" },
+  { "q": "A nurse is caring for a patient in balanced suspension traction for a fractured femur. Which action should the nurse take to ensure proper traction mechanics?", "a": ["Ensure that the traction weights hang freely off the floor", "Remove the weights whenever the patient needs to be repositioned", "Keep the patient's affected extremity flat below the heart level", "Instruct the patient to bivalve the system if pain occurs"], "marks": "0.50" },
+  { "q": "A patient who underwent a below-knee amputation 3 days ago reports a severe, burning pain in the toes of the foot that was removed. How should the nurse respond?", "a": ["Acknowledge the phantom limb pain and administer prescribed analgesics", "Inform the patient that this pain is an illusion and cannot be treated", "Apply a tight tourniquet around the stump to cut off nerve signals", "Encourage the patient to stay completely still to avoid triggering the pain"], "marks": "0.50" },
+  { "q": "To prevent hip flexion contractures in a patient who underwent an above-knee amputation 48 hours ago, the nurse should instruct the patient to:", "a": ["Avoid keeping the stump elevated on pillows continuously", "Keep the stump flexed and adducted at all times", "Spend the entire day resting in a semi-Fowler position", "Refrain from performing any range-of-motion exercises"], "marks": "0.50" },
+  { "q": "A patient with a history of diabetes mellitus develops a chronic bone infection due to vascular insufficiency. The nurse anticipates that the treatment will primary focus on:", "a": ["Surgical debridement and prolonged antibiotic therapy", "Immediate joint fusion surgery and low-impact exercises", "Intubation, mechanical ventilation, and corticosteroid infusions", "Application of manual skin traction and a fiberglass cast"], "marks": "0.50" },
+  { "q": "An older adult female patient with advanced osteoporosis has a history of dementia and frequent falls. Which safety intervention should the nurse implement?", "a": ["Maintain the patient's bed in its lowest position", "Apply bilateral wrist restraints during sleep hours", "Place furniture pieces as obstacles around the bedside", "Keep the room completely dark at night to avoid confusion"], "marks": "0.50" },
+  { "q": "A nurse is providing dietary teaching to a postmenopausal patient to prevent the progression of osteoporosis. Which supplement combination should the nurse recommend?", "a": ["Calcium and Vitamin D", "Vitamin C and Iron", "Vitamin B12 and Potassium", "Magnesium and Zinc"], "marks": "0.50" },
+  { "q": "A patient with Rheumatoid Arthritis reports severe joint stiffness every morning that limits their ability to dress. What should the nurse suggest?", "a": ["Apply moist heat to the joints before attempting morning activities", "Perform high-impact aerobic exercises as soon as you wake up", "Avoid moving the joints entirely until the morning stiffness resolves", "Restrict your dietary intake of omega-3 fatty acids"], "marks": "0.50" },
+  { "q": "A female patient is newly prescribed Methotrexate for severe Rheumatoid Arthritis. Which instruction is critical for the nurse to include in the health teaching?", "a": ["Use effective contraception during therapy to prevent pregnancy", "Expect your skin and bodily secretions to turn a bright orange color", "Increase your intake of alcohol to help minimize joint discomfort", "Avoid routine eye examinations while you are taking this medication"], "marks": "0.50" },
+  { "q": "A patient with a history of joint damage presents with an abrupt onset of high fever, chills, and a red, swollen, severely painful knee joint. The nurse recognizes that the patient requires:", "a": ["Prompt joint fluid culture and drainage for septic arthritis", "Application of an external fixation device for a silent fracture", "Administration of a biophosphonate medication for osteoporosis", "Long-term rest and dynamic strength training for osteoarthritis"], "marks": "0.50" },
+  { "q": "A patient with a wrist fracture is being fitted for a short arm cast. To protect the skin integrity, what action should the nurse ensure is taken?", "a": ["Apply soft padding over the skin before the cast is placed", "Keep the cast wet for the first 48 hours after application", "Expose the skin under the cast to direct sunlight twice daily", "Tightly wrap an elastic bandage over the outside of the dry cast"], "marks": "0.50" }
 ]
 
     while(bank.length < 40) {
@@ -1796,7 +1814,7 @@
     }
 
     let currentExamIndex = 0; 
-    let examTimeTotalMinutes = 120;
+    let examTimeTotalMinutes = 180;
     let examTimeUsedSeconds = 0; 
     let textScaleValue = 1.0;
 
@@ -2095,7 +2113,7 @@ document.getElementById("modeProgressBarFill").style.width = `${itemsPercent}%`;
         if(examSystemInitialized) return;
         examSystemInitialized = true;
 
-        let remainSeconds = 120 * 60; 
+        let remainSeconds = 180 * 60; 
         setInterval(() => {
             if (remainSeconds > 0) { remainSeconds--; examTimeUsedSeconds++; }
             const hrs = Math.floor(remainSeconds / 3600).toString().padStart(2, '0');
