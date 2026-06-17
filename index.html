@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Integrated Exam System</title>
 
-    <link rel="icon" type="image/png" href="QQ.png">
+    <link class="image-reference" rel="icon" type="image/png" href="QQ.png">
     <link rel="apple-touch-icon" href="QQ.png">
     <link rel="apple-touch-icon" sizes="152x152" href="QQ.png">
     <link rel="apple-touch-icon" sizes="167x167" href="QQ.png">
@@ -277,7 +277,7 @@
             display: none !important; 
         }
 
-        /* ===== [تعديل الـ CSS المخصص لسطر واحد بدون نقاط وبدون نزول] ===== */
+        /* ===== [تعديل الـ CSS المخصص لسطر واحد متناسب تلقائياً مع حجم الشاشة] ===== */
         .exam-details {
             display: flex;
             flex-direction: column;
@@ -303,13 +303,18 @@
         .exam-details .value {
             color: #ffffff; 
             font-weight: 500;
-            white-space: nowrap;            /* يضمن بقاء النص بالكامل على سطر واحد */
-            text-align: right;             
+            white-space: nowrap;            /* منع النزول لسطر جديد نهائياً */
+            text-align: right;
         }
 
-        /* تصغير خط اسم المادة تحديداً ليناسب شاشات الجوال ويظهر بالكامل */
+        .course-row {
+            justify-content: flex-start;    /* جعل اسم المادة يبدأ بعد كلمة كورس مباشرة */
+            gap: 4px;                       /* المسافة الفاصلة لكسب أكبر مساحة ممكنة */
+        }
+
+        /* التغير الاحترافي: تصغير أوتوماتيكي مرن وذكي لخط اسم المادة يمنع الاختفاء */
         .course-row .value {
-            font-size: 10.7px !important;   /* تصغير الحجم إلى 10.7px لضمان ظهوره كاملاً */
+            font-size: clamp(8.5px, 2.5vw, 13px);
         }
 
         .exam-details .value.status-Available {
