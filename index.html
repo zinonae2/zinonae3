@@ -303,13 +303,13 @@
         .exam-details .value {
             color: #ffffff; 
             font-weight: 500;
-            white-space: nowrap;            /* منع النزول لسطر جديد نهائياً */
-            text-align: right;
+            white-space: nowrap;            /* يضمن بقاء النص بالكامل على سطر واحد */
+            text-align: right;             
         }
 
-        .course-row {
-            justify-content: flex-start;    /* جعل اسم المادة يبدأ بعد كلمة كورس مباشرة */
-            gap: 24px;                      /* المسافة الفاصلة بينهما */
+        /* تصغير خط اسم المادة تحديداً ليناسب شاشات الجوال ويظهر بالكامل */
+        .course-row .value {
+            font-size: 13.5px !important;   /* تصغير الحجم إلى 13.5px لضمان ظهوره كاملاً */
         }
 
         .exam-details .value.status-Available {
