@@ -278,25 +278,34 @@
         }
 
         .exam-details {
-            display: grid;
-            /* التعديل: هنا تم تحديد حجم ثابت تقريبي للـ Label لمنع التمدد، وجعل القيمة مرنة جداً */
-            grid-template-columns: max-content minmax(0, 1fr);
+            display: flex;
+            flex-direction: column; /* ترتيب الأسطر عمودياً فوق بعضها */
             row-gap: 16px;
-            column-gap: 12px;
             font-size: 14px;
             color: #aeaeb2; 
         }
 
+        /* تنسيق مخصص لكل سطر يحتوي على عنوان وقيمة */
+        .exam-details-row {
+            display: flex;
+            justify-content: space-between; /* يدفع العنوان لليصار والقيمة لليمين */
+            align-items: flex-start;        /* يضمن محاذاة النصوص من الأعلى إذا نزل النص سطر جديد */
+            gap: 16px;                      /* مسافة أمان بين العنوان والنص */
+            width: 100%;
+        }
+
+        /* العناوين الثابتة مثل Course, Duration */
+        .exam-details-label {
+            flex-shrink: 0;                 /* يمنع العناوين الثابتة من الانضغاط أو الاختفاء */
+            color: #aeaeb2;
+        }
+
         .exam-details .value {
             color: #ffffff; 
-            justify-self: end;
             font-weight: 500;
-            /* التعديل: جعل النص يبدأ المحاذاة من اليسار لليمين ليناسب اللغة الإنجليزية */
-            text-align: left;
-            /* التعديل: تم تغييرها لـ normal للسماح للنص بالنزول لأسفل بشكل تلقائي عند الشاشات الصغيرة */
-            white-space: normal;
-            /* أمان إضافي لكسر الكلمات الطويلة جداً إن وجدت */
-            word-break: break-word; 
+            text-align: right;             /* محاذاة النص الطويل لليمين */
+            white-space: normal;            /* السماح بالنزول لسطر جديد */
+            word-break: break-word;         /* كسر الكلمات الطويلة جداً */
         }
 
         .exam-details .value.status-Available {
@@ -1448,11 +1457,26 @@
                     </div>
                 </div>
                 <div class="exam-details collapsed">
-                    <span>Course</span> <span class="value">Epidemiology and Statistics for Health Care Professionals</span>
-                    <span>Duration</span> <span class="value">02:00:00</span>
-                    <span>Proctored</span> <span class="value">No</span>
-                    <span>Status</span> <span class="value status-ended">Exam Ended</span>
-                    <span>Upload Status</span> <span class="value">Uploaded</span>
+                    <div class="exam-details-row">
+                        <span class="exam-details-label">Course</span> 
+                        <span class="value">Epidemiology and Statistics for Health Care Professionals</span>
+                    </div>
+                    <div class="exam-details-row">
+                        <span class="exam-details-label">Duration</span> 
+                        <span class="value">02:00:00</span>
+                    </div>
+                    <div class="exam-details-row">
+                        <span class="exam-details-label">Proctored</span> 
+                        <span class="value">No</span>
+                    </div>
+                    <div class="exam-details-row">
+                        <span class="exam-details-label">Status</span> 
+                        <span class="value status-ended">Exam Ended</span>
+                    </div>
+                    <div class="exam-details-row">
+                        <span class="exam-details-label">Upload Status</span> 
+                        <span class="value">Uploaded</span>
+                    </div>
                 </div>
                 <button class="view-score collapsed" onclick="event.stopPropagation(); openResultsNotificationModal()">View Score</button>
             </div>
