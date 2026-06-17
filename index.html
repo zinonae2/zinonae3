@@ -279,7 +279,8 @@
 
         .exam-details {
             display: grid;
-            grid-template-columns: auto 1fr;
+            /* التعديل: هنا تم تحديد حجم ثابت تقريبي للـ Label لمنع التمدد، وجعل القيمة مرنة جداً */
+            grid-template-columns: max-content minmax(0, 1fr);
             row-gap: 16px;
             column-gap: 12px;
             font-size: 14px;
@@ -290,7 +291,12 @@
             color: #ffffff; 
             justify-self: end;
             font-weight: 500;
-            white-space: nowrap;
+            /* التعديل: جعل النص يبدأ المحاذاة من اليسار لليمين ليناسب اللغة الإنجليزية */
+            text-align: left;
+            /* التعديل: تم تغييرها لـ normal للسماح للنص بالنزول لأسفل بشكل تلقائي عند الشاشات الصغيرة */
+            white-space: normal;
+            /* أمان إضافي لكسر الكلمات الطويلة جداً إن وجدت */
+            word-break: break-word; 
         }
 
         .exam-details .value.status-Available {
