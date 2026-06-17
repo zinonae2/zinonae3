@@ -277,35 +277,39 @@
             display: none !important; 
         }
 
+        /* ===== [تعديل الـ CSS المخصص لسطر واحد بدون نقاط وبدون نزول] ===== */
         .exam-details {
             display: flex;
-            flex-direction: column; /* ترتيب الأسطر عمودياً فوق بعضها */
+            flex-direction: column;
             row-gap: 16px;
             font-size: 14px;
             color: #aeaeb2; 
-        }
-
-        /* تنسيق مخصص لكل سطر يحتوي على عنوان وقيمة */
-        .exam-details-row {
-            display: flex;
-            justify-content: space-between; /* يدفع العنوان لليصار والقيمة لليمين */
-            align-items: flex-start;        /* يضمن محاذاة النصوص من الأعلى إذا نزل النص سطر جديد */
-            gap: 16px;                      /* مسافة أمان بين العنوان والنص */
             width: 100%;
         }
 
-        /* العناوين الثابتة مثل Course, Duration */
+        .exam-details-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            overflow: visible;
+        }
+
         .exam-details-label {
-            flex-shrink: 0;                 /* يمنع العناوين الثابتة من الانضغاط أو الاختفاء */
+            flex-shrink: 0;
             color: #aeaeb2;
         }
 
         .exam-details .value {
             color: #ffffff; 
             font-weight: 500;
-            text-align: right;             /* محاذاة النص الطويل لليمين */
-            white-space: normal;            /* السماح بالنزول لسطر جديد */
-            word-break: break-word;         /* كسر الكلمات الطويلة جداً */
+            white-space: nowrap;            /* منع النزول لسطر جديد نهائياً */
+            text-align: right;
+        }
+
+        .course-row {
+            justify-content: flex-start;    /* جعل اسم المادة يبدأ بعد كلمة كورس مباشرة */
+            gap: 24px;                      /* المسافة الفاصلة بينهما */
         }
 
         .exam-details .value.status-Available {
@@ -1126,12 +1130,29 @@
                         <span class="arrow-toggle">▼</span>
                     </div>
                 </div>
+                
+                <!-- تعديل هيكل الـ HTML للاختبار الحالي -->
                 <div class="exam-details collapsed">
-                    <span>Course</span> <span class="value">Epidemiology and Statistics for Health Care Professionals</span>
-                    <span>Duration</span> <span class="value">02:00:00</span>
-                    <span>Proctored</span> <span class="value">No</span>
-                    <span>Status</span> <span class="value status-Available">Available</span>
-                    <span>Upload Status</span> <span class="value">-</span>
+                    <div class="exam-details-row course-row">
+                        <span class="exam-details-label">Course</span> 
+                        <span class="value">Epidemiology and Statistics for Health Care Professionals</span>
+                    </div>
+                    <div class="exam-details-row">
+                        <span class="exam-details-label">Duration</span> 
+                        <span class="value">02:00:00</span>
+                    </div>
+                    <div class="exam-details-row">
+                        <span class="exam-details-label">Proctored</span> 
+                        <span class="value">No</span>
+                    </div>
+                    <div class="exam-details-row">
+                        <span class="exam-details-label">Status</span> 
+                        <span class="value status-Available">Available</span>
+                    </div>
+                    <div class="exam-details-row">
+                        <span class="exam-details-label">Upload Status</span> 
+                        <span class="value">-</span>
+                    </div>
                 </div>
                 <button class="btn-attempt-custom collapsed" onclick="event.stopPropagation(); goToExamPage()">Attempt (Take Exam)</button>
             </div>
@@ -1456,8 +1477,10 @@
                         <span class="arrow-toggle">▼</span>
                     </div>
                 </div>
+                
+                <!-- تعديل هيكل الـ HTML للاختبارات المنتهية (Post-Exam) أيضاً -->
                 <div class="exam-details collapsed">
-                    <div class="exam-details-row">
+                    <div class="exam-details-row course-row">
                         <span class="exam-details-label">Course</span> 
                         <span class="value">Epidemiology and Statistics for Health Care Professionals</span>
                     </div>
@@ -1802,7 +1825,7 @@
   { "q": "Which of the following best describes selective screening?", "a": ["Conducting mammograms only for women aged 50 and above due to higher risk.", "Offering a blood pressure and glucose test to all factory workers during a health campaign.", "Measuring blood pressure during a regular clinic visit for an unrelated complaint.", "Testing all newborns for multiple genetic disorders using a single blood sample."], "marks": "1.00" },
   { "q": "Which of the following scenarios illustrates opportunistic screening?", "a": ["All pregnant women are offered genetic testing during the first trimester.", "A smoker aged 60 is invited for a lung cancer screening based on risk profile.", "A national campaign testing all school children for vision problems.", "A patient visits a clinic for a flu shot, and the doctor screens for high blood pressure."], "marks": "1.00" },
   { "q": "Based on the Tuberculosis table, what is the Negative Predictive Value (NPV) of the test?", "a": ["90%", "81.8%", "18.2%", "20%"], "marks": "1.00" },
-  { "q": "Based on the Tuberculosis table, what is the Positive Predictive Value (PPV) of the screening test?", "a": ["72.7%", "88.9%", "80%", "22.2%"], "marks": "1.00" },
+  { "q": "Based on the Tuberculosis table, what is the Positive Predictive Value (PPV) of the screening test?", "a": ["72.7%", "88.9%", "80%", "22.2%"], "connected_from_prev": true, "marks": "1.00" },
   { "q": "Which of the following best defines sensitivity in the context of screening tests?", "a": ["The degree to which a test is cost-effective in mass populations.", "The ability of a test to correctly identify those who do not have the disease.", "The degree of public acceptance of a screening test.", "The ability of a test to correctly identify those who have the disease."], "marks": "1.00" },
   { "q": "A thermometer always shows 2 degrees higher than the actual temperature. This means:", "a": ["The thermometer is reliable but not valid.", "The thermometer is neither reliable nor valid.", "The thermometer has high validity but low reliability.", "The thermometer is both valid and reliable."], "marks": "1.00" },
   { "q": "Which of the following best distinguishes screening from diagnosis?", "a": ["Diagnosis is performed only on healthy individuals.", "Screening identifies individuals at risk; diagnosis confirms the presence of disease.", "Screening is used after the diagnosis is confirmed.", "Screening requires expensive and invasive procedures."], "marks": "1.00" },
