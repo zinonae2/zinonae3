@@ -307,16 +307,6 @@
             text-align: right;
         }
 
-        .course-row {
-            justify-content: flex-start;    /* جعل اسم المادة يبدأ بعد كلمة كورس مباشرة */
-            gap: 4px;                       /* المسافة الفاصلة لكسب أكبر مساحة ممكنة */
-        }
-
-        /* التغير الاحترافي: تصغير أوتوماتيكي مرن وذكي لخط اسم المادة يمنع الاختفاء */
-        .course-row .value {
-            font-size: clamp(8.5px, 2.5vw, 13px);
-        }
-
         .exam-details .value.status-Available {
             color: #2a65bf;
             font-weight: bold;
@@ -703,6 +693,11 @@
             gap: 10px;
         }
 
+        .student-row > :first-child {
+            flex: 1;
+            min-width: 0;
+        }
+
         .student-name-label {
             font-size: 11px;
             color: var(--text-muted);
@@ -710,11 +705,14 @@
         }
 
         .student-name {
-            font-size: 12px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--text-muted);
             line-height: 1.2;
             text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .header-buttons {
@@ -1130,7 +1128,7 @@
                     <div class="exam-title">NUR 419 Mid term Exam</div>
                     <div class="exam-date">
                         <div>
-                            <span style="color: #ffffff;">4 Oct 2026</span><br>01:00 PM
+                            <span style="color: #ffffff;">07 Oct 2026</span><br>01:00 PM
                         </div>
                         <span class="arrow-toggle">▼</span>
                     </div>
@@ -1477,7 +1475,7 @@
                     <div class="exam-title">NUR 419 Mid term Exam</div>
                     <div class="exam-date">
                         <div>
-                            <span style="color: #ffffff;">04 Oct 2026</span><br>01:00 PM
+                            <span style="color: #ffffff;">07 Oct 2026</span><br>01:00 PM
                         </div>
                         <span class="arrow-toggle">▼</span>
                     </div>
@@ -1726,7 +1724,7 @@
     function openNotificationModal() {
         document.getElementById('notif-custom-title').textContent = 'Notification';
         document.getElementById('notif-custom-text').innerHTML = `
-            The QQ app was first launched at 02 Jun 2026 07:04:58 AM, with Device ID: 48F0A388-D0F6-4265-8E22-504A0D7714C9 and Timezone: Asia/Riyadh
+            The QQ app was first launched at 07 Oct 2026 07:04:58 AM, with Device ID: 48F0A388-D0F6-4265-8E22-504A0D7714C9 and Timezone: Asia/Riyadh
         `;
         document.getElementById('notif-modal-overlay').classList.remove('hidden');
     }
